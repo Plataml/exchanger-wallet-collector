@@ -7,3 +7,4 @@ data/
 # Adapters (contain site-specific configs)
 adapters/*.json
 !adapters/_example.json
+Untitled spreadsheet (1).xlsx

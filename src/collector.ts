@@ -5,6 +5,7 @@ import { config, randomDelay, sleep } from './config';
 import { getAdapter } from './adapters';
 import { CryptoPair, Exchanger } from './types';
 import { logger } from './logger';
+import { notifySuccess, notifyError } from './telegram';
 import fs from 'fs';
 
 // Default pairs to try
@@ -17,12 +18,14 @@ const DEFAULT_PAIRS: CryptoPair[] = [
 export async function collectFromExchanger(
   exchanger: Exchanger,
   pairs: CryptoPair[] = DEFAULT_PAIRS
-): Promise<void> {
+): Promise<{ success: number; failed: number }> {
   const adapter = getAdapter(exchanger.domain);
+  let success = 0;
+  let failed = 0;
 
   if (!adapter) {
     logger.warn(`No adapter for ${exchanger.domain}, skipping`);
-    return;
+    return { success, failed };
   }
 
   for (const pair of pairs) {
@@ -45,6 +48,10 @@ export async function collectFromExchanger(
       insertAttempt(exchanger.id, `${pair.from}-${pair.to}`, 'success');
       logger.info(`[${exchanger.name}] Success: ${result.address}`);
 
+      // Telegram notification
+      await notifySuccess(exchanger.name, result.address, `${pair.from}->${pair.to}`);
+      success++;
+
     } catch (error: any) {
       const errorMsg = error.message || String(error);
       const status = errorMsg.toLowerCase().includes('captcha') ? 'captcha' :
@@ -52,6 +59,12 @@ export async function collectFromExchanger(
 
       insertAttempt(exchanger.id, `${pair.from}-${pair.to}`, status, errorMsg);
       logger.error(`[${exchanger.name}] ${status}: ${errorMsg}`);
+
+      // Telegram notification only for critical errors
+      if (status === 'blocked') {
+        await notifyError(exchanger.name, errorMsg);
+      }
+      failed++;
 
     } finally {
       if (page) {
@@ -64,6 +77,8 @@ export async function collectFromExchanger(
     logger.info(`Waiting ${Math.round(delay / 1000)}s before next pair...`);
     await sleep(delay);
   }
+
+  return { success, failed };
 }
 
 export async function runCollector(targetDomain?: string): Promise<void> {
@@ -71,6 +86,9 @@ export async function runCollector(targetDomain?: string): Promise<void> {
   if (!fs.existsSync(config.screenshotsPath)) {
     fs.mkdirSync(config.screenshotsPath, { recursive: true });
   }
+
+  let totalSuccess = 0;
+  let totalFailed = 0;
 
   try {
     let exchangers: Exchanger[];
@@ -93,7 +111,9 @@ export async function runCollector(targetDomain?: string): Promise<void> {
     logger.info(`Processing ${exchangers.length} exchanger(s)...`);
 
     for (const exchanger of exchangers) {
-      await collectFromExchanger(exchanger);
+      const { success, failed } = await collectFromExchanger(exchanger);
+      totalSuccess += success;
+      totalFailed += failed;
 
       // Delay between exchangers
       const delay = randomDelay();
@@ -105,5 +125,5 @@ export async function runCollector(targetDomain?: string): Promise<void> {
     await closeBrowser();
   }
 
-  logger.info('Collection cycle complete');
+  logger.info(`Collection cycle complete. Success: ${totalSuccess}, Failed: ${totalFailed}`);
 }

@@ -1,6 +1,5790 @@
 [
   {
-    "name": "Example Exchange",
-    "domain": "example-exchange.com"
+    "name": "Сова",
+    "domain": "sova.gg"
+  },
+  {
+    "name": "Крипта",
+    "domain": "cripta.cc"
+  },
+  {
+    "name": "Шахта",
+    "domain": "mine.exchange"
+  },
+  {
+    "name": "Ферма",
+    "domain": "ferma.cc"
+  },
+  {
+    "name": "OneMoment",
+    "domain": "onemoment.cc"
+  },
+  {
+    "name": "CoinStar",
+    "domain": "coinstart.cc"
+  },
+  {
+    "name": "ExHub",
+    "domain": "exhub.io"
+  },
+  {
+    "name": "Receive-Money",
+    "domain": "receive-money.biz"
+  },
+  {
+    "name": "AlfaBit",
+    "domain": "alfabit.org"
+  },
+  {
+    "name": "CoinDrop",
+    "domain": "coindrop.trade"
+  },
+  {
+    "name": "365Cash",
+    "domain": "365cash.co"
+  },
+  {
+    "name": "Альткоин",
+    "domain": "alt-coin.cc"
+  },
+  {
+    "name": "BTCSale\n",
+    "domain": "btcsale.me"
+  },
+  {
+    "name": "City-Exchange",
+    "domain": "city-exchange.io"
+  },
+  {
+    "name": "NixExchange\n",
+    "domain": "www.nixexchange.com"
+  },
+  {
+    "name": "Ukr-Obmen\n",
+    "domain": "ukr-obmen.com"
+  },
+  {
+    "name": "Метка\n",
+    "domain": "metka.cc"
+  },
+  {
+    "name": "Касса",
+    "domain": "kassa.cc"
+  },
+  {
+    "name": "7Money",
+    "domain": "7money.co"
+  },
+  {
+    "name": "InTo",
+    "domain": "in-to.cc"
+  },
+  {
+    "name": "I-Obmen",
+    "domain": "i-obmen.bz"
+  },
+  {
+    "name": "El-Change",
+    "domain": "el-change.com"
+  },
+  {
+    "name": "CoinCat",
+    "domain": "coincat.in"
+  },
+  {
+    "name": "F-Change",
+    "domain": "f-change.biz"
+  },
+  {
+    "name": "HotExchange",
+    "domain": "hot24.exchange"
+  },
+  {
+    "name": "CryptoHome\n",
+    "domain": "cryptohome.me"
+  },
+  {
+    "name": "Transfer24\n",
+    "domain": "transfer24.pro"
+  },
+  {
+    "name": "Обменко",
+    "domain": "obmenko.org"
+  },
+  {
+    "name": "КупиБит",
+    "domain": "kupibit.me"
+  },
+  {
+    "name": "Clean-Exchange",
+    "domain": "clean-exchange.com"
+  },
+  {
+    "name": "BetaTransfer",
+    "domain": "betatransfer.org"
+  },
+  {
+    "name": "NiceObmen",
+    "domain": "niceobmen.com"
+  },
+  {
+    "name": "AvanChange",
+    "domain": "avanchange.com"
+  },
+  {
+    "name": "YChanger\n",
+    "domain": "ychangers.net"
+  },
+  {
+    "name": "BitExchanger\n",
+    "domain": "bit-exchanger.me"
+  },
+  {
+    "name": "D-Obmen\n",
+    "domain": "d-obmen.cc"
+  },
+  {
+    "name": "E-Change\n",
+    "domain": "e-change.io"
+  },
+  {
+    "name": "Муха\n",
+    "domain": "myxa.cc"
+  },
+  {
+    "name": "Xchange\n",
+    "domain": "xchange.fund"
+  },
+  {
+    "name": "FlashObmen\n",
+    "domain": "flashobmen.com"
+  },
+  {
+    "name": "LasloBit\n",
+    "domain": "laslobit.cc"
+  },
+  {
+    "name": "Daeo",
+    "domain": "daeo.pro"
+  },
+  {
+    "name": "ProstovCash\n",
+    "domain": "prostovcash.com"
+  },
+  {
+    "name": "ChangeProject",
+    "domain": "changeproject.best"
+  },
+  {
+    "name": "BaksMan",
+    "domain": "baksmany.com"
+  },
+  {
+    "name": "MasterChange",
+    "domain": "master-change.io"
+  },
+  {
+    "name": "Papa-Change\n",
+    "domain": "www.papa-change.com"
+  },
+  {
+    "name": "Keine-Exchange\n",
+    "domain": "keine-exchange.com"
+  },
+  {
+    "name": "YoChange\n",
+    "domain": "yochange.com"
+  },
+  {
+    "name": "Crypto-Dom",
+    "domain": "crypto-dom.com"
+  },
+  {
+    "name": "NewLine\n",
+    "domain": "newline.online"
+  },
+  {
+    "name": "NicexChanger\n",
+    "domain": "nicexchanger.cc"
+  },
+  {
+    "name": "1WM",
+    "domain": "1wm.io"
+  },
+  {
+    "name": "Best-Obmen",
+    "domain": "best-obmen.co"
+  },
+  {
+    "name": "VIPchanger\n",
+    "domain": "4.vipchanger.app"
+  },
+  {
+    "name": "GramBit",
+    "domain": "grambit.biz"
+  },
+  {
+    "name": "Finex24",
+    "domain": "finex24.io/?rid=12"
+  },
+  {
+    "name": "Coco-Pay\n",
+    "domain": "coco-pay.com"
+  },
+  {
+    "name": "24PayBank\n",
+    "domain": "24paybanks.me"
+  },
+  {
+    "name": "CoinShop24\n",
+    "domain": "coinshop24.org"
+  },
+  {
+    "name": "WestChange",
+    "domain": "westchange.top"
+  },
+  {
+    "name": "JetMonet\n",
+    "domain": "jetmonet.com"
+  },
+  {
+    "name": "Platov",
+    "domain": "platov.co"
+  },
+  {
+    "name": "ЗеленаяСвеча\n",
+    "domain": "green-obmenka.ru"
+  },
+  {
+    "name": "Top-Exchange",
+    "domain": "top-exchange.com"
+  },
+  {
+    "name": "60сек\n",
+    "domain": "60sek.net"
+  },
+  {
+    "name": "ExLine",
+    "domain": "exline.pro"
+  },
+  {
+    "name": "FastChange\n",
+    "domain": "fastchange.me"
+  },
+  {
+    "name": "ClickPay\n",
+    "domain": "clickpay.cx"
+  },
+  {
+    "name": "Sunduk\n",
+    "domain": "sunduk.su"
+  },
+  {
+    "name": "1Mile",
+    "domain": "1mile.co"
+  },
+  {
+    "name": "CoinClick",
+    "domain": "coinclick.cc"
+  },
+  {
+    "name": "Криптохаб",
+    "domain": "cryptohub.llc"
+  },
+  {
+    "name": "Об-мен",
+    "domain": "ob-men.com"
+  },
+  {
+    "name": "EpiChange\n",
+    "domain": "epichange.online"
+  },
+  {
+    "name": "IziBTC\n",
+    "domain": "izibtc.net"
+  },
+  {
+    "name": "BestKurs24\n",
+    "domain": "bestkurs24.com"
+  },
+  {
+    "name": "Лимончик\n",
+    "domain": "lemonchik.cash"
+  },
+  {
+    "name": "Crypto-Store",
+    "domain": "crypto-store.cc"
+  },
+  {
+    "name": "OpenChange",
+    "domain": "openchange.is"
+  },
+  {
+    "name": "2rbina",
+    "domain": "2rbina.net"
+  },
+  {
+    "name": "CoinChanger",
+    "domain": "coinchanger.in"
+  },
+  {
+    "name": "Котлета",
+    "domain": "kotleta.gg"
+  },
+  {
+    "name": "PushPayer\n",
+    "domain": "pushpayer.net"
+  },
+  {
+    "name": "RocketChange",
+    "domain": "rocketchange.ws"
+  },
+  {
+    "name": "1-Online\n",
+    "domain": "1-online.ru"
+  },
+  {
+    "name": "ExWhite",
+    "domain": "exwhite.io"
+  },
+  {
+    "name": "BTchange",
+    "domain": "btchange.ru"
+  },
+  {
+    "name": "Nordex",
+    "domain": "nordex.cc"
+  },
+  {
+    "name": "MultiVal",
+    "domain": "multival.is"
+  },
+  {
+    "name": "EExchanger\n",
+    "domain": "eexchanger.co"
+  },
+  {
+    "name": "CriptHub\n",
+    "domain": "cripthub.ru"
+  },
+  {
+    "name": "FloatChange\n",
+    "domain": "floatchange.com"
+  },
+  {
+    "name": "PayMarket\n",
+    "domain": "paymarket.cc"
+  },
+  {
+    "name": "CryptoXchange\n",
+    "domain": "cryptoxchange.cc"
+  },
+  {
+    "name": "Kingex\n",
+    "domain": "new.kingex.io"
+  },
+  {
+    "name": "Staff-Obmen",
+    "domain": "staff-obmen.com"
+  },
+  {
+    "name": "RamonCash",
+    "domain": "ramon.money"
+  },
+  {
+    "name": "Crypto-Polis\n",
+    "domain": "crypto-polis.org"
+  },
+  {
+    "name": "БухтаОбмена",
+    "domain": "buhtaobmena.me"
+  },
+  {
+    "name": "HD-Change",
+    "domain": "hd-change.com"
+  },
+  {
+    "name": "SberBit",
+    "domain": "sberbit.vip"
+  },
+  {
+    "name": "AbcObmen",
+    "domain": "abcobmen.net"
+  },
+  {
+    "name": "PayGet",
+    "domain": "in1go.cc"
+  },
+  {
+    "name": "Cerber\n",
+    "domain": "cerber.top"
+  },
+  {
+    "name": "24Obmin",
+    "domain": "24obmin.com"
+  },
+  {
+    "name": "Delets\n",
+    "domain": "delets.online"
+  },
+  {
+    "name": "Банкомат",
+    "domain": "bankcomat.me"
+  },
+  {
+    "name": "ExBox",
+    "domain": "exbox.app"
+  },
+  {
+    "name": "BTC2Pay\n",
+    "domain": "btc2pay.org"
+  },
+  {
+    "name": "UniCash\n",
+    "domain": "unicash.pro"
+  },
+  {
+    "name": "Ex-Bank\n",
+    "domain": "ex-bank.cc"
+  },
+  {
+    "name": "Rapid-Obmen\n",
+    "domain": "rapid-obmen.com"
+  },
+  {
+    "name": "GoldObmen",
+    "domain": "goldobmen.com"
+  },
+  {
+    "name": "Арбуз\n",
+    "domain": "arbuz.io"
+  },
+  {
+    "name": "Moneta365",
+    "domain": "www.moneta365.com"
+  },
+  {
+    "name": "CoinPayMaster",
+    "domain": "coinpaymaster.com"
+  },
+  {
+    "name": "FehuPay",
+    "domain": "fehupay.com"
+  },
+  {
+    "name": "BroExchange",
+    "domain": "bro.exchange"
+  },
+  {
+    "name": "TytCash",
+    "domain": "tyt.cash"
+  },
+  {
+    "name": "Криптообменник",
+    "domain": "cryptoobmennik.exchange"
+  },
+  {
+    "name": "Феникс",
+    "domain": "myphoenix.cc"
+  },
+  {
+    "name": "WxMoney\n",
+    "domain": "wx.money"
+  },
+  {
+    "name": "ChBy\n",
+    "domain": "chby.io"
+  },
+  {
+    "name": "YesObmen\n",
+    "domain": "yesobmen.com"
+  },
+  {
+    "name": "Global-Ex",
+    "domain": "global-ex.cc"
+  },
+  {
+    "name": "NextCoin\n",
+    "domain": "www.nextcoin.pro"
+  },
+  {
+    "name": "CatChange",
+    "domain": "catchange.io"
+  },
+  {
+    "name": "Nadex\n",
+    "domain": "nadex.io"
+  },
+  {
+    "name": "Excoin\n",
+    "domain": "excoin.in"
+  },
+  {
+    "name": "Konvert",
+    "domain": "konvert.im"
+  },
+  {
+    "name": "SpbWMCasher\n",
+    "domain": "spbwmcasher.ru"
+  },
+  {
+    "name": "4Exchange",
+    "domain": "4ex.cash"
+  },
+  {
+    "name": "Банка\n",
+    "domain": "banka.exchange"
+  },
+  {
+    "name": "CoolCoin\n",
+    "domain": "coolcoin.best"
+  },
+  {
+    "name": "ChangeCoins\n",
+    "domain": "changecoins.io"
+  },
+  {
+    "name": "Kupitman\n",
+    "domain": "kupitman.pro"
+  },
+  {
+    "name": "First-BTC\n",
+    "domain": "first-btc.io"
+  },
+  {
+    "name": "SwapEx",
+    "domain": "swapex.cc"
+  },
+  {
+    "name": "AllCash\n",
+    "domain": "all.cash"
+  },
+  {
+    "name": "TrustMeCash\n",
+    "domain": "best.trustmecash.com"
+  },
+  {
+    "name": "EuroBit",
+    "domain": "eurobit.cc"
+  },
+  {
+    "name": "WMChanger",
+    "domain": "wmchanger.net"
+  },
+  {
+    "name": "Пандпэй",
+    "domain": "pandpay.net"
+  },
+  {
+    "name": "X-Obmen",
+    "domain": "x-obmen.biz"
+  },
+  {
+    "name": "CryptoPay24\n",
+    "domain": "cryptopay24.com"
+  },
+  {
+    "name": "CoinBlinker",
+    "domain": "coinblinker.me"
+  },
+  {
+    "name": "Ru-Bas\n",
+    "domain": "www.ru-bas.ru"
+  },
+  {
+    "name": "Rexexio\n",
+    "domain": "rexex.io"
+  },
+  {
+    "name": "E-Obmen\n",
+    "domain": "e-obmen.net"
+  },
+  {
+    "name": "BitStore\n",
+    "domain": "bitstore.ws"
+  },
+  {
+    "name": "HASchange",
+    "domain": "haschange.com"
+  },
+  {
+    "name": "YaObmen",
+    "domain": "yaobmen.cash"
+  },
+  {
+    "name": "SwapCoin",
+    "domain": "swapcoin.cc"
+  },
+  {
+    "name": "TraiderIdeal\n",
+    "domain": "traiderideal.ru"
+  },
+  {
+    "name": "FixedFloat\n",
+    "domain": "ff.io"
+  },
+  {
+    "name": "DigiChanger",
+    "domain": "www.digichanger.pro"
+  },
+  {
+    "name": "BtcChange24",
+    "domain": "www.btcchange24.com"
+  },
+  {
+    "name": "BelkaPay\n",
+    "domain": "belkapay.cc"
+  },
+  {
+    "name": "Даркен",
+    "domain": "darken.vip"
+  },
+  {
+    "name": "Ru-Change\n",
+    "domain": "ru-change.cc"
+  },
+  {
+    "name": "ExchangeForMe",
+    "domain": "exchangefor.me"
+  },
+  {
+    "name": "CashBox",
+    "domain": "cashbox.exchange"
+  },
+  {
+    "name": "MoneyMix",
+    "domain": "moneymix.org"
+  },
+  {
+    "name": "ExchangeX",
+    "domain": "exchangex.biz"
+  },
+  {
+    "name": "PremierCash",
+    "domain": "premier.cash"
+  },
+  {
+    "name": "cointransfer",
+    "domain": "cointransfer.online"
+  },
+  {
+    "name": "TradeToCash",
+    "domain": "www.tradeto.cash"
+  },
+  {
+    "name": "Crypster",
+    "domain": "crypster.net"
+  },
+  {
+    "name": "WikiPays",
+    "domain": "wikipays.com"
+  },
+  {
+    "name": "Bixter",
+    "domain": "bixter.org"
+  },
+  {
+    "name": "111Обмен\n",
+    "domain": "111obmen.com"
+  },
+  {
+    "name": "50Cents",
+    "domain": "50cents.pro"
+  },
+  {
+    "name": "Fiatex",
+    "domain": "www.fiatex.pro"
+  },
+  {
+    "name": "Coin-Bank\n",
+    "domain": "coin-bank.co"
+  },
+  {
+    "name": "Цунами",
+    "domain": "www.tsunami.cash"
+  },
+  {
+    "name": "ObmenAT24\n",
+    "domain": "obmenat24.com"
+  },
+  {
+    "name": "Galaxy-Coin\n",
+    "domain": "galaxy-coin.cash"
+  },
+  {
+    "name": "ArmChange",
+    "domain": "armchange.ru"
+  },
+  {
+    "name": "Bitcoin24SU\n",
+    "domain": "bitcoin24.su"
+  },
+  {
+    "name": "Точка24",
+    "domain": "tochka24.org"
+  },
+  {
+    "name": "Сатоши",
+    "domain": "satoshi.cx"
+  },
+  {
+    "name": "BTC-Обменник\n",
+    "domain": "btc-obmennik.com"
+  },
+  {
+    "name": "BigBank",
+    "domain": "bigbank.top"
+  },
+  {
+    "name": "BitHunter",
+    "domain": "bithunter.io"
+  },
+  {
+    "name": "ObmenGuru",
+    "domain": "obmen.guru"
+  },
+  {
+    "name": "FreeChange",
+    "domain": "freechange.cc"
+  },
+  {
+    "name": "BitokAi\n",
+    "domain": "bitok.ai"
+  },
+  {
+    "name": "24Обмен\n",
+    "domain": "24obmen.su"
+  },
+  {
+    "name": "Cash-Bit",
+    "domain": "cash-bit.com"
+  },
+  {
+    "name": "TopCash",
+    "domain": "topcash24.me"
+  },
+  {
+    "name": "24Zone",
+    "domain": "24.zone"
+  },
+  {
+    "name": "WMSell\n",
+    "domain": "wmsell.biz"
+  },
+  {
+    "name": "N1ex",
+    "domain": "n7.n1-ex.com"
+  },
+  {
+    "name": "16Tonn",
+    "domain": "16tonn.com"
+  },
+  {
+    "name": "CryptoMoney",
+    "domain": "cryptomoney.pro"
+  },
+  {
+    "name": "Вобменка",
+    "domain": "vobmenka.com"
+  },
+  {
+    "name": "AllMoney",
+    "domain": "allmoney.market"
+  },
+  {
+    "name": "SwiftChange",
+    "domain": "swiftchange.net"
+  },
+  {
+    "name": "Vilcov\n",
+    "domain": "vilcov.com"
+  },
+  {
+    "name": "GrumBot\n",
+    "domain": "grumbot.com"
+  },
+  {
+    "name": "BitPayes\n",
+    "domain": "bitpayes.com"
+  },
+  {
+    "name": "CoinCraddle\n",
+    "domain": "coincraddle.com"
+  },
+  {
+    "name": "ObmenLite24\n",
+    "domain": "obmenlite24.ru"
+  },
+  {
+    "name": "Криптон",
+    "domain": "crypt-ons.com"
+  },
+  {
+    "name": "XMoney",
+    "domain": "xmoney.su"
+  },
+  {
+    "name": "Exch-em",
+    "domain": "exch-em.com"
+  },
+  {
+    "name": "AllTop\n",
+    "domain": "alltop.io"
+  },
+  {
+    "name": "Real-Bit\n",
+    "domain": "real-bit.net"
+  },
+  {
+    "name": "CryptoMax",
+    "domain": "cryptomax.ru"
+  },
+  {
+    "name": "CryptoBarMen",
+    "domain": "cryptobar.men"
+  },
+  {
+    "name": "CryptoLavka\n",
+    "domain": "cryptolavka.com"
+  },
+  {
+    "name": "InstaCrypt",
+    "domain": "instacrypt.org"
+  },
+  {
+    "name": "UAchanger\n",
+    "domain": "uachanger.com"
+  },
+  {
+    "name": "CoinsBlack\n",
+    "domain": "coins.black"
+  },
+  {
+    "name": "Adb",
+    "domain": "adb.bz"
+  },
+  {
+    "name": "KZ007",
+    "domain": "kz007.org"
+  },
+  {
+    "name": "AnonEx",
+    "domain": "anonex.cash"
+  },
+  {
+    "name": "BtcTenge",
+    "domain": "btctenge.com"
+  },
+  {
+    "name": "WMBlr",
+    "domain": "wmblr.ru"
+  },
+  {
+    "name": "ExpressMoney\n",
+    "domain": "express.money"
+  },
+  {
+    "name": "Obmen-Box",
+    "domain": "obmen-box.net"
+  },
+  {
+    "name": "99Francs",
+    "domain": "99francs.pro"
+  },
+  {
+    "name": "LetsChange",
+    "domain": "letschange.biz"
+  },
+  {
+    "name": "Changee",
+    "domain": "changee.com"
+  },
+  {
+    "name": "EmpireOfExchange\n",
+    "domain": "best.empireofexchange.online"
+  },
+  {
+    "name": "ТочкаОбмена",
+    "domain": "best.tochkaobmena.org"
+  },
+  {
+    "name": "N-Change",
+    "domain": "n-change.net"
+  },
+  {
+    "name": "Micro-exchange",
+    "domain": "micro-exchange.me"
+  },
+  {
+    "name": "Money-Change",
+    "domain": "money-change.biz"
+  },
+  {
+    "name": "CoinGuru\n",
+    "domain": "coinguru.pw"
+  },
+  {
+    "name": "WMStream",
+    "domain": "wmstream.pro"
+  },
+  {
+    "name": "XbitMoney",
+    "domain": "xbit.money"
+  },
+  {
+    "name": "Enter-Change",
+    "domain": "enter-change.com"
+  },
+  {
+    "name": "Z-Exchange\n",
+    "domain": "z-exchange.ru"
+  },
+  {
+    "name": "IceBTС",
+    "domain": "icebtc.me"
+  },
+  {
+    "name": "CoinJoin",
+    "domain": "coinjoin.online"
+  },
+  {
+    "name": "ExBitBotNet",
+    "domain": "exbitbot.net"
+  },
+  {
+    "name": "4Money",
+    "domain": "4money.me"
+  },
+  {
+    "name": "GreenBit",
+    "domain": "greenbit.pro"
+  },
+  {
+    "name": "CityBit",
+    "domain": "citybit.pro"
+  },
+  {
+    "name": "ECashExpert",
+    "domain": "ecash.expert"
+  },
+  {
+    "name": "Crybex",
+    "domain": "crybex.com"
+  },
+  {
+    "name": "Fair-Exchange\n",
+    "domain": "fairexchange.ru"
+  },
+  {
+    "name": "1Exchanger\n",
+    "domain": "1exchanger.com"
+  },
+  {
+    "name": "818Finance\n",
+    "domain": "www.818.finance"
+  },
+  {
+    "name": "Z-Obmen\n",
+    "domain": "z-obmen.ru"
+  },
+  {
+    "name": "Money-Office",
+    "domain": "money-office.com"
+  },
+  {
+    "name": "ПоТеме",
+    "domain": "www.poteme.com"
+  },
+  {
+    "name": "WmMoney",
+    "domain": "wm.money"
+  },
+  {
+    "name": "ГоугоуБит\n",
+    "domain": "gogobit.cc"
+  },
+  {
+    "name": "Обменочка",
+    "domain": "super.obmenochkaaa.ru"
+  },
+  {
+    "name": "MarketCoin",
+    "domain": "marketcoin.io"
+  },
+  {
+    "name": "Quantex\n",
+    "domain": "quantex.pro"
+  },
+  {
+    "name": "Crypik\n",
+    "domain": "crypik.com"
+  },
+  {
+    "name": "КриптоРай\n",
+    "domain": "cryptor.ai"
+  },
+  {
+    "name": "Big-Changer\n",
+    "domain": "big-changer.ru"
+  },
+  {
+    "name": "Your-Coins\n",
+    "domain": "your-coins.com"
+  },
+  {
+    "name": "BroGuru",
+    "domain": "bro.guru"
+  },
+  {
+    "name": "CleanCoins\n",
+    "domain": "cleancoins.cc"
+  },
+  {
+    "name": "ExCenter",
+    "domain": "ex.center"
+  },
+  {
+    "name": "ObmenoFF\n",
+    "domain": "obmenoff.cc"
+  },
+  {
+    "name": "GreenEX",
+    "domain": "greenex.cc"
+  },
+  {
+    "name": "CryexPro\n",
+    "domain": "cryex.pro"
+  },
+  {
+    "name": "AnyExchange\n",
+    "domain": "anyexchange.best"
+  },
+  {
+    "name": "CryptoShopping",
+    "domain": "one.cryptoshopping.vip"
+  },
+  {
+    "name": "Kursov24\n",
+    "domain": "kursov24.org"
+  },
+  {
+    "name": "PocketBank\n",
+    "domain": "pocketbank.net"
+  },
+  {
+    "name": "BitObmen\n",
+    "domain": "bitobmen.net"
+  },
+  {
+    "name": "PoneyMoney\n",
+    "domain": "www.poneymoney.com"
+  },
+  {
+    "name": "Е-Банк",
+    "domain": "e-bank.pro"
+  },
+  {
+    "name": "GeeExchange",
+    "domain": "geeexchange.com"
+  },
+  {
+    "name": "Treddr\n",
+    "domain": "treddr.org"
+  },
+  {
+    "name": "100Coins\n",
+    "domain": "100coins.io"
+  },
+  {
+    "name": "Tuco\n",
+    "domain": "tuco.co"
+  },
+  {
+    "name": "CryptoYes",
+    "domain": "cryptoyes.ru"
+  },
+  {
+    "name": "ExBaza",
+    "domain": "exbaza.com"
+  },
+  {
+    "name": "ОбменкаSU",
+    "domain": "obmenka.su"
+  },
+  {
+    "name": "Sellver",
+    "domain": "sellver.com"
+  },
+  {
+    "name": "Стрела",
+    "domain": "strl-x-chng.com"
+  },
+  {
+    "name": "CryptoGin\n",
+    "domain": "cryptogin.cc"
+  },
+  {
+    "name": "KeyChanger\n",
+    "domain": "keychanger.pro"
+  },
+  {
+    "name": "Magnatus",
+    "domain": "magnatus.com"
+  },
+  {
+    "name": "Makoli",
+    "domain": "makoli.com"
+  },
+  {
+    "name": "Obmen4you",
+    "domain": "obmen4you.com"
+  },
+  {
+    "name": "CryptoRoyal",
+    "domain": "cryptoroyal.exchange"
+  },
+  {
+    "name": "MyBTC",
+    "domain": "mybtc.link"
+  },
+  {
+    "name": "Криптолоджик",
+    "domain": "cryptologic.online"
+  },
+  {
+    "name": "Criptify",
+    "domain": "criptify.com"
+  },
+  {
+    "name": "Atom-Exchange\n",
+    "domain": "atom-exchange.com"
+  },
+  {
+    "name": "5Минут",
+    "domain": "5min.pro"
+  },
+  {
+    "name": "Bit100k",
+    "domain": "bit100k.com"
+  },
+  {
+    "name": "CryptoChicken\n",
+    "domain": "crypto-chicken.co"
+  },
+  {
+    "name": "Alfacash\n",
+    "domain": "www.alfa.cash"
+  },
+  {
+    "name": "CoinTok",
+    "domain": "cointok.net"
+  },
+  {
+    "name": "AppBit\n",
+    "domain": "appbit.net"
+  },
+  {
+    "name": "Мытнинский",
+    "domain": "mitninskii.online"
+  },
+  {
+    "name": "24ExPay",
+    "domain": "24expay.com"
+  },
+  {
+    "name": "OneClick24",
+    "domain": "oneclick24.io"
+  },
+  {
+    "name": "BucksBunny",
+    "domain": "bucksbunny.me"
+  },
+  {
+    "name": "EasyGlobal",
+    "domain": "easyglobal.org"
+  },
+  {
+    "name": "WmPayCash\n",
+    "domain": "wmpaycash.com"
+  },
+  {
+    "name": "More-Ex\n",
+    "domain": "more-ex.com"
+  },
+  {
+    "name": "JarvisExchange",
+    "domain": "jarvisexchange.com"
+  },
+  {
+    "name": "W-Box\n",
+    "domain": "w-box.io"
+  },
+  {
+    "name": "LovanPay\n",
+    "domain": "lovanpay.org"
+  },
+  {
+    "name": "ShapeBTC\n",
+    "domain": "shapebtc.com"
+  },
+  {
+    "name": "N-Obmen\n",
+    "domain": "n-obmen.net"
+  },
+  {
+    "name": "LigaBTC",
+    "domain": "ligabtc.com"
+  },
+  {
+    "name": "EezyCash\n",
+    "domain": "eezy.cash"
+  },
+  {
+    "name": "Rebex",
+    "domain": "rebex.io"
+  },
+  {
+    "name": "MoneyMate\n",
+    "domain": "moneymate.best"
+  },
+  {
+    "name": "BuyBit",
+    "domain": "buybit.su"
+  },
+  {
+    "name": "ExpoChange\n",
+    "domain": "expochange.org"
+  },
+  {
+    "name": "FastWM",
+    "domain": "fastwm.biz"
+  },
+  {
+    "name": "ATMExchanger",
+    "domain": "cash.atm-exchangeee.ru"
+  },
+  {
+    "name": "GoExme",
+    "domain": "goexme.io"
+  },
+  {
+    "name": "КриптоОбмен\n",
+    "domain": "cryptoobmen.io"
+  },
+  {
+    "name": "GetBit\n",
+    "domain": "getbit.exchange"
+  },
+  {
+    "name": "O-Paxum\n",
+    "domain": "o-paxum.net"
+  },
+  {
+    "name": "Echange\n",
+    "domain": "echange.su"
+  },
+  {
+    "name": "Swappix\n",
+    "domain": "swappix.io"
+  },
+  {
+    "name": "Crypto-Trans\n",
+    "domain": "crypto-trans.com"
+  },
+  {
+    "name": "VN-Exchange",
+    "domain": "vn-exchange.com"
+  },
+  {
+    "name": "CryptoZapravka\n",
+    "domain": "crypto-zapravka.com"
+  },
+  {
+    "name": "Cash-Bit\n",
+    "domain": "cash-bit.com"
+  },
+  {
+    "name": "LetsPay\n",
+    "domain": "letspay.me"
+  },
+  {
+    "name": "BTC24pro\n",
+    "domain": "btc24.pro"
+  },
+  {
+    "name": "BTC-Волга",
+    "domain": "btc-volga.com"
+  },
+  {
+    "name": "InsideExchange\n",
+    "domain": "inside-exchange.com"
+  },
+  {
+    "name": "Bitok777\n",
+    "domain": "bitok777.net"
+  },
+  {
+    "name": "Lionex",
+    "domain": "lionex.net"
+  },
+  {
+    "name": "JohnnyDo\n",
+    "domain": "johnny.do"
+  },
+  {
+    "name": "ZombieCash",
+    "domain": "zombie.cash"
+  },
+  {
+    "name": "EasyBit",
+    "domain": "easybit.com"
+  },
+  {
+    "name": "Convertex24\n",
+    "domain": "convertex24.io"
+  },
+  {
+    "name": "Обменник-UZ\n",
+    "domain": "1obmennik-uz.ru"
+  },
+  {
+    "name": "Paynote\n",
+    "domain": "paynote.eu"
+  },
+  {
+    "name": "1654Exchange\n",
+    "domain": "1654.exchange"
+  },
+  {
+    "name": "Vmex",
+    "domain": "vmex.info"
+  },
+  {
+    "name": "Марио\n",
+    "domain": "mario.zone"
+  },
+  {
+    "name": "MyCryptoMarket\n",
+    "domain": "mycrypto.market"
+  },
+  {
+    "name": "369Change\n",
+    "domain": "369change.com"
+  },
+  {
+    "name": "RealExchange",
+    "domain": "real-exchange.net"
+  },
+  {
+    "name": "24Online\n",
+    "domain": "24online.su"
+  },
+  {
+    "name": "BitCash",
+    "domain": "bitcash.cc"
+  },
+  {
+    "name": "ObmenAT\n",
+    "domain": "obmenat.co"
+  },
+  {
+    "name": "Brabus",
+    "domain": "brabus.exchange"
+  },
+  {
+    "name": "AltinBit",
+    "domain": "altinbit.com"
+  },
+  {
+    "name": "Bitcoff\n",
+    "domain": "bitcoff.io"
+  },
+  {
+    "name": "EliteObmen\n",
+    "domain": "eliteobmen.com"
+  },
+  {
+    "name": "LightObmen\n",
+    "domain": "lightobmen.cash"
+  },
+  {
+    "name": "ChangeExpert",
+    "domain": "changeexpert.io"
+  },
+  {
+    "name": "CryptoSwap365",
+    "domain": "cryptoswap365.com"
+  },
+  {
+    "name": "BitFm",
+    "domain": "bitfm.io"
+  },
+  {
+    "name": "Changelly",
+    "domain": "changelly.com"
+  },
+  {
+    "name": "R2Exchange",
+    "domain": "r2.exchange"
+  },
+  {
+    "name": "Bitcoin24Pro",
+    "domain": "bitcoin24.pro"
+  },
+  {
+    "name": "Belqi",
+    "domain": "belqi.net"
+  },
+  {
+    "name": "BTCDeal",
+    "domain": "btcdeal.ru"
+  },
+  {
+    "name": "GeekChange",
+    "domain": "geekchange.com"
+  },
+  {
+    "name": "BonkyPay\n",
+    "domain": "bonkypay.com"
+  },
+  {
+    "name": "UltraChange",
+    "domain": "ultrachange.com"
+  },
+  {
+    "name": "SwapGate\n",
+    "domain": "swapgate.io"
+  },
+  {
+    "name": "BeeSwap",
+    "domain": "www.beeswap.gg"
+  },
+  {
+    "name": "FavoriteExchanger",
+    "domain": "favorite-exchanger.net"
+  },
+  {
+    "name": "CyberMoney",
+    "domain": "cybermoney.biz"
+  },
+  {
+    "name": "Bitmore\n",
+    "domain": "bitmore.io"
+  },
+  {
+    "name": "Оборот",
+    "domain": "oborot.net"
+  },
+  {
+    "name": "ObmennCom\n",
+    "domain": "obmenn.com"
+  },
+  {
+    "name": "FlyMoney\n",
+    "domain": "flymoney.biz"
+  },
+  {
+    "name": "BTCe-Obmen",
+    "domain": "btce-obmen.com"
+  },
+  {
+    "name": "ChangerClub\n",
+    "domain": "changer.club"
+  },
+  {
+    "name": "Monease",
+    "domain": "monease.io"
+  },
+  {
+    "name": "ExWm\n",
+    "domain": "exwm.cc"
+  },
+  {
+    "name": "Coin24",
+    "domain": "coin24.io"
+  },
+  {
+    "name": "ObmenOne\n",
+    "domain": "obmen.one"
+  },
+  {
+    "name": "ОбменОМ\n",
+    "domain": "obmenom.com"
+  },
+  {
+    "name": "PrimeExchange",
+    "domain": "prime-exchange.io"
+  },
+  {
+    "name": "ObmenCash",
+    "domain": "obmen.cash"
+  },
+  {
+    "name": "WayBit\n",
+    "domain": "www.waybit.pl"
+  },
+  {
+    "name": "1Million",
+    "domain": "1million.exchange"
+  },
+  {
+    "name": "PrimeEx\n",
+    "domain": "primeex.io"
+  },
+  {
+    "name": "Paspar",
+    "domain": "paspar.net"
+  },
+  {
+    "name": "LeoExchanger\n",
+    "domain": "leoexchanger.net"
+  },
+  {
+    "name": "BitcoinObmennik",
+    "domain": "www.bitcoinobmennik.com"
+  },
+  {
+    "name": "Crypocto\n",
+    "domain": "crypocto.com"
+  },
+  {
+    "name": "Intercontinental",
+    "domain": "intercontinental.trade"
+  },
+  {
+    "name": "MoneyPort",
+    "domain": "moneyport.world"
+  },
+  {
+    "name": "Cryptofiat",
+    "domain": "cryptofiat.finance"
+  },
+  {
+    "name": "X-Capital",
+    "domain": "x-capital.expert"
+  },
+  {
+    "name": "Финансович",
+    "domain": "finansovich-exchange.com"
+  },
+  {
+    "name": "Обмен-Бро",
+    "domain": "obmen-bro.com"
+  },
+  {
+    "name": "AVPay",
+    "domain": "avpay.pro"
+  },
+  {
+    "name": "Обмен-Бро\n",
+    "domain": "obmen-bro.org"
+  },
+  {
+    "name": "BTCBank",
+    "domain": "btcbank.com.ua"
+  },
+  {
+    "name": "CryptoBar",
+    "domain": "cryptobar.cc"
+  },
+  {
+    "name": "MegaChange",
+    "domain": "www.megachange.ru"
+  },
+  {
+    "name": "Sharky",
+    "domain": "sharky.one"
+  },
+  {
+    "name": "Dolphex",
+    "domain": "dolphex.io"
+  },
+  {
+    "name": "MyChanger",
+    "domain": "mychanger.biz"
+  },
+  {
+    "name": "Coine-Market",
+    "domain": "coine-market.com"
+  },
+  {
+    "name": "TJSpay",
+    "domain": "tjspay.com"
+  },
+  {
+    "name": "XeBit",
+    "domain": "xebit.me"
+  },
+  {
+    "name": "ChangeHero",
+    "domain": "changehero.io"
+  },
+  {
+    "name": "Livex",
+    "domain": "livex.pro"
+  },
+  {
+    "name": "БестОбмен",
+    "domain": "bestobmen.su"
+  },
+  {
+    "name": "CoinFusionOne",
+    "domain": "coinfusion.one"
+  },
+  {
+    "name": "Терминал",
+    "domain": "terminal.cash"
+  },
+  {
+    "name": "DoubleSwap",
+    "domain": "doubleswap.ru"
+  },
+  {
+    "name": "R-Obmen",
+    "domain": "r-obmen.ru"
+  },
+  {
+    "name": "KryptoSwap\n",
+    "domain": "kryptoswap.exchange"
+  },
+  {
+    "name": "CoinBox",
+    "domain": "coinbox.pw"
+  },
+  {
+    "name": "ВсемОбмен\n",
+    "domain": "vsemobmen.online"
+  },
+  {
+    "name": "7Pay\n",
+    "domain": "7pay.me"
+  },
+  {
+    "name": "КриптоМагнат\n",
+    "domain": "cryptomagnat.online"
+  },
+  {
+    "name": "Пятачок\n",
+    "domain": "pyatachok.pro"
+  },
+  {
+    "name": "BitBong",
+    "domain": "bitbong.pro"
+  },
+  {
+    "name": "PayStore",
+    "domain": "www.paystore.pro"
+  },
+  {
+    "name": "EasySwap",
+    "domain": "easyswap.me"
+  },
+  {
+    "name": "AtPayz",
+    "domain": "atpayz.com"
+  },
+  {
+    "name": "BitKit",
+    "domain": "bitkit.money"
+  },
+  {
+    "name": "Msk-Exchange\n",
+    "domain": "msk-exchange.ru"
+  },
+  {
+    "name": "UkrExchange\n",
+    "domain": "ukr.exchange"
+  },
+  {
+    "name": "WM-Sha",
+    "domain": "wm-sha.ru"
+  },
+  {
+    "name": "Эльвира\n",
+    "domain": "elvira.exchange"
+  },
+  {
+    "name": "Crypto007\n",
+    "domain": "www.crypto007.net"
+  },
+  {
+    "name": "DualCoin\n",
+    "domain": "dualcoin.io"
+  },
+  {
+    "name": "ChangeNow",
+    "domain": "changenow.io"
+  },
+  {
+    "name": "Dvizh\n",
+    "domain": "www.dvizh.com"
+  },
+  {
+    "name": "Coin24Bank\n",
+    "domain": "coin24bank.com"
+  },
+  {
+    "name": "InstaBit",
+    "domain": "instabit.pro"
+  },
+  {
+    "name": "Tasty-Changer\n",
+    "domain": "tasty-changer.com"
+  },
+  {
+    "name": "XbiTrade",
+    "domain": "online.xbitrade.com"
+  },
+  {
+    "name": "Itez",
+    "domain": "buy.itez.com"
+  },
+  {
+    "name": "ExBit",
+    "domain": "exbit.cc"
+  },
+  {
+    "name": "Fly-Pay",
+    "domain": "fly-pay.io"
+  },
+  {
+    "name": "BazarMoney",
+    "domain": "bazarmoney.ru"
+  },
+  {
+    "name": "Exdex",
+    "domain": "exdex.ae"
+  },
+  {
+    "name": "WeDoExchange\n",
+    "domain": "www.wedo.exchange"
+  },
+  {
+    "name": "PabloCash\n",
+    "domain": "pablocash.io"
+  },
+  {
+    "name": "MultiKassa",
+    "domain": "multikassa.com"
+  },
+  {
+    "name": "GoldenGate\n",
+    "domain": "goldengatex.net"
+  },
+  {
+    "name": "eBTCpro\n",
+    "domain": "www.ebtc.pro"
+  },
+  {
+    "name": "EasyBusy\n",
+    "domain": "easybusy.bz"
+  },
+  {
+    "name": "SmartMoney\n",
+    "domain": "smartmoney.exchange"
+  },
+  {
+    "name": "CryptoVortex",
+    "domain": "cryptovortex.pro"
+  },
+  {
+    "name": "WmCurrency\n",
+    "domain": "2.wmcurrency.org"
+  },
+  {
+    "name": "CryptoTims",
+    "domain": "cryptotims.com"
+  },
+  {
+    "name": "Expa24\n",
+    "domain": "expa24.com"
+  },
+  {
+    "name": "Fiatex\n",
+    "domain": "www.fiatex.pro"
+  },
+  {
+    "name": "XChanger\n",
+    "domain": "xchanger.pk"
+  },
+  {
+    "name": "BitFlaming",
+    "domain": "bitflaming.com"
+  },
+  {
+    "name": "Ex-ATM24\n",
+    "domain": "ex.atm24.pro"
+  },
+  {
+    "name": "Exwp\n",
+    "domain": "exwp.com"
+  },
+  {
+    "name": "Crypcie",
+    "domain": "crypcie.com"
+  },
+  {
+    "name": "Ripae\n",
+    "domain": "ripae.net"
+  },
+  {
+    "name": "Меняла\n",
+    "domain": "www.menyala.info"
+  },
+  {
+    "name": "GoodBoySwap\n",
+    "domain": "goodboyswap.com"
+  },
+  {
+    "name": "SuperChange\n",
+    "domain": "superchange.is"
+  },
+  {
+    "name": "Биткоин24\n",
+    "domain": "bitcoin24.com.ua"
+  },
+  {
+    "name": "SwapsCenter\n",
+    "domain": "swapscenter.com"
+  },
+  {
+    "name": "HelpChange",
+    "domain": "helpchange.cc"
+  },
+  {
+    "name": "OkPays\n",
+    "domain": "okpays.com"
+  },
+  {
+    "name": "Murex",
+    "domain": "murex.exchange"
+  },
+  {
+    "name": "CryptoSell",
+    "domain": "cryptosell.ru"
+  },
+  {
+    "name": "HiExchange\n",
+    "domain": "hi.exchange"
+  },
+  {
+    "name": "Ecurex\n",
+    "domain": "ecurex.net"
+  },
+  {
+    "name": "BtcBit\n",
+    "domain": "btcbit.net"
+  },
+  {
+    "name": "DoctorBit",
+    "domain": "doctorbit.pro"
+  },
+  {
+    "name": "Урал-Обмен",
+    "domain": "ural-obmen.ru"
+  },
+  {
+    "name": "Dubai-Tether\n",
+    "domain": "dubai-tether.pro"
+  },
+  {
+    "name": "Сапфирекс\n",
+    "domain": "sapfirex.com"
+  },
+  {
+    "name": "BulldogExchange",
+    "domain": "www.bulldog.exchange"
+  },
+  {
+    "name": "CashFlow",
+    "domain": "cashflow.best"
+  },
+  {
+    "name": "SendNow",
+    "domain": "sendnow.money"
+  },
+  {
+    "name": "Bakster",
+    "domain": "bakster.org"
+  },
+  {
+    "name": "VeanEx",
+    "domain": "veanexchange.com"
+  },
+  {
+    "name": "MisterBit",
+    "domain": "misterbit.pro"
+  },
+  {
+    "name": "Force",
+    "domain": "frctrade.com"
+  },
+  {
+    "name": "UnioChange",
+    "domain": "uniochange.com"
+  },
+  {
+    "name": "Cash2Pay",
+    "domain": "cash2pay.pro"
+  },
+  {
+    "name": "WTC-Ex",
+    "domain": "wtc-ex.com"
+  },
+  {
+    "name": "WebMyCash",
+    "domain": "webmycash.com"
+  },
+  {
+    "name": "IChangeOne",
+    "domain": "ichange.one"
+  },
+  {
+    "name": "WswOne",
+    "domain": "wsw.one"
+  },
+  {
+    "name": "Buycoin",
+    "domain": "buycoin.online"
+  },
+  {
+    "name": "Рубин",
+    "domain": "rubin.exchange"
+  },
+  {
+    "name": "HodlBase",
+    "domain": "hodlbase.org"
+  },
+  {
+    "name": "GetExch",
+    "domain": "getexch.com"
+  },
+  {
+    "name": "MoneyRoll",
+    "domain": "moneyroll.pro"
+  },
+  {
+    "name": "ExObmin\n",
+    "domain": "www.exobmin.io"
+  },
+  {
+    "name": "KingsExchange\n",
+    "domain": "kingsexchange.global"
+  },
+  {
+    "name": "My-Xchange\n",
+    "domain": "my-xchange.com"
+  },
+  {
+    "name": "ProtonPlus",
+    "domain": "protonplus.co"
+  },
+  {
+    "name": "eCashMe\n",
+    "domain": "www.ecashme.ru"
+  },
+  {
+    "name": "NovaChange\n",
+    "domain": "www.novachange.cc"
+  },
+  {
+    "name": "CyberBTC",
+    "domain": "www.cyberbtc.com"
+  },
+  {
+    "name": "FoxBTC",
+    "domain": "foxbtc.pro"
+  },
+  {
+    "name": "Обмен24",
+    "domain": "xn--24-9kcq8ahd.com"
+  },
+  {
+    "name": "Go-Go",
+    "domain": "www.go-go.exchange"
+  },
+  {
+    "name": "HamsterBit\n",
+    "domain": "hamsterbit.pro"
+  },
+  {
+    "name": "Ant\n",
+    "domain": "ant.exchange"
+  },
+  {
+    "name": "LetsExchange",
+    "domain": "letsexchange.io"
+  },
+  {
+    "name": "Wishex",
+    "domain": "wishex.io"
+  },
+  {
+    "name": "DimmarEx",
+    "domain": "dimmarex.com"
+  },
+  {
+    "name": "BuyCrypt",
+    "domain": "buycrypt.exchange"
+  },
+  {
+    "name": "ExchangeMafia",
+    "domain": "exchangemafia.com"
+  },
+  {
+    "name": "InstantExchangers",
+    "domain": "instantexchangers.com"
+  },
+  {
+    "name": "LionChange",
+    "domain": "www.lionchange.com"
+  },
+  {
+    "name": "Moscoin",
+    "domain": "moscoin-exchanger.com"
+  },
+  {
+    "name": "AtChange",
+    "domain": "atchange.net"
+  },
+  {
+    "name": "ChangerBiz",
+    "domain": "changer.biz"
+  },
+  {
+    "name": "CashRocket",
+    "domain": "cashrocket.online"
+  },
+  {
+    "name": "1tab",
+    "domain": "1tab.co"
+  },
+  {
+    "name": "Monopriz",
+    "domain": "monopriz.com"
+  },
+  {
+    "name": "AveEx",
+    "domain": "aveex.co"
+  },
+  {
+    "name": "IconFinance",
+    "domain": "icon.finance"
+  },
+  {
+    "name": "Xenex",
+    "domain": "www.xenex.site"
+  },
+  {
+    "name": "Империал",
+    "domain": "imperial.exchange"
+  },
+  {
+    "name": "SF-Changer",
+    "domain": "ru.sfchanger.com"
+  },
+  {
+    "name": "Payex24",
+    "domain": "www.payex24.com"
+  },
+  {
+    "name": "Money-Pay",
+    "domain": "money-pay.org"
+  },
+  {
+    "name": "MyInvestStory",
+    "domain": "myinveststory.com"
+  },
+  {
+    "name": "ExWell",
+    "domain": "exwell.io"
+  },
+  {
+    "name": "MasonEx",
+    "domain": "mason-ex.com"
+  },
+  {
+    "name": "Dashka",
+    "domain": "dashka.exchange"
+  },
+  {
+    "name": "UmaPay",
+    "domain": "umapay.online"
+  },
+  {
+    "name": "Swopperio\n",
+    "domain": "www.swopper.io"
+  },
+  {
+    "name": "Bitcoin-Armenia\n",
+    "domain": "bitcoin-armenia.com"
+  },
+  {
+    "name": "БарскийДворОбмен\n",
+    "domain": "www.barskiydvorobmen.com"
+  },
+  {
+    "name": "AuraLegal\n",
+    "domain": "www.aura.legal"
+  },
+  {
+    "name": "FlashCash",
+    "domain": "flashcash.top"
+  },
+  {
+    "name": "Paynoom",
+    "domain": "paynoom.com"
+  },
+  {
+    "name": "WhiteXCash",
+    "domain": "whitex.cash"
+  },
+  {
+    "name": "XStable",
+    "domain": "www.xstable.pro"
+  },
+  {
+    "name": "Changelly\n",
+    "domain": "changelly.com"
+  },
+  {
+    "name": "ChangeHero\n",
+    "domain": "changehero.io"
+  },
+  {
+    "name": "ObminMe",
+    "domain": "www.obmin.me"
+  },
+  {
+    "name": "100Bitcoins",
+    "domain": "100bitcoins.com"
+  },
+  {
+    "name": "C4Changer",
+    "domain": "uae.c4changer.com"
+  },
+  {
+    "name": "Exchanging\n",
+    "domain": "exchanging.app"
+  },
+  {
+    "name": "PayExchanger\n",
+    "domain": "www.payexchanger.com"
+  },
+  {
+    "name": "Changer4u\n",
+    "domain": "changer4u.com"
+  },
+  {
+    "name": "SimpleSwap\n",
+    "domain": "simpleswap.io"
+  },
+  {
+    "name": "ExWallets\n",
+    "domain": "www.exwallets.com"
+  },
+  {
+    "name": "Pocket-Exchange\n",
+    "domain": "pocket-exchange.com"
+  },
+  {
+    "name": "LemonchikCash",
+    "domain": "lemonchik.cash"
+  },
+  {
+    "name": "AjuBit",
+    "domain": "ajubit.com"
+  },
+  {
+    "name": "AceXchanger\n",
+    "domain": "acexchanger.com"
+  },
+  {
+    "name": "DeltaChanger\n",
+    "domain": "deltachanger.com"
+  },
+  {
+    "name": "ObmenMoney\n",
+    "domain": "obmen.money"
+  },
+  {
+    "name": "Efex",
+    "domain": "efex.pro"
+  },
+  {
+    "name": "BobrExchange",
+    "domain": "bobr.exchange"
+  },
+  {
+    "name": "C1kWorld\n",
+    "domain": "c1k.world"
+  },
+  {
+    "name": "Itez",
+    "domain": "buy.itez.com"
+  },
+  {
+    "name": "365Exchanger\n",
+    "domain": "365exchanger.com"
+  },
+  {
+    "name": "Elibrax",
+    "domain": "elibrax.com"
+  },
+  {
+    "name": "Coinumm",
+    "domain": "coinumm.com"
+  },
+  {
+    "name": "Aztec-Gold",
+    "domain": "aztec-gold.net"
+  },
+  {
+    "name": "Pkr2Dollar",
+    "domain": "global.pkr2dollar.com"
+  },
+  {
+    "name": "BitcoinVN",
+    "domain": "bitcoinvn.io"
+  },
+  {
+    "name": "SecureShift",
+    "domain": "secureshift.io"
+  },
+  {
+    "name": "Swapter\n",
+    "domain": "swapter.io"
+  },
+  {
+    "name": "LuckyChange",
+    "domain": "luckychange.net"
+  },
+  {
+    "name": "Swapuz\n",
+    "domain": "swapuz.com"
+  },
+  {
+    "name": "SecuredChange",
+    "domain": "securedchange.com"
+  },
+  {
+    "name": "FinchPay\n",
+    "domain": "widget.finchpay.io"
+  },
+  {
+    "name": "swop",
+    "domain": "swop.is"
+  },
+  {
+    "name": "01bit",
+    "domain": "01bit.pro"
+  },
+  {
+    "name": "0xbc1",
+    "domain": "0xbc1.io"
+  },
+  {
+    "name": "1otc.exchange",
+    "domain": "www.1otc.exchange"
+  },
+  {
+    "name": "24wm",
+    "domain": "24wm.kz"
+  },
+  {
+    "name": "5minchange",
+    "domain": "5minchange.ru"
+  },
+  {
+    "name": "5минут",
+    "domain": "ex.5min.pro"
+  },
+  {
+    "name": "7money",
+    "domain": "7money.co"
+  },
+  {
+    "name": "alexcash",
+    "domain": "alexcash.io"
+  },
+  {
+    "name": "altswap",
+    "domain": "altswap.cc"
+  },
+  {
+    "name": "apexchange",
+    "domain": "apexchange.money"
+  },
+  {
+    "name": "audia6",
+    "domain": "audia6.best"
+  },
+  {
+    "name": "aurora-exchange",
+    "domain": "aurora-exchange.io"
+  },
+  {
+    "name": "btcpro24",
+    "domain": "btcpro24.com"
+  },
+  {
+    "name": "barry24",
+    "domain": "barry24.com"
+  },
+  {
+    "name": "bchange",
+    "domain": "bchange.cc"
+  },
+  {
+    "name": "bitbeast",
+    "domain": "bitbeast.net"
+  },
+  {
+    "name": "bitberry",
+    "domain": "bitberry.cash"
+  },
+  {
+    "name": "bitmask",
+    "domain": "bitmask.top"
+  },
+  {
+    "name": "bitox",
+    "domain": "bitox.net"
+  },
+  {
+    "name": "boomerang",
+    "domain": "boomerang12.org"
+  },
+  {
+    "name": "bswap",
+    "domain": "bswap.pro"
+  },
+  {
+    "name": "btcobmen",
+    "domain": "btcobmen.com.ua"
+  },
+  {
+    "name": "BulldogExchange",
+    "domain": "www.bulldog.exchange"
+  },
+  {
+    "name": "bullschange",
+    "domain": "bullschange.com"
+  },
+  {
+    "name": "buycoin",
+    "domain": "buycoin.online"
+  },
+  {
+    "name": "cryptojet",
+    "domain": "cryptojet.one"
+  },
+  {
+    "name": "cashalot",
+    "domain": "cashalot.one"
+  },
+  {
+    "name": "catbit",
+    "domain": "catbit.io"
+  },
+  {
+    "name": "change",
+    "domain": "www.change.am"
+  },
+  {
+    "name": "change-money",
+    "domain": "change-money.org"
+  },
+  {
+    "name": "changebtc",
+    "domain": "changebtc.co"
+  },
+  {
+    "name": "citykripto",
+    "domain": "citykripto.com"
+  },
+  {
+    "name": "coincapital",
+    "domain": "coincapital.ltd"
+  },
+  {
+    "name": "coincross",
+    "domain": "coincross.one"
+  },
+  {
+    "name": "coinswap",
+    "domain": "www.coinswap.es"
+  },
+  {
+    "name": "coinfy",
+    "domain": "coinfy.cc"
+  },
+  {
+    "name": "coinsbar",
+    "domain": "www.coinsbar.net"
+  },
+  {
+    "name": "comcash",
+    "domain": "comcash.io"
+  },
+  {
+    "name": "cross-market",
+    "domain": "cross-market.net"
+  },
+  {
+    "name": "cryptostrix",
+    "domain": "cryptostrix.cc"
+  },
+  {
+    "name": "cryptotims",
+    "domain": "cryptotims.com"
+  },
+  {
+    "name": "cryptowolves",
+    "domain": "cryptowolves.io"
+  },
+  {
+    "name": "cryptozilla",
+    "domain": "cryptozilla.pro"
+  },
+  {
+    "name": "cryptomat",
+    "domain": "cryptomat.cc"
+  },
+  {
+    "name": "crystal-trade",
+    "domain": "crystal-trade.org"
+  },
+  {
+    "name": "dfcex",
+    "domain": "www.dfcex.com"
+  },
+  {
+    "name": "dmoney",
+    "domain": "dmoney.cc"
+  },
+  {
+    "name": "deltex",
+    "domain": "deltex.group"
+  },
+  {
+    "name": "device",
+    "domain": "www.device.me"
+  },
+  {
+    "name": "dualcoin",
+    "domain": "dualcoin.io"
+  },
+  {
+    "name": "duck.money",
+    "domain": "duck.money"
+  },
+  {
+    "name": "duex.cash",
+    "domain": "duex.cash"
+  },
+  {
+    "name": "easy-changer",
+    "domain": "easy-changer.io"
+  },
+  {
+    "name": "easybusy",
+    "domain": "easybusy.bz"
+  },
+  {
+    "name": "ebitok",
+    "domain": "ebitok.com"
+  },
+  {
+    "name": "edinorog",
+    "domain": "edinorog.net"
+  },
+  {
+    "name": "exchange-club",
+    "domain": "exchange-club.io"
+  },
+  {
+    "name": "exchanger",
+    "domain": "exchanger.exchange"
+  },
+  {
+    "name": "exchanger1",
+    "domain": "exchanger1.com"
+  },
+  {
+    "name": "exicash",
+    "domain": "exi.cash"
+  },
+  {
+    "name": "exline",
+    "domain": "exline.pro"
+  },
+  {
+    "name": "fastex",
+    "domain": "fastex.biz"
+  },
+  {
+    "name": "fastify",
+    "domain": "fastify.exchange"
+  },
+  {
+    "name": "flashobmen",
+    "domain": "flashobmen.com"
+  },
+  {
+    "name": "foxbtcpro",
+    "domain": "foxbtc.pro/??"
+  },
+  {
+    "name": "freechange",
+    "domain": "freechange.cc"
+  },
+  {
+    "name": "fury-exchange",
+    "domain": "fury-exchange.com"
+  },
+  {
+    "name": "ganesh.exchange",
+    "domain": "ganesh.exchange"
+  },
+  {
+    "name": "ghostpirate",
+    "domain": "ghostpirate.biz"
+  },
+  {
+    "name": "goldenswap",
+    "domain": "www.goldenswap.pro"
+  },
+  {
+    "name": "haschange",
+    "domain": "haschange.com"
+  },
+  {
+    "name": "inkognitoswap",
+    "domain": "www.inkognitoswap.com"
+  },
+  {
+    "name": "insight",
+    "domain": "insight-cash.com"
+  },
+  {
+    "name": "internetmoney",
+    "domain": "internetmoney.exchange"
+  },
+  {
+    "name": "izi.exchange",
+    "domain": "www.izi.exchange"
+  },
+  {
+    "name": "just-bit",
+    "domain": "www.just-bit.com"
+  },
+  {
+    "name": "kingchange",
+    "domain": "kingchange.io"
+  },
+  {
+    "name": "kizilcash",
+    "domain": "kizilcash.com"
+  },
+  {
+    "name": "kms-exchange",
+    "domain": "kms-exchange.com"
+  },
+  {
+    "name": "lidos.exchange",
+    "domain": "lidos.exchange"
+  },
+  {
+    "name": "lightobmen",
+    "domain": "lightobmen.cash"
+  },
+  {
+    "name": "lincoln",
+    "domain": "www.lincoln.money"
+  },
+  {
+    "name": "local-pay",
+    "domain": "local-pay.com"
+  },
+  {
+    "name": "luckychange",
+    "domain": "luckychange.net"
+  },
+  {
+    "name": "lunabit",
+    "domain": "lunabit.cc"
+  },
+  {
+    "name": "mafincash",
+    "domain": "mafincash.com"
+  },
+  {
+    "name": "masxcrypto",
+    "domain": "www.masxcrypto.com"
+  },
+  {
+    "name": "matrix-changer",
+    "domain": "matrix-changer.com"
+  },
+  {
+    "name": "mint-change",
+    "domain": "mint-change.ru"
+  },
+  {
+    "name": "moneta365",
+    "domain": "www.moneta365.com"
+  },
+  {
+    "name": "moneycame",
+    "domain": "1.moneycame.com"
+  },
+  {
+    "name": "moneymix",
+    "domain": "moneymix.org"
+  },
+  {
+    "name": "moneyport world",
+    "domain": "moneyport.world"
+  },
+  {
+    "name": "moonlightexchanger",
+    "domain": "moonlightexchanger.com"
+  },
+  {
+    "name": "more-ex",
+    "domain": "more-ex.com"
+  },
+  {
+    "name": "moscoin-exchanger",
+    "domain": "moscoin-exchanger.com"
+  },
+  {
+    "name": "mrmoney",
+    "domain": "mrmoney.cc"
+  },
+  {
+    "name": "nametoken",
+    "domain": "nametoken.pro"
+  },
+  {
+    "name": "opgswap",
+    "domain": "www.opgswap.com"
+  },
+  {
+    "name": "obama",
+    "domain": "obama.ru"
+  },
+  {
+    "name": "obmen365",
+    "domain": "obmen365.com"
+  },
+  {
+    "name": "obmenexpert",
+    "domain": "obmenexpert.com"
+  },
+  {
+    "name": "paymax",
+    "domain": "paymax.gg"
+  },
+  {
+    "name": "perfect-change",
+    "domain": "perfect-change.com"
+  },
+  {
+    "name": "proficash",
+    "domain": "proficash.ru"
+  },
+  {
+    "name": "protonplus",
+    "domain": "protonplus.co"
+  },
+  {
+    "name": "purechange",
+    "domain": "purechange.net"
+  },
+  {
+    "name": "revbit",
+    "domain": "revbit.net"
+  },
+  {
+    "name": "rubycash",
+    "domain": "rubycash.org"
+  },
+  {
+    "name": "runtoram",
+    "domain": "runtoram.com"
+  },
+  {
+    "name": "sbscash",
+    "domain": "sbs.cash"
+  },
+  {
+    "name": "sectormoney",
+    "domain": "sectormoney.com"
+  },
+  {
+    "name": "sellver",
+    "domain": "sellver.com"
+  },
+  {
+    "name": "sharks",
+    "domain": "sharks.exchange"
+  },
+  {
+    "name": "solidswap",
+    "domain": "solidswap.com"
+  },
+  {
+    "name": "spaceex",
+    "domain": "spaceex.pro"
+  },
+  {
+    "name": "spaceswap",
+    "domain": "spaceswap.cc"
+  },
+  {
+    "name": "sunriseex",
+    "domain": "www.sunriseex.com"
+  },
+  {
+    "name": "swap-line",
+    "domain": "www.swap-line.com"
+  },
+  {
+    "name": "swapbit",
+    "domain": "swapbit.pro"
+  },
+  {
+    "name": "swapspace",
+    "domain": "swapspace.co"
+  },
+  {
+    "name": "swapper",
+    "domain": "swapper.now"
+  },
+  {
+    "name": "tasty-changer",
+    "domain": "tasty-changer.com"
+  },
+  {
+    "name": "the change",
+    "domain": "thechange.ltd"
+  },
+  {
+    "name": "timesale",
+    "domain": "timesale.top"
+  },
+  {
+    "name": "tower exchange",
+    "domain": "tower.exchange"
+  },
+  {
+    "name": "tranza",
+    "domain": "tranza.cc"
+  },
+  {
+    "name": "txids",
+    "domain": "txids.io"
+  },
+  {
+    "name": "ural-obmen",
+    "domain": "ural-obmen.ru"
+  },
+  {
+    "name": "vertu-exchange",
+    "domain": "vertu-exchange.com"
+  },
+  {
+    "name": "vipchanger",
+    "domain": "2.vipchanger.one"
+  },
+  {
+    "name": "vn-exchange",
+    "domain": "vn-exchange.com"
+  },
+  {
+    "name": "wmglobus",
+    "domain": "wmglobus.com"
+  },
+  {
+    "name": "wcash",
+    "domain": "wcash.pw"
+  },
+  {
+    "name": "webmycash",
+    "domain": "webmycash.com"
+  },
+  {
+    "name": "whales",
+    "domain": "whales.pro"
+  },
+  {
+    "name": "wirebit",
+    "domain": "wirebit.net"
+  },
+  {
+    "name": "wolfstreet",
+    "domain": "wolfstreet.cash"
+  },
+  {
+    "name": "x-pay",
+    "domain": "x-pay.com"
+  },
+  {
+    "name": "xgram",
+    "domain": "xgram.io"
+  },
+  {
+    "name": "yodaobmen",
+    "domain": "yodaobmen.com"
+  },
+  {
+    "name": "yogexchanger",
+    "domain": "www.yogexchanger.com"
+  },
+  {
+    "name": "kotleta",
+    "domain": "kotleta.gg"
+  },
+  {
+    "name": "365cash",
+    "domain": "local-pay.com"
+  },
+  {
+    "name": "Hell Change",
+    "domain": "www.hellchange.top"
+  },
+  {
+    "name": "Blitzbit",
+    "domain": "blitzbit.io"
+  },
+  {
+    "name": "Citykripto",
+    "domain": "citykripto.com"
+  },
+  {
+    "name": "Device me ",
+    "domain": "www.device.me"
+  },
+  {
+    "name": "CrystalTrade",
+    "domain": "crystal-trade.org"
+  },
+  {
+    "name": "MoneyCame",
+    "domain": "1.moneycame.net"
+  },
+  {
+    "name": "Paynoom",
+    "domain": "paynoom.com"
+  },
+  {
+    "name": "ComCash",
+    "domain": "comcash.io/ru"
+  },
+  {
+    "name": "Quickex ",
+    "domain": "quickex.io"
+  },
+  {
+    "name": "24bestex",
+    "domain": "24bestex.com"
+  },
+  {
+    "name": "ProfiCash",
+    "domain": "proficash.ru"
+  },
+  {
+    "name": "Just-Bit",
+    "domain": "www.just-bit.com"
+  },
+  {
+    "name": "Revbit",
+    "domain": "revbit.net"
+  },
+  {
+    "name": "WorldexCrypto",
+    "domain": "worldexcrypto.pro"
+  },
+  {
+    "name": "BtcPro24 ",
+    "domain": "btcpro24.com"
+  },
+  {
+    "name": "AcryptoExchange",
+    "domain": "acryptoexchange.com"
+  },
+  {
+    "name": "X-capital ",
+    "domain": "x-capital.expert"
+  },
+  {
+    "name": "SuperChange.Net",
+    "domain": "superchange.net"
+  },
+  {
+    "name": "Bossexchange",
+    "domain": "bossexchange.pro"
+  },
+  {
+    "name": "Laslobit ",
+    "domain": "laslobit.cc"
+  },
+  {
+    "name": "Deltex",
+    "domain": "deltex.group"
+  },
+  {
+    "name": "GoldenGateX",
+    "domain": "goldengatex.net"
+  },
+  {
+    "name": "Tsunami Cash",
+    "domain": "www.tsunami.cash"
+  },
+  {
+    "name": "MrMoney",
+    "domain": "mrmoney.cc"
+  },
+  {
+    "name": "CoinsBar ",
+    "domain": "www.coinsbar.net/ru"
+  },
+  {
+    "name": "Bitwisex",
+    "domain": "bitwisex.io"
+  },
+  {
+    "name": "Bittop.Cash",
+    "domain": "bittop.cash"
+  },
+  {
+    "name": "WorldChangeRU",
+    "domain": "worldchange.me"
+  },
+  {
+    "name": "Cryptoswap365",
+    "domain": "cryptoswap365.com"
+  },
+  {
+    "name": "24bitbank",
+    "domain": "24bitbank.io"
+  },
+  {
+    "name": "Rim-exchange",
+    "domain": "rim-exchange.com"
+  },
+  {
+    "name": "Xchange-24",
+    "domain": "xchange-24.com"
+  },
+  {
+    "name": "Obs",
+    "domain": "obs.cash"
+  },
+  {
+    "name": "16 tonn ",
+    "domain": "16tonn.com"
+  },
+  {
+    "name": "Cybercrypta",
+    "domain": "cybercrypta.com"
+  },
+  {
+    "name": "Cryptobox",
+    "domain": "cryptobox.pro"
+  },
+  {
+    "name": "Kryptok",
+    "domain": "kryptok.io"
+  },
+  {
+    "name": "RavenChange",
+    "domain": "ravenchange.ru"
+  },
+  {
+    "name": "Izi-Exchange ",
+    "domain": "izi-exchange.net"
+  },
+  {
+    "name": "Uzcash",
+    "domain": "uzcash.online"
+  },
+  {
+    "name": "Coinlime",
+    "domain": "coinlime.org"
+  },
+  {
+    "name": "NiceChange",
+    "domain": "nicexchanger.cc"
+  },
+  {
+    "name": "Rubycash",
+    "domain": "rubycash.org"
+  },
+  {
+    "name": "Moonlight",
+    "domain": "moonlightexchanger.com"
+  },
+  {
+    "name": "Onlycrypto",
+    "domain": "onlycrypto.cc"
+  },
+  {
+    "name": "Lincoln Money",
+    "domain": "www.lincoln.money"
+  },
+  {
+    "name": "ObmenkaOrg",
+    "domain": "obmenka.org"
+  },
+  {
+    "name": "Cryptojet One",
+    "domain": "cryptojet.one"
+  },
+  {
+    "name": "Киты",
+    "domain": "whales.pro"
+  },
+  {
+    "name": "Exchange For Me",
+    "domain": "exchangefor.me"
+  },
+  {
+    "name": "Bitbox",
+    "domain": "bitbox.pw"
+  },
+  {
+    "name": "NameToken",
+    "domain": "nametoken.pro"
+  },
+  {
+    "name": "СoinSwapEs",
+    "domain": "www.coinswap.es"
+  },
+  {
+    "name": "alexcash",
+    "domain": "alexcash.io"
+  },
+  {
+    "name": "Char Exchange",
+    "domain": "charex.ru"
+  },
+  {
+    "name": "Run To Ram",
+    "domain": "runtoram.com"
+  },
+  {
+    "name": "Cryptowolves",
+    "domain": "cryptowolves.io"
+  },
+  {
+    "name": "Bcx exchange ",
+    "domain": "bcx.exchange"
+  },
+  {
+    "name": "StarChange",
+    "domain": "star-change.io"
+  },
+  {
+    "name": "Troychange",
+    "domain": "www.troychange.net"
+  },
+  {
+    "name": "ColibriPay",
+    "domain": "colibripay.pw"
+  },
+  {
+    "name": "LibertyCoin",
+    "domain": "libertycoin.pro"
+  },
+  {
+    "name": "КриптоПорт",
+    "domain": "cryptoport.cc"
+  },
+  {
+    "name": "Зеленая Cвеча",
+    "domain": "green-obmenka.ru"
+  },
+  {
+    "name": "Carlos Exchange",
+    "domain": "carlos-exchange.com"
+  },
+  {
+    "name": "X-Order",
+    "domain": "x-order.online/?"
+  },
+  {
+    "name": "Fastify",
+    "domain": "fastify.exchange"
+  },
+  {
+    "name": "BuySell",
+    "domain": "buysell.center"
+  },
+  {
+    "name": "Extradeco",
+    "domain": "extradeco.net"
+  },
+  {
+    "name": "Most",
+    "domain": "most.exchange"
+  },
+  {
+    "name": "Шо по курсу?",
+    "domain": "sho-po-kursu.com"
+  },
+  {
+    "name": "Eanez",
+    "domain": "eanez.in/?"
+  },
+  {
+    "name": "Simplexchange",
+    "domain": "simplexchange.pro"
+  },
+  {
+    "name": "VertuExchange",
+    "domain": "vertu-exchange.com"
+  },
+  {
+    "name": "NoorExchange",
+    "domain": "www.noor.exchange"
+  },
+  {
+    "name": "OnexPay",
+    "domain": "onexpay.io"
+  },
+  {
+    "name": "LoanCryptoBank",
+    "domain": "loancryptobank.com"
+  },
+  {
+    "name": "CryptoKarma",
+    "domain": "cryptokarma.pro"
+  },
+  {
+    "name": "FlashExchange",
+    "domain": "flashexchange.io"
+  },
+  {
+    "name": "Swop",
+    "domain": "swop.is"
+  },
+  {
+    "name": "Mercex",
+    "domain": "www.mercex.io"
+  },
+  {
+    "name": "FastM",
+    "domain": "fastm.pro/?rid=7"
+  },
+  {
+    "name": "YogExchanger",
+    "domain": "www.yogexchanger.com"
+  },
+  {
+    "name": "FaceExchange",
+    "domain": "faceexchange.net/?rid=9"
+  },
+  {
+    "name": "Obmenca",
+    "domain": "obmenca.com"
+  },
+  {
+    "name": "Bitkovskiy",
+    "domain": "bitkovskiy.io"
+  },
+  {
+    "name": "MaxSwap",
+    "domain": "maxswap.cc"
+  },
+  {
+    "name": "Nimlab",
+    "domain": "nimlab.eu/ru"
+  },
+  {
+    "name": "Tokenshuffle",
+    "domain": "tokenshuffle.com"
+  },
+  {
+    "name": "AtlantPay",
+    "domain": "atlantpay.com"
+  },
+  {
+    "name": "Sberix",
+    "domain": "sberix.com"
+  },
+  {
+    "name": "Xpoint",
+    "domain": "xpoint.pro"
+  },
+  {
+    "name": "Atlascash",
+    "domain": "atlascash.ai"
+  },
+  {
+    "name": "Bizon exchange",
+    "domain": "www.exchange-bizon.com/ru"
+  },
+  {
+    "name": "Premiumcash",
+    "domain": "premiumcash.exchange"
+  },
+  {
+    "name": "Vmoment",
+    "domain": "vmoment.pro"
+  },
+  {
+    "name": "Cryptogene",
+    "domain": "cryptogene.pro"
+  },
+  {
+    "name": "Great Change",
+    "domain": "greatchange.exchange"
+  },
+  {
+    "name": "Topaz",
+    "domain": "topaz.cash"
+  },
+  {
+    "name": "Dfcex",
+    "domain": "www.dfcex.com/ru"
+  },
+  {
+    "name": "Lets Сhange",
+    "domain": "letschange.biz"
+  },
+  {
+    "name": "CashOut",
+    "domain": "cashout.biz"
+  },
+  {
+    "name": "OPG-Swap",
+    "domain": "www.opgswap.com/ru"
+  },
+  {
+    "name": "TETChange",
+    "domain": "tetchange.com"
+  },
+  {
+    "name": "Aifory Pro",
+    "domain": "aifory.pro/cash"
+  },
+  {
+    "name": "Prism",
+    "domain": "prism-exchange.io"
+  },
+  {
+    "name": "AllEx",
+    "domain": "allex.one"
+  },
+  {
+    "name": "Change247",
+    "domain": "change247.net"
+  },
+  {
+    "name": "natebit",
+    "domain": "natebit.pro"
+  },
+  {
+    "name": "AmlXe",
+    "domain": "amlxe.com"
+  },
+  {
+    "name": "TheGrail",
+    "domain": "thegrail.exchange"
+  },
+  {
+    "name": "Cash-in",
+    "domain": "cash-in.io"
+  },
+  {
+    "name": "Exchange pool",
+    "domain": "exchange-pool.com"
+  },
+  {
+    "name": "CoinSpaceCash",
+    "domain": "coinspace.cash"
+  },
+  {
+    "name": "HDchange",
+    "domain": "hd-change.com"
+  },
+  {
+    "name": "Cryptand",
+    "domain": "cryptand.exchange"
+  },
+  {
+    "name": "Bunker",
+    "domain": "bunker.exchange"
+  },
+  {
+    "name": "Currex",
+    "domain": "currex.best"
+  },
+  {
+    "name": "WMExchange24",
+    "domain": "wmexchange24.com"
+  },
+  {
+    "name": "SaintExchange",
+    "domain": "saint.exchange"
+  },
+  {
+    "name": "SMREX",
+    "domain": "smrex.io"
+  },
+  {
+    "name": "Prostoobmen",
+    "domain": "prostoobmen.com"
+  },
+  {
+    "name": "Lien365",
+    "domain": "lien365.net"
+  },
+  {
+    "name": "SonaExchange",
+    "domain": "sona.exchange"
+  },
+  {
+    "name": "Vikbit",
+    "domain": "vikbit.com/ru"
+  },
+  {
+    "name": "VN exchange",
+    "domain": "vn-exchange.com"
+  },
+  {
+    "name": "Bitality",
+    "domain": "bitality.cc"
+  },
+  {
+    "name": "Yo!Change",
+    "domain": "yochange.com"
+  },
+  {
+    "name": "Pocket Exchange",
+    "domain": "pocket-exchange.com"
+  },
+  {
+    "name": "SAFU exchange",
+    "domain": "safuexchange.cc"
+  },
+  {
+    "name": "e-$crooge",
+    "domain": "e-scrooge.is"
+  },
+  {
+    "name": "NixEchange",
+    "domain": "ne1.nixexchange.net"
+  },
+  {
+    "name": "Paytiz",
+    "domain": "paytiz.com/ru"
+  },
+  {
+    "name": "GetExchange",
+    "domain": "getexchange.ru"
+  },
+  {
+    "name": "DEPO",
+    "domain": "depo.is"
+  },
+  {
+    "name": "Allcharge",
+    "domain": "allcharge.online"
+  },
+  {
+    "name": "Flipcoin",
+    "domain": "flipcoin.exchange"
+  },
+  {
+    "name": "AlfaCashier",
+    "domain": "www.alfa.cash/ru"
+  },
+  {
+    "name": "100btc.kiev.ua",
+    "domain": "100coins.io"
+  },
+  {
+    "name": "GREEN MONEY",
+    "domain": "green-money.cc"
+  },
+  {
+    "name": "ТопОбменка",
+    "domain": "top-obmenka.com"
+  },
+  {
+    "name": "Cabinet",
+    "domain": "cabinet.exchange"
+  },
+  {
+    "name": "PonyBit",
+    "domain": "ponybit.ru"
+  },
+  {
+    "name": "TheRedPay",
+    "domain": "www.theredpay.com"
+  },
+  {
+    "name": "SimpleExchange",
+    "domain": "simplexchange.pro"
+  },
+  {
+    "name": "P1exchange",
+    "domain": "p1exchange.pro"
+  },
+  {
+    "name": "EastChange",
+    "domain": "eastchange.io"
+  },
+  {
+    "name": "BitOkk",
+    "domain": "bitokk.biz"
+  },
+  {
+    "name": "Cashex",
+    "domain": "cashex.cc"
+  },
+  {
+    "name": "Armoney Exchange",
+    "domain": "armoney-exchange.ru"
+  },
+  {
+    "name": "VIP-Obmen",
+    "domain": "vip-obmen.money"
+  },
+  {
+    "name": "Криптообменник",
+    "domain": "kriptoobmennik.com"
+  },
+  {
+    "name": "Zver Exchange",
+    "domain": "zver.exchange"
+  },
+  {
+    "name": "Lagoda.Exchange",
+    "domain": "lagoda.exchange"
+  },
+  {
+    "name": "Lion Exchange",
+    "domain": "lion-exchange.com"
+  },
+  {
+    "name": "CROCO EX",
+    "domain": "croco-ex.ru"
+  },
+  {
+    "name": "VOODoOSH",
+    "domain": "voodoosh-exchange.ru"
+  },
+  {
+    "name": "Staya Exchange",
+    "domain": "staya.exchange"
+  },
+  {
+    "name": "Investcoin",
+    "domain": "investcoin.exchange"
+  },
+  {
+    "name": "DeCenter Exchange",
+    "domain": "decenter-exchange.ru"
+  },
+  {
+    "name": "City-Obmen",
+    "domain": "city-obmen.ru"
+  },
+  {
+    "name": "TurboExchange",
+    "domain": "turboexchange.ru"
+  },
+  {
+    "name": "BitHunter",
+    "domain": "bithunter.io"
+  },
+  {
+    "name": "UBIMONEY",
+    "domain": "ubimoney.shop"
+  },
+  {
+    "name": "24ATM",
+    "domain": "24atm.net"
+  },
+  {
+    "name": "amlxe",
+    "domain": "amlxe.com"
+  },
+  {
+    "name": "Vikbit",
+    "domain": "vikbit.com"
+  },
+  {
+    "name": "NetexBit",
+    "domain": "netexbit.com"
+  },
+  {
+    "name": "Vashobmen24",
+    "domain": "vashobmen24.net"
+  },
+  {
+    "name": "Papa-change",
+    "domain": "papa-change.com"
+  },
+  {
+    "name": "Bitcoin Exchanger",
+    "domain": "www.bitcoinexchanger.co"
+  },
+  {
+    "name": "AML24",
+    "domain": "aml24.com"
+  },
+  {
+    "name": "AiforyPro",
+    "domain": "aifory.pro"
+  },
+  {
+    "name": "X-payeer",
+    "domain": "x-payeer.com"
+  },
+  {
+    "name": "Wirebit",
+    "domain": "wirebit.net"
+  },
+  {
+    "name": "intenzaexchange",
+    "domain": "intenzaexchange.online"
+  },
+  {
+    "name": "NewCoin-X",
+    "domain": "newcoin-x.com"
+  },
+  {
+    "name": "CrownChange",
+    "domain": "crownchange.com"
+  },
+  {
+    "name": "BelkaPay",
+    "domain": "belkapay.com"
+  },
+  {
+    "name": "Char Exchange",
+    "domain": "charex.ru"
+  },
+  {
+    "name": "WmChange",
+    "domain": "wmchange.com"
+  },
+  {
+    "name": "TrueXchanger",
+    "domain": "truexchanger.com"
+  },
+  {
+    "name": "Cash-x-Cash\n",
+    "domain": "cash-x-cash.com"
+  },
+  {
+    "name": "Exmymoney",
+    "domain": "exmymoney.com"
+  },
+  {
+    "name": "MY24pay",
+    "domain": "my24pay.com"
+  },
+  {
+    "name": "Paybit Online",
+    "domain": "www.paybitonline.com"
+  },
+  {
+    "name": "OKpay",
+    "domain": "okpay.biz"
+  },
+  {
+    "name": "Stormex",
+    "domain": "stormex.io"
+  },
+  {
+    "name": "xchange-24",
+    "domain": "xchange-24.com"
+  },
+  {
+    "name": "paySSo",
+    "domain": "paysso.com"
+  },
+  {
+    "name": "BTCPro24",
+    "domain": "btcpro24.cominvite"
+  },
+  {
+    "name": "Rim-exchange\n",
+    "domain": "rim-exchange.com"
+  },
+  {
+    "name": "Crypto007",
+    "domain": "www.crypto007.netref"
+  },
+  {
+    "name": "United Exchange Centr",
+    "domain": "uacentr.com"
+  },
+  {
+    "name": "Btcchange24",
+    "domain": "btcchange24.com"
+  },
+  {
+    "name": "CryptoExchange",
+    "domain": "cryptoexchange.ru"
+  },
+  {
+    "name": "BTCSale",
+    "domain": "btcsale.biz"
+  },
+  {
+    "name": "PaypalPartner",
+    "domain": "paypalpartner.com"
+  },
+  {
+    "name": "Swapex.Net",
+    "domain": "swapex.net"
+  },
+  {
+    "name": "NOLIMIT",
+    "domain": "nolimit.cc"
+  },
+  {
+    "name": "100monet",
+    "domain": "100monet.pro"
+  },
+  {
+    "name": "ChangeSuper",
+    "domain": "superchangi.ru"
+  },
+  {
+    "name": "mchange",
+    "domain": "mchange.net"
+  },
+  {
+    "name": "bit-obmenka",
+    "domain": "bit-obmenka.vip"
+  },
+  {
+    "name": "BTC-Change",
+    "domain": "btc-change.ru"
+  },
+  {
+    "name": "wowex.online",
+    "domain": "wowex.online"
+  },
+  {
+    "name": "Exchanger.ltd",
+    "domain": "exchanger.ltd"
+  },
+  {
+    "name": "RBankExchange",
+    "domain": "rbankexchange.io"
+  },
+  {
+    "name": "aChange",
+    "domain": "www.achange.net"
+  },
+  {
+    "name": "Exchange Zones",
+    "domain": "ww25.exchangezones.co.in"
+  },
+  {
+    "name": "XMLGOLD",
+    "domain": "www.xmlgold.is"
+  },
+  {
+    "name": "MegaXChange",
+    "domain": "megaxchange.cash"
+  },
+  {
+    "name": "Bitcoin-Obmen",
+    "domain": "ww38.bitcoin-obmen.com"
+  },
+  {
+    "name": "Bestxchange24",
+    "domain": "bestxchange24.com"
+  },
+  {
+    "name": "Eastchange",
+    "domain": "eastchange.io"
+  },
+  {
+    "name": "BogemaExchange",
+    "domain": "bogema.exchange"
+  },
+  {
+    "name": "7bit24",
+    "domain": "7bit24.com"
+  },
+  {
+    "name": "CashTime",
+    "domain": "cashtime.pro"
+  },
+  {
+    "name": "ChangePlus",
+    "domain": "changeplus.pw"
+  },
+  {
+    "name": "iChanger",
+    "domain": "ichanger.net"
+  },
+  {
+    "name": "123exchange",
+    "domain": "123exchange.me"
+  },
+  {
+    "name": "wmBroker",
+    "domain": "wmbroker.co.uk"
+  },
+  {
+    "name": "Aura Legal",
+    "domain": "www.aura.legalref"
+  },
+  {
+    "name": "WizzEX",
+    "domain": "wizz.exchange"
+  },
+  {
+    "name": "1CEBIT\n",
+    "domain": "1cebit.com"
+  },
+  {
+    "name": "CryptoGene",
+    "domain": "cryptogene.pro"
+  },
+  {
+    "name": "UXBTC",
+    "domain": "uxbtc.com"
+  },
+  {
+    "name": "PAY2DAY",
+    "domain": "pay2day.top"
+  },
+  {
+    "name": "OAO BITCOIN",
+    "domain": "inb.tc"
+  },
+  {
+    "name": "e-currencyexchangers",
+    "domain": "e-currencyexchangers.com"
+  },
+  {
+    "name": "Netpay BTC",
+    "domain": "netpaybtc.com"
+  },
+  {
+    "name": "Indacoin",
+    "domain": "indacoin.com"
+  },
+  {
+    "name": "Mentalswap",
+    "domain": "mentalswap.pro"
+  },
+  {
+    "name": "worldex",
+    "domain": "worldex.cc"
+  },
+  {
+    "name": "Magnetic Exchange 2",
+    "domain": "magnetic-exchange.net"
+  },
+  {
+    "name": "Digital Exchanger",
+    "domain": "www.digitalexchanger.net"
+  },
+  {
+    "name": "OneClickEx",
+    "domain": "oneclickex.net"
+  },
+  {
+    "name": "WMCash",
+    "domain": "wmcash.biz"
+  },
+  {
+    "name": "Rapid-wm",
+    "domain": "rapid-wm.com"
+  },
+  {
+    "name": "Clever Money",
+    "domain": "clevermoney.io"
+  },
+  {
+    "name": "Bankir",
+    "domain": "bankir.io"
+  },
+  {
+    "name": "QCashPay",
+    "domain": "qcashpay.com"
+  },
+  {
+    "name": "ProfiChange",
+    "domain": "profichange.com"
+  },
+  {
+    "name": "Olimpchange",
+    "domain": "olimpchange.com"
+  },
+  {
+    "name": "Valutix",
+    "domain": "valutix.io"
+  },
+  {
+    "name": "P.M.Holder",
+    "domain": "pmholder.com"
+  },
+  {
+    "name": "MonEx",
+    "domain": "monex.me"
+  },
+  {
+    "name": "MONO Change",
+    "domain": "monochange.site"
+  },
+  {
+    "name": "Bitiobmen\n",
+    "domain": "bitiobmen.com"
+  },
+  {
+    "name": "DM-change",
+    "domain": "dm-change.pro"
+  },
+  {
+    "name": "ExchangeC2C",
+    "domain": "www.exchangec2c.com"
+  },
+  {
+    "name": "UniChange exchanger",
+    "domain": "unichange.me"
+  },
+  {
+    "name": "Qipri",
+    "domain": "qipri.com"
+  },
+  {
+    "name": "UbiChange",
+    "domain": "ubichange.com"
+  },
+  {
+    "name": "Epay",
+    "domain": "www.epay.com"
+  },
+  {
+    "name": "У ПЕТРОВИЧА",
+    "domain": "y-petrovicha.ru"
+  },
+  {
+    "name": "Agopay",
+    "domain": "agopay.com"
+  },
+  {
+    "name": "AGmoney",
+    "domain": "agmoney.net"
+  },
+  {
+    "name": "Royalcash",
+    "domain": "royalcash.cc"
+  },
+  {
+    "name": "scsobmen",
+    "domain": "scsobmen.com"
+  },
+  {
+    "name": "CatChange",
+    "domain": "1.catchange.org"
+  },
+  {
+    "name": "Sapsanex",
+    "domain": "sapsanex.cc"
+  },
+  {
+    "name": "E-Money",
+    "domain": "e-money.cc"
+  },
+  {
+    "name": "Imexchanger",
+    "domain": "imexchanger.pro"
+  },
+  {
+    "name": "WealthPay",
+    "domain": "wealthpay.org"
+  },
+  {
+    "name": "Bitokme",
+    "domain": "bitok.me"
+  },
+  {
+    "name": "Ex-money",
+    "domain": "ex-money.cc"
+  },
+  {
+    "name": "Changex",
+    "domain": "нет"
+  },
+  {
+    "name": "nnexchange",
+    "domain": "нет"
+  },
+  {
+    "name": "cryptochange24",
+    "domain": "cryptochange24.com"
+  },
+  {
+    "name": "Litex",
+    "domain": "www.litex.pro"
+  },
+  {
+    "name": "7Exchange",
+    "domain": "7exchange.ru"
+  },
+  {
+    "name": "Unite-change",
+    "domain": "нет"
+  },
+  {
+    "name": "OplataWM\n",
+    "domain": "oplatawm.ru"
+  },
+  {
+    "name": "MinedTrade",
+    "domain": "minedtrade.com"
+  },
+  {
+    "name": "Like Change",
+    "domain": "likechange.biz"
+  },
+  {
+    "name": "bitochek",
+    "domain": "bitochek.net"
+  },
+  {
+    "name": "btc-online",
+    "domain": "btc-online.net"
+  },
+  {
+    "name": "LiveExchange",
+    "domain": "livexpro.pro"
+  },
+  {
+    "name": "366.cash",
+    "domain": "evryday.cash"
+  },
+  {
+    "name": "N1.Exchange.Zone\n",
+    "domain": "n1.exchange.zone"
+  },
+  {
+    "name": "WMZ-THB",
+    "domain": "wmz-thb.ru"
+  },
+  {
+    "name": "Valley.Cash",
+    "domain": "valley.cash"
+  },
+  {
+    "name": "Magnetic Exchange 3",
+    "domain": "magnetic-exchange.org"
+  },
+  {
+    "name": "UKRCASH",
+    "domain": "ukrcash.com"
+  },
+  {
+    "name": "LiteObmen",
+    "domain": "liteobmen.com"
+  },
+  {
+    "name": "Superobmenka",
+    "domain": "superobmenka.com"
+  },
+  {
+    "name": "WebObmen",
+    "domain": "webobmen.online"
+  },
+  {
+    "name": "Exchanger.org.ua",
+    "domain": "exchanger.org.ua"
+  },
+  {
+    "name": "Change-Expert",
+    "domain": "change-expert.biz"
+  },
+  {
+    "name": "Cambio.Money",
+    "domain": "cambio.money"
+  },
+  {
+    "name": "FastExchange",
+    "domain": "fastexchange.center"
+  },
+  {
+    "name": "Obmenka24",
+    "domain": "нет"
+  },
+  {
+    "name": "Exspss",
+    "domain": "exspss.com"
+  },
+  {
+    "name": "UnitCash",
+    "domain": "unitcash.io"
+  },
+  {
+    "name": "Solidchanger",
+    "domain": "solidchanger.net"
+  },
+  {
+    "name": "fxservice",
+    "domain": "fxservice.io"
+  },
+  {
+    "name": "1337ex",
+    "domain": "1337ex.com"
+  },
+  {
+    "name": "cryptobaron",
+    "domain": "cryptobaron.org"
+  },
+  {
+    "name": "BullUP",
+    "domain": "bullup.ai"
+  },
+  {
+    "name": "A-Exchange",
+    "domain": "a-exchange.com"
+  },
+  {
+    "name": "FeX.pm",
+    "domain": "fex.pm"
+  },
+  {
+    "name": "Victoriaexchange",
+    "domain": "victoriaexchange.me"
+  },
+  {
+    "name": "A1Change",
+    "domain": "a1change.me"
+  },
+  {
+    "name": "Orange Exchange Pro",
+    "domain": "orangeexchangepro.com"
+  },
+  {
+    "name": "CashBank",
+    "domain": "cashbank.pro"
+  },
+  {
+    "name": "Shift-Money",
+    "domain": "shift-money.com"
+  },
+  {
+    "name": "Pay2cash",
+    "domain": "pay2cash.online"
+  },
+  {
+    "name": "HotRate\n",
+    "domain": "hotrate.io"
+  },
+  {
+    "name": "Hill.money",
+    "domain": "hill.money"
+  },
+  {
+    "name": "EmpireOfExchange",
+    "domain": "empireofexchange.com"
+  },
+  {
+    "name": "Exchangebooth",
+    "domain": "www.exchangebooth.net"
+  },
+  {
+    "name": "CinusExchange",
+    "domain": "cinusexc.io"
+  },
+  {
+    "name": "E-dengi",
+    "domain": "e-dengi.org"
+  },
+  {
+    "name": "M-obmen",
+    "domain": "m-obmen.ru"
+  },
+  {
+    "name": "Ultragold",
+    "domain": "ultragold.org"
+  },
+  {
+    "name": "New-Kassa",
+    "domain": "newkassa.com"
+  },
+  {
+    "name": "hot-bit",
+    "domain": "hot-bit.com"
+  },
+  {
+    "name": "24Btc",
+    "domain": "24btc.cash"
+  },
+  {
+    "name": "Ecoin Exchanger",
+    "domain": "www.ecoinexchanger.com"
+  },
+  {
+    "name": "Owlgold",
+    "domain": "owl.gold"
+  },
+  {
+    "name": "ExchangeYourMoney",
+    "domain": "exchangeyourmoney.com"
+  },
+  {
+    "name": "Fenix Pay",
+    "domain": "ww1.fenix-pay.com"
+  },
+  {
+    "name": "changehigh",
+    "domain": "changehigh.com"
+  },
+  {
+    "name": "WekSell",
+    "domain": "weksell.com"
+  },
+  {
+    "name": "multichange",
+    "domain": "multichange.net"
+  },
+  {
+    "name": "Ekexchange",
+    "domain": "ekexchange.com"
+  },
+  {
+    "name": "Swap-exchange",
+    "domain": "swap-exchange.com"
+  },
+  {
+    "name": "OK-Change",
+    "domain": "www.ok-change.com"
+  },
+  {
+    "name": "24change",
+    "domain": "24change.com"
+  },
+  {
+    "name": "WmChange24",
+    "domain": "wmchange24.com"
+  },
+  {
+    "name": "Vip-obmen",
+    "domain": "vip-obmen.biz"
+  },
+  {
+    "name": "obmenneg",
+    "domain": "obmenneg.com"
+  },
+  {
+    "name": "SimpleChange",
+    "domain": "simplechange.ru"
+  },
+  {
+    "name": "ABCash",
+    "domain": "www.abcash.org"
+  },
+  {
+    "name": "Trust Changer",
+    "domain": "trust-changer.com"
+  },
+  {
+    "name": "btc-obmenka\n",
+    "domain": "btc-obmenka.com"
+  },
+  {
+    "name": "Change24",
+    "domain": "change24.pro"
+  },
+  {
+    "name": "Virmonex",
+    "domain": "virmonex.com"
+  },
+  {
+    "name": "RuBitok",
+    "domain": "rubitok.com"
+  },
+  {
+    "name": "Quickex",
+    "domain": "quickex.io"
+  },
+  {
+    "name": "crypto-bank",
+    "domain": "crypto-bank.ws"
+  },
+  {
+    "name": "Bitcoins",
+    "domain": "bitcoins.md"
+  },
+  {
+    "name": "Bitlish-Checkout",
+    "domain": "checkout.bitlish.com"
+  },
+  {
+    "name": "Uznopay\n",
+    "domain": "www.uznopay.com"
+  },
+  {
+    "name": "Cryptonet",
+    "domain": "cryptonet.pro"
+  },
+  {
+    "name": "ikc3",
+    "domain": "www.ikc3.io"
+  },
+  {
+    "name": "Easy-change",
+    "domain": "easy-change.pro"
+  },
+  {
+    "name": "CRYPTONE.SPACE",
+    "domain": "cryptone.space"
+  },
+  {
+    "name": "BlinkSwap",
+    "domain": "blinkswap.io"
+  },
+  {
+    "name": "Hasty Exchange",
+    "domain": "hasty.exchange"
+  },
+  {
+    "name": "ProChanger",
+    "domain": "prochanger.io"
+  },
+  {
+    "name": "Obmen",
+    "domain": "obmen.cc"
+  },
+  {
+    "name": "ExchangeGold",
+    "domain": "www.exchangegold.org"
+  },
+  {
+    "name": "SaveChange",
+    "domain": "www.savechange.ru"
+  },
+  {
+    "name": "100btc",
+    "domain": "100btc.pro"
+  },
+  {
+    "name": "NbExchange",
+    "domain": "нет"
+  },
+  {
+    "name": "GooD-Exchanger",
+    "domain": "good-exchanger.com"
+  },
+  {
+    "name": "WeoPay",
+    "domain": "нет"
+  },
+  {
+    "name": "MetroBit",
+    "domain": "metrobit.pro"
+  },
+  {
+    "name": "Fox Rocket",
+    "domain": "fox-rocket.com"
+  },
+  {
+    "name": "WM.cash",
+    "domain": "wm.cash"
+  },
+  {
+    "name": "Bit-Exchange",
+    "domain": "bit-exchange.org"
+  },
+  {
+    "name": "Change-x",
+    "domain": "change-x.cc/contacts"
+  },
+  {
+    "name": "CashAdmin",
+    "domain": "cashadmin.ru"
+  },
+  {
+    "name": "UNINPRO",
+    "domain": "unin.pro"
+  },
+  {
+    "name": "easybit",
+    "domain": "www.easybit.pro"
+  },
+  {
+    "name": "fox.exchange",
+    "domain": "fox.exchange"
+  },
+  {
+    "name": "PayWallet",
+    "domain": "paywallet.cc"
+  },
+  {
+    "name": "top-kurs",
+    "domain": "top-kurs.com"
+  },
+  {
+    "name": "WorldchangeRU",
+    "domain": "worldchange.rureferral"
+  },
+  {
+    "name": "Exchange.moscow",
+    "domain": "exchange.moscow"
+  },
+  {
+    "name": "vip-money",
+    "domain": "vip-money.net"
+  },
+  {
+    "name": "CoinsChanger",
+    "domain": "coinschanger.ru"
+  },
+  {
+    "name": "Иеремия76",
+    "domain": "ieremia76.com"
+  },
+  {
+    "name": "eggchange",
+    "domain": "eggchange.org"
+  },
+  {
+    "name": "Ultra-Flash",
+    "domain": "ultra-flash.com"
+  },
+  {
+    "name": "SaxoBit",
+    "domain": "saxobit.com"
+  },
+  {
+    "name": "Goldex",
+    "domain": "metrochange.io"
+  },
+  {
+    "name": "Metrochange",
+    "domain": "metrochange.io"
+  },
+  {
+    "name": "Rabbit Swap",
+    "domain": "rabbit.io"
+  },
+  {
+    "name": "Ecurrencyzone",
+    "domain": "ecurrencyzone.net"
+  },
+  {
+    "name": "v-obmen",
+    "domain": "v-obmen.com"
+  },
+  {
+    "name": "Obmennik",
+    "domain": "obmennik.ua"
+  },
+  {
+    "name": "P2PChange",
+    "domain": "p2pchange.is"
+  },
+  {
+    "name": "ExMoney",
+    "domain": "exmoney.me"
+  },
+  {
+    "name": "FasaChange Exchanger",
+    "domain": "fasachange.com"
+  },
+  {
+    "name": "Меняйпро.рф",
+    "domain": "xn--e1aihfgfh1j.xn--p1ai"
+  },
+  {
+    "name": "WW-Pay",
+    "domain": "ww-pay.com"
+  },
+  {
+    "name": "Trust-Exchange",
+    "domain": "trust-exchange.org"
+  },
+  {
+    "name": "Pay4bit",
+    "domain": "pay4bit.biz"
+  },
+  {
+    "name": "24obmen",
+    "domain": "24obmen.org"
+  },
+  {
+    "name": "EzChange",
+    "domain": "ezchange.is"
+  },
+  {
+    "name": "Ultraobmen",
+    "domain": "www.ultraobmen.net"
+  },
+  {
+    "name": "Меняйко",
+    "domain": "xn--e1aidfgi0j.com.ua"
+  },
+  {
+    "name": "Exchanger WM",
+    "domain": "www.exchangerwm.com"
+  },
+  {
+    "name": "PAYBIS",
+    "domain": "buy.paybis.com"
+  },
+  {
+    "name": "obmennik24",
+    "domain": "obmennik24.net"
+  },
+  {
+    "name": "vv-obmen",
+    "domain": "vv-obmen.ru"
+  },
+  {
+    "name": "OneExchanger",
+    "domain": "ww1.oneexchanger.com"
+  },
+  {
+    "name": "YM-CHANGE",
+    "domain": "ym-change.com"
+  },
+  {
+    "name": "ArtCash",
+    "domain": "www.artcash.net"
+  },
+  {
+    "name": "Money Cat",
+    "domain": "moneycat.biz"
+  },
+  {
+    "name": "BTC-OBMENNIK",
+    "domain": "btc-obmennik.com"
+  },
+  {
+    "name": "X-Crypto",
+    "domain": "нет"
+  },
+  {
+    "name": "Bitway",
+    "domain": "bitway.pro"
+  },
+  {
+    "name": "Changemoney",
+    "domain": "www.changemoney.me"
+  },
+  {
+    "name": "Exipon",
+    "domain": "exipon.net"
+  },
+  {
+    "name": "Obmennik-uz",
+    "domain": "obmennik-uz.ru"
+  },
+  {
+    "name": "flychange",
+    "domain": "flychange.net"
+  },
+  {
+    "name": "Yes.Exchanger",
+    "domain": "yes-obmenka.com"
+  },
+  {
+    "name": "c1k.world",
+    "domain": "c1k.world"
+  },
+  {
+    "name": "Worldswop",
+    "domain": "worldswop.com"
+  },
+  {
+    "name": "ObmenMonet",
+    "domain": "obmenmonet.com/?"
+  },
+  {
+    "name": "EX24.ONLINE",
+    "domain": "ex24.online"
+  },
+  {
+    "name": "CryptoCash.Finance",
+    "domain": "cryptocash.finance"
+  },
+  {
+    "name": "KzObmen",
+    "domain": "kzobmen.com"
+  },
+  {
+    "name": "SmartWM",
+    "domain": "smartwm.rureferral"
+  },
+  {
+    "name": "Obmenka",
+    "domain": "obmenka.uareferral/3"
+  },
+  {
+    "name": "Cashbank.SU",
+    "domain": "нет"
+  },
+  {
+    "name": "Bit-plant",
+    "domain": "www.bit-plant.com"
+  },
+  {
+    "name": "wm.express",
+    "domain": "wm.express"
+  },
+  {
+    "name": "Goldbit",
+    "domain": "goldbit.global"
+  },
+  {
+    "name": "Safe Currency",
+    "domain": "safecurrency.com"
+  },
+  {
+    "name": "Cashex",
+    "domain": "cashex.cc"
+  },
+  {
+    "name": "Bitokme",
+    "domain": "bitok.cc"
+  },
+  {
+    "name": "REXI",
+    "domain": "rexi.cc"
+  },
+  {
+    "name": "Bestbit",
+    "domain": "bestbit.com.ua"
+  },
+  {
+    "name": "4pay",
+    "domain": "4pay.in"
+  },
+  {
+    "name": "AGcash",
+    "domain": "www.agcash.ru"
+  },
+  {
+    "name": "NextBit",
+    "domain": "nextbit.me"
+  },
+  {
+    "name": "4esnok",
+    "domain": "4esnok.cc"
+  },
+  {
+    "name": "Cryptokacca",
+    "domain": "cryptokacca.pro"
+  },
+  {
+    "name": "CeshEX",
+    "domain": "ceshex.com"
+  },
+  {
+    "name": "ExBase",
+    "domain": "exbase.biz"
+  },
+  {
+    "name": "BigBanK.BEST",
+    "domain": "bigbank.best"
+  },
+  {
+    "name": "Kingex",
+    "domain": "kingex.io"
+  },
+  {
+    "name": "Finly.Exchange",
+    "domain": "finly.exchange"
+  },
+  {
+    "name": "GoodKurs",
+    "domain": "goodkurs.net"
+  },
+  {
+    "name": "usdt2cash.exchange",
+    "domain": "www.usdt2cash.exchange"
+  },
+  {
+    "name": "Обменот",
+    "domain": "obmenot.com"
+  },
+  {
+    "name": "TechnoCashier",
+    "domain": "technocashier.com"
+  },
+  {
+    "name": "RCHANGE",
+    "domain": "www.rchange.net"
+  },
+  {
+    "name": "24payme",
+    "domain": "24pay.me"
+  },
+  {
+    "name": "Mobilexchange",
+    "domain": "www.mobilexchange.me"
+  },
+  {
+    "name": "Advex",
+    "domain": "advex.com"
+  },
+  {
+    "name": "monetok",
+    "domain": "monetok.net"
+  },
+  {
+    "name": "ExchangeBox",
+    "domain": "exchangebox.biz"
+  },
+  {
+    "name": "Ok-exchange",
+    "domain": "ok-exchange.ru"
+  },
+  {
+    "name": "XzzX",
+    "domain": "xzzx.biz"
+  },
+  {
+    "name": "1wm",
+    "domain": "1wm.kz"
+  },
+  {
+    "name": "Proexchange",
+    "domain": "proexchange.biz"
+  },
+  {
+    "name": "DJchange",
+    "domain": "djchange.cc"
+  },
+  {
+    "name": "quickchange",
+    "domain": "quickchange.cc"
+  },
+  {
+    "name": "EwalletPLUS",
+    "domain": "www.ewalletplus.com"
+  },
+  {
+    "name": "PayQW",
+    "domain": "payqw.com"
+  },
+  {
+    "name": "White Exchange Online",
+    "domain": "whitexchange.online"
+  },
+  {
+    "name": "PayeGold",
+    "domain": "www.payegold.com"
+  },
+  {
+    "name": "SafePay",
+    "domain": "safepay.com.ua"
+  },
+  {
+    "name": "obmenka.online",
+    "domain": "obmenka.online"
+  },
+  {
+    "name": "TLX.exchange",
+    "domain": "tlx.exchange"
+  },
+  {
+    "name": "MGchange",
+    "domain": "www.mgchange.com"
+  },
+  {
+    "name": "Chmoney",
+    "domain": "chmoney.ru"
+  },
+  {
+    "name": "HotExchange",
+    "domain": "hotexchange.ru"
+  },
+  {
+    "name": "loza-m",
+    "domain": "loza-m.com"
+  },
+  {
+    "name": "Cryptex24",
+    "domain": "cryptex24.com"
+  },
+  {
+    "name": "InCash24",
+    "domain": "www.incash24.com"
+  },
+  {
+    "name": "Buysomebitcoins",
+    "domain": "нет"
+  },
+  {
+    "name": "buy-bitcoins",
+    "domain": "buy-bitcoins.pro"
+  },
+  {
+    "name": "Bit2Ca",
+    "domain": "bit2ca.com"
+  },
+  {
+    "name": "EconomyST",
+    "domain": "economy.st"
+  },
+  {
+    "name": "24Change",
+    "domain": "24change.pw"
+  },
+  {
+    "name": "Midas24",
+    "domain": "midas24.biz"
+  },
+  {
+    "name": "Fair Change",
+    "domain": "fair-change.com"
+  },
+  {
+    "name": "WM365",
+    "domain": "wm365.biz"
+  },
+  {
+    "name": "kip-kip",
+    "domain": "kip-kip.cash"
+  },
+  {
+    "name": "CCoin",
+    "domain": "ccoin.cc"
+  },
+  {
+    "name": "xlemon",
+    "domain": "xlemon.biz"
+  },
+  {
+    "name": "bestcoin",
+    "domain": "bestcoin.cc"
+  },
+  {
+    "name": "alfapay",
+    "domain": "alfapay.online"
+  },
+  {
+    "name": "Exchange.blue",
+    "domain": "www.exchange.blue"
+  },
+  {
+    "name": "ONEOBMEN",
+    "domain": "1obmen.ru"
+  },
+  {
+    "name": "GoodObmen\n",
+    "domain": "goodobmen.com"
+  },
+  {
+    "name": "BigBank.BEST",
+    "domain": "bigbank.cash"
+  },
+  {
+    "name": "wm007kz",
+    "domain": "wm007.kz"
+  },
+  {
+    "name": "Ex-Bank",
+    "domain": "www.ex-bank.cc"
+  },
+  {
+    "name": "TruexGOLD",
+    "domain": "truexgold.com"
+  },
+  {
+    "name": "PurseOfBit",
+    "domain": "www.purseofbit.com"
+  },
+  {
+    "name": "Obmendeneg",
+    "domain": "www.obmendeneg.org"
+  },
+  {
+    "name": "coin-future",
+    "domain": "coin-future.ru"
+  },
+  {
+    "name": "WMini",
+    "domain": "wmini.ru"
+  },
+  {
+    "name": "doxbt",
+    "domain": "doxbt.com"
+  },
+  {
+    "name": "GRAMBIT",
+    "domain": "grambit.net"
+  },
+  {
+    "name": "Stratoschange",
+    "domain": "stratoschange.com"
+  },
+  {
+    "name": "Portfel",
+    "domain": "portfel.cc"
+  },
+  {
+    "name": "AMG Change",
+    "domain": "нет"
+  },
+  {
+    "name": "ArtHouse Exchange",
+    "domain": "arthouse-exchange.com"
+  },
+  {
+    "name": "Artek-Exchanger",
+    "domain": "artek-exchanger.com"
+  },
+  {
+    "name": "BtcWorm\n",
+    "domain": "btcworm.com"
+  },
+  {
+    "name": "CriptExchanger",
+    "domain": "www.criptexchanger.com"
+  },
+  {
+    "name": "Blablachange",
+    "domain": "blablachange.com"
+  },
+  {
+    "name": "F1Ex",
+    "domain": "f1ex.com"
+  },
+  {
+    "name": "GOLDUX",
+    "domain": "goldux.com"
+  },
+  {
+    "name": "IOBMEN",
+    "domain": "нет"
+  },
+  {
+    "name": 4008005673.0,
+    "domain": "www.4008005673.com"
+  },
+  {
+    "name": "X-Obmen",
+    "domain": "x-obmen.com"
+  },
+  {
+    "name": "pm-obmen",
+    "domain": "pm-obmen.tv"
+  },
+  {
+    "name": "24Obmen",
+    "domain": "xn--24-clcq8ahd.com"
+  },
+  {
+    "name": "Obmenik24",
+    "domain": "obmenik24.net"
+  },
+  {
+    "name": "WM-Privat",
+    "domain": "www.wm-privat.com"
+  },
+  {
+    "name": "WMCentre",
+    "domain": "wmcentre.kz"
+  },
+  {
+    "name": "A1change",
+    "domain": "www.a1change.com"
+  },
+  {
+    "name": "UkrWM",
+    "domain": "ukrwm.com"
+  },
+  {
+    "name": "Onlinechange",
+    "domain": "www.onlinechange.com"
+  },
+  {
+    "name": "Cashing",
+    "domain": "нет"
+  },
+  {
+    "name": "Cash-Transfers",
+    "domain": "cash-transfers.ru"
+  },
+  {
+    "name": "JetChange",
+    "domain": "нет"
+  },
+  {
+    "name": "Cash2PM",
+    "domain": "cash2pm.com"
+  },
+  {
+    "name": "FildChange",
+    "domain": "fildchange.com"
+  },
+  {
+    "name": "iGN Exchange",
+    "domain": "ignexchange.comen"
+  },
+  {
+    "name": "Mig obmen\n",
+    "domain": "нет"
+  },
+  {
+    "name": "ArbitrCoin",
+    "domain": "arbitrcoin.com"
+  },
+  {
+    "name": "OM",
+    "domain": "нет"
+  },
+  {
+    "name": "WmChange",
+    "domain": "wmchange.in.ua"
+  },
+  {
+    "name": "Maximaexchange",
+    "domain": "maximaexchange.com"
+  },
+  {
+    "name": "Express-Obmen",
+    "domain": "нет"
+  },
+  {
+    "name": "Obmenio",
+    "domain": "www.obmen.io"
+  },
+  {
+    "name": "24xbtc",
+    "domain": "old.24xbtc.com"
+  },
+  {
+    "name": "pmcash",
+    "domain": "pmcash.kz"
+  },
+  {
+    "name": "PAYTOCHINA",
+    "domain": "paytochina.com"
+  },
+  {
+    "name": "24-Exchange",
+    "domain": "24-exchange.com"
+  },
+  {
+    "name": "wm-obmen24\n",
+    "domain": "нет"
+  },
+  {
+    "name": "Coinex24",
+    "domain": "www.coinex24.com"
+  },
+  {
+    "name": "Obmennik-wm",
+    "domain": "obmennik-wm.com"
+  },
+  {
+    "name": "Digital Currency Exchange",
+    "domain": "www.dc-ex.com"
+  },
+  {
+    "name": "Vsego",
+    "domain": "www.vsego.kz"
+  },
+  {
+    "name": "Spasibo",
+    "domain": "spasibo.kz"
+  },
+  {
+    "name": "ExPayer",
+    "domain": "нет"
+  },
+  {
+    "name": "OWM24",
+    "domain": "owm24.com"
+  },
+  {
+    "name": "Express-PM",
+    "domain": "express-pm.com"
+  },
+  {
+    "name": "MyExchanger",
+    "domain": "myexchanger.lv"
+  },
+  {
+    "name": "24online",
+    "domain": "24online.cc"
+  },
+  {
+    "name": "Star5.Exchange",
+    "domain": "нет"
+  },
+  {
+    "name": "Roboexchange",
+    "domain": "roboexchange.com"
+  },
+  {
+    "name": "megabestobmen",
+    "domain": "www.megabestobmen.com"
+  },
+  {
+    "name": "WMalliance",
+    "domain": "rx24.ru"
+  },
+  {
+    "name": "Y-Obmen",
+    "domain": "нет"
+  },
+  {
+    "name": "Cash-24",
+    "domain": "cash-24.net"
+  },
+  {
+    "name": "Templazobmen",
+    "domain": "templazobmen.ru"
+  },
+  {
+    "name": "babasiki",
+    "domain": "babasiki.ru"
+  },
+  {
+    "name": "LuxObmenka",
+    "domain": "luxobmenka.com"
+  },
+  {
+    "name": "TytCoin",
+    "domain": "www.tytcoin.com"
+  },
+  {
+    "name": "BitEx-1",
+    "domain": "bitex-1.com"
+  },
+  {
+    "name": "Jojo.cash",
+    "domain": "jojo.cash"
+  },
+  {
+    "name": "PrivatPay",
+    "domain": "privatpay.net"
+  },
+  {
+    "name": "Crypto-money",
+    "domain": "crypto-money.cc"
+  },
+  {
+    "name": "24Bestex",
+    "domain": "24bestex.com"
+  },
+  {
+    "name": "Exmon",
+    "domain": "exmon.me"
+  },
+  {
+    "name": "CoinLave",
+    "domain": "coinlave.com"
+  },
+  {
+    "name": "Ecchanger",
+    "domain": "ecchanger.com"
+  },
+  {
+    "name": "MoneyPay",
+    "domain": "moneypay.biz"
+  },
+  {
+    "name": "UniEx",
+    "domain": "uniex.co"
+  },
+  {
+    "name": "Bitconvex",
+    "domain": "bitconvex.com"
+  },
+  {
+    "name": "PlatiWM",
+    "domain": "platiwm.biz"
+  },
+  {
+    "name": "Payforia",
+    "domain": "www.payforia.net"
+  },
+  {
+    "name": "4exchange",
+    "domain": "нет"
+  },
+  {
+    "name": "Cryptochange",
+    "domain": "нет"
+  },
+  {
+    "name": "staff-obmen",
+    "domain": "staffobmen.com"
+  },
+  {
+    "name": "StoreBucks",
+    "domain": "storebucks.io"
+  },
+  {
+    "name": "Exchnage",
+    "domain": "exchnage.net"
+  },
+  {
+    "name": "Lordchange",
+    "domain": "lordchange.com"
+  },
+  {
+    "name": "Nolimit",
+    "domain": "nolimit.cc"
+  },
+  {
+    "name": "Coinyard",
+    "domain": "coinyard.net"
+  },
+  {
+    "name": "Icon finance",
+    "domain": "icon.finance"
+  },
+  {
+    "name": "Cashflow",
+    "domain": "cashflow.best"
+  },
+  {
+    "name": "Obmenot",
+    "domain": "obmenot.com"
+  },
+  {
+    "name": "Easyex",
+    "domain": "easyex.pro"
+  },
+  {
+    "name": "Cinus",
+    "domain": "cinusexc.io"
+  },
+  {
+    "name": "Krokobmen",
+    "domain": "krok-obmen.com"
+  },
+  {
+    "name": "UniexMoney",
+    "domain": "uniex.money"
+  },
+  {
+    "name": "Fasterix",
+    "domain": "fasterix.pro"
+  },
+  {
+    "name": "4ExchangeRU",
+    "domain": "нет"
+  },
+  {
+    "name": "AlfaChange",
+    "domain": "alfachange.net"
+  },
+  {
+    "name": "AlfaExchange",
+    "domain": "alfa.exchange"
+  },
+  {
+    "name": "Alfa-Trades",
+    "domain": "alfa-trades.com"
+  },
+  {
+    "name": "AllTrustMe",
+    "domain": "alltrust.me"
+  },
+  {
+    "name": "Base-Exchange",
+    "domain": "base-exchange.com"
+  },
+  {
+    "name": "BissonExchange",
+    "domain": "bisson.exchange"
+  },
+  {
+    "name": "BitPride-Exchange",
+    "domain": "bitpride-exchange.com"
+  },
+  {
+    "name": "CryptoHonest",
+    "domain": "cryptohonest.ru"
+  },
+  {
+    "name": "CryptoMeow",
+    "domain": "cryptomeow.io"
+  },
+  {
+    "name": "CryptoMoney",
+    "domain": "cryptomoney.pro"
+  },
+  {
+    "name": "CrypTomsk",
+    "domain": "cryptomsk.com"
+  },
+  {
+    "name": "Cryptopayer",
+    "domain": "cryptopayer.ru"
+  },
+  {
+    "name": "Eastchange",
+    "domain": "eastchange.io"
+  },
+  {
+    "name": "Ebitok",
+    "domain": "ebitok.com"
+  },
+  {
+    "name": "E-Scrooge",
+    "domain": "e-scrooge.is/RU"
+  },
+  {
+    "name": "ExchangeExpress",
+    "domain": "exchange.express"
+  },
+  {
+    "name": "ExchangeYourMoney",
+    "domain": "exchangeyourmoney.com"
+  },
+  {
+    "name": "ExMoney",
+    "domain": "exmoney.me"
+  },
+  {
+    "name": "Exolix",
+    "domain": "exolix.com"
+  },
+  {
+    "name": "Faex24",
+    "domain": "faex24.com"
+  },
+  {
+    "name": "FlyChange",
+    "domain": "flychange.net"
+  },
+  {
+    "name": "GlobalBits",
+    "domain": "globalbits.org"
+  },
+  {
+    "name": "Goldux",
+    "domain": "goldux.com"
+  },
+  {
+    "name": "JPMarket",
+    "domain": "jpmarket.cc"
+  },
+  {
+    "name": "Just-Exchanger",
+    "domain": "just-exchanger.com"
+  },
+  {
+    "name": "MChange",
+    "domain": "mchange.net"
+  },
+  {
+    "name": "Me24",
+    "domain": "me24.com.ua"
+  },
+  {
+    "name": "MixChanger",
+    "domain": "mixchanger.net"
+  },
+  {
+    "name": "MonEx",
+    "domain": "monex.me"
+  },
+  {
+    "name": "MultiChange",
+    "domain": "multichange.net"
+  },
+  {
+    "name": "ObmenEX",
+    "domain": "obmenex.asia"
+  },
+  {
+    "name": "Obmenneg",
+    "domain": "obmenneg.com"
+  },
+  {
+    "name": "ObmenPP",
+    "domain": "obmenpp.com.ua"
+  },
+  {
+    "name": "PayFull",
+    "domain": "payfull.ru"
+  },
+  {
+    "name": "Platiwm",
+    "domain": "platiwm.biz"
+  },
+  {
+    "name": "PrivatCash",
+    "domain": "privat.cash"
+  },
+  {
+    "name": "ProstoCash",
+    "domain": "prostovcash.com"
+  },
+  {
+    "name": "QuickChange",
+    "domain": "quickchange.cc"
+  },
+  {
+    "name": "Sm24",
+    "domain": "sm24.exchange"
+  },
+  {
+    "name": "SunriseCash",
+    "domain": "sunrise.cash"
+  },
+  {
+    "name": "Swap-Exchange",
+    "domain": "swap-exchange.com"
+  },
+  {
+    "name": "Tec-Bit",
+    "domain": "tec-bit.com"
+  },
+  {
+    "name": "Txid",
+    "domain": "txid.pro"
+  },
+  {
+    "name": "Unite-Change",
+    "domain": "unite-change.com"
+  },
+  {
+    "name": "W3Buy",
+    "domain": "www.w3buy.io"
+  },
+  {
+    "name": "WmBox",
+    "domain": "w-box.io"
+  },
+  {
+    "name": "WM-Obmen",
+    "domain": "wm-obmen.com"
+  },
+  {
+    "name": "WorldChange",
+    "domain": "worldchange.cc"
+  },
+  {
+    "name": "WuBill",
+    "domain": "wubill.com"
+  },
+  {
+    "name": "Алтын",
+    "domain": "altin.su"
+  },
+  {
+    "name": "Биток777",
+    "domain": "bitok777.net"
+  },
+  {
+    "name": "Меняйко",
+    "domain": "xn--e1aidfgi0j.com.ua"
+  },
+  {
+    "name": "Момент",
+    "domain": "moment.express"
+  },
+  {
+    "name": "Монеткин",
+    "domain": "monetkin.me"
+  },
+  {
+    "name": "Сумма",
+    "domain": "summa.vip"
+  },
+  {
+    "name": "Bseit",
+    "domain": "bseit.com"
+  },
+  {
+    "name": "CryptoTyumen",
+    "domain": "cryptotyumen.ru"
+  },
+  {
+    "name": "Exchange247",
+    "domain": "exchange-247.com"
+  },
+  {
+    "name": "InsightCash",
+    "domain": "insight-cash.com"
+  },
+  {
+    "name": "NextСoin",
+    "domain": "www.nextcoin.pro"
+  },
+  {
+    "name": "Obmenu",
+    "domain": "obmenu.com"
+  },
+  {
+    "name": "RazMen",
+    "domain": "razmen.cc"
+  },
+  {
+    "name": "Smart-Obmen",
+    "domain": "www.smart-obmen.com"
+  },
+  {
+    "name": "SolidSwap",
+    "domain": "solidswap.net"
+  },
+  {
+    "name": "Swapper",
+    "domain": "swapper.now"
+  },
+  {
+    "name": "Torbit",
+    "domain": "non-kyc-exchanges-torbit.org"
+  },
+  {
+    "name": "TransitBit",
+    "domain": "transit-bit.com"
+  },
+  {
+    "name": "Xchange",
+    "domain": "xchange.ltd"
+  },
+  {
+    "name": "Transcoin",
+    "domain": "ru.transcoin.me"
+  },
+  {
+    "name": "Goldux",
+    "domain": "ru.exchangersmonitor.com"
+  },
+  {
+    "name": "CosmoChanger",
+    "domain": "cosmochanger.cc"
+  },
+  {
+    "name": "001k.exchange",
+    "domain": "001k.exchange"
+  },
+  {
+    "name": "TurkMoney",
+    "domain": "www.turkmoney.net"
+  },
+  {
+    "name": "Abcobmen",
+    "domain": "abcobmen.org"
+  },
+  {
+    "name": "SuperChange",
+    "domain": "superchange.net"
+  },
+  {
+    "name": "Bitcoin24",
+    "domain": "bitcoin24.su"
+  },
+  {
+    "name": "Topcash.me",
+    "domain": "topcash24.me"
+  },
+  {
+    "name": "Chby",
+    "domain": "chby.io"
+  },
+  {
+    "name": "OKpays",
+    "domain": "okpays.com"
+  },
+  {
+    "name": "CryptoMoneyPro",
+    "domain": "cryptomoney.pro"
+  },
+  {
+    "name": "Obmen-bro",
+    "domain": "obmen-bro.org"
+  },
+  {
+    "name": "Ecash.Expert",
+    "domain": "ecash.expert"
+  },
+  {
+    "name": "Bro Exchange",
+    "domain": "bro.exchange"
+  },
+  {
+    "name": "Novachenge",
+    "domain": "www.novachange.cc"
+  },
+  {
+    "name": "Keine-Exchange",
+    "domain": "keine-exchange.com"
+  },
+  {
+    "name": "CoinClick.cc",
+    "domain": "coinclick.cc"
+  },
+  {
+    "name": "Transfer24",
+    "domain": "transfer24.pro"
+  },
+  {
+    "name": "Bit24",
+    "domain": "bit24.io"
+  },
+  {
+    "name": "dbchange",
+    "domain": "dbchange.ru"
+  },
+  {
+    "name": "v-obmen24",
+    "domain": "www.v-obmen24.ru"
+  },
+  {
+    "name": "btcstaff",
+    "domain": "btcstaff.ru"
+  },
+  {
+    "name": "cryptobmen",
+    "domain": "cryptobmen.com"
+  },
+  {
+    "name": "getex24",
+    "domain": "www.getex24.com"
+  },
+  {
+    "name": "matbea",
+    "domain": "matbea.com"
+  },
+  {
+    "name": "exchange-on",
+    "domain": "exchange-on.com"
+  },
+  {
+    "name": "electronexchange",
+    "domain": "electronexchange.ru"
+  },
+  {
+    "name": "wotpay",
+    "domain": "wotpay.net"
+  },
+  {
+    "name": "aexchanger",
+    "domain": "aexchanger.com"
+  },
+  {
+    "name": "wmstar",
+    "domain": "wmstar.club"
+  },
+  {
+    "name": "paymaster",
+    "domain": "paymaster.cc"
+  },
+  {
+    "name": "getcoins",
+    "domain": "www.getcoins.cc"
+  },
+  {
+    "name": "cambiosaldo",
+    "domain": "cambiosaldo.com"
+  },
+  {
+    "name": "evogates",
+    "domain": "www.evogates.com"
+  },
+  {
+    "name": "FinProstir",
+    "domain": "finprostir.com"
+  },
+  {
+    "name": "Changeit",
+    "domain": "changeit.com.ua"
+  },
+  {
+    "name": "Air-buy",
+    "domain": "www.air-buy.exchange"
+  },
+  {
+    "name": "1654.exchange",
+    "domain": "1654.exchange"
+  },
+  {
+    "name": "Bitexpay",
+    "domain": "www.bitexpay.io"
+  },
+  {
+    "name": "Fastex.biz",
+    "domain": "lv-ex.com"
+  },
+  {
+    "name": "Explace",
+    "domain": "explace.io"
+  },
+  {
+    "name": "Goldex.team",
+    "domain": "goldex.team"
+  },
+  {
+    "name": "GroshX",
+    "domain": "groshx.com"
+  },
+  {
+    "name": "E-Crypto",
+    "domain": "www.ee-crypto.com"
+  },
+  {
+    "name": "Cryptoboss.online",
+    "domain": "www.cryptoboss.online"
+  },
+  {
+    "name": "Pokupaika",
+    "domain": "pokupaika.in.ua"
+  },
+  {
+    "name": "Bitmen.pro",
+    "domain": "bitmen.pro"
+  },
+  {
+    "name": "Swapenco",
+    "domain": "www.swapenco.com.ua"
+  },
+  {
+    "name": "AlpinaEx",
+    "domain": "alpinaex.com"
+  },
+  {
+    "name": "Altex",
+    "domain": "altex.biz"
+  },
+  {
+    "name": "CapoCash",
+    "domain": "www.capo.cash"
+  },
+  {
+    "name": "Cerber",
+    "domain": "1.cerber.pro"
+  },
+  {
+    "name": "Cryptos",
+    "domain": "cryptos.com.ua"
+  },
+  {
+    "name": "Exxchop",
+    "domain": "exxchop.com"
+  },
+  {
+    "name": "Flexy69",
+    "domain": "www.flexy69.cc"
+  },
+  {
+    "name": "GrumBot",
+    "domain": "grumbot.net"
+  },
+  {
+    "name": "Nigos",
+    "domain": "nigos.net"
+  },
+  {
+    "name": "UnoMoney",
+    "domain": "unomoney.net"
+  },
+  {
+    "name": "ZebraEX",
+    "domain": "www.zebraex.app"
+  },
+  {
+    "name": "КриптоМенялка",
+    "domain": "kriptomenyalka.com"
+  },
+  {
+    "name": "Монеткинс",
+    "domain": "monetkins.com"
+  },
+  {
+    "name": "Bestx24",
+    "domain": "bestx24.com"
+  },
+  {
+    "name": "Crypto-exchange24",
+    "domain": "crypto-exchange24.com.ua"
+  },
+  {
+    "name": "cashfeelings.exchange",
+    "domain": "www.cashfeelings.exchange"
+  },
+  {
+    "name": "Expeer",
+    "domain": "expeer.io"
+  },
+  {
+    "name": "ЯВплюс",
+    "domain": "yvplus.org"
+  },
+  {
+    "name": "co1n.exchange",
+    "domain": "www.co1n.exchange"
+  },
+  {
+    "name": "Samurai Exchange",
+    "domain": "www.samuraiexchange.com"
+  },
+  {
+    "name": "BitcoinBox.io",
+    "domain": "www.bitcoinbox.io/ru"
+  },
+  {
+    "name": "E-privat",
+    "domain": "e-privat.info"
+  },
+  {
+    "name": "100BtcKiev",
+    "domain": "100btc.kiev.ua"
+  },
+  {
+    "name": "Обменяй",
+    "domain": "obmenyai.com"
+  },
+  {
+    "name": "Montecash",
+    "domain": "montecash.exchange"
+  },
+  {
+    "name": "OSERV",
+    "domain": "obmen-service.com"
+  },
+  {
+    "name": "CapitalCash",
+    "domain": "capital.cash"
+  },
+  {
+    "name": "CoinX",
+    "domain": "coinx.kg"
+  },
+  {
+    "name": "Kriptotelo",
+    "domain": "kriptotelo.com"
+  },
+  {
+    "name": "SafExchange",
+    "domain": "safexchange.pro"
+  },
+  {
+    "name": "Almazex",
+    "domain": "almazex.com"
+  },
+  {
+    "name": "Yzex",
+    "domain": "yzex.co"
+  },
+  {
+    "name": "NorthCapital",
+    "domain": "northcapital.cash"
+  },
+  {
+    "name": "MirExchange24",
+    "domain": "mirexchange24.io"
+  },
+  {
+    "name": "Exswaping",
+    "domain": "exswaping.com"
   }
 ]
