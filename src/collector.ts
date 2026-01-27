@@ -3,10 +3,14 @@ import { createPage, closeBrowser } from './browser';
 import { getActiveExchangers, insertWallet, insertAttempt, getExchangerByDomain } from './db';
 import { config, randomDelay, sleep } from './config';
 import { getAdapter } from './adapters';
+import { smartCollect, initEngines, ExchangeFormData } from './engines';
 import { CryptoPair, Exchanger } from './types';
 import { logger } from './logger';
 import { notifySuccess, notifyError } from './telegram';
 import fs from 'fs';
+
+// Initialize engine system
+let enginesInitialized = false;
 
 // Default pairs to try
 const DEFAULT_PAIRS: CryptoPair[] = [
@@ -23,9 +27,10 @@ export async function collectFromExchanger(
   let success = 0;
   let failed = 0;
 
-  if (!adapter) {
-    logger.warn(`No adapter for ${exchanger.domain}, skipping`);
-    return { success, failed };
+  // Initialize engines if needed
+  if (!enginesInitialized) {
+    initEngines();
+    enginesInitialized = true;
   }
 
   for (const pair of pairs) {
@@ -35,7 +40,48 @@ export async function collectFromExchanger(
       logger.info(`[${exchanger.name}] Collecting ${pair.from}->${pair.to} (${pair.network})`);
 
       page = await createPage();
-      const result = await adapter.collect(page, pair);
+
+      let result: { address: string; network: string; screenshotPath: string };
+
+      // Try adapter first if available
+      if (adapter) {
+        result = await adapter.collect(page, pair);
+      } else {
+        // Use smart engine system
+        logger.info(`[${exchanger.name}] No adapter, using smart engine`);
+
+        // Navigate to exchanger
+        await page.goto(`https://${exchanger.domain}`, { waitUntil: 'load', timeout: 60000 });
+        await page.waitForTimeout(2000);
+
+        // Prepare form data
+        const formData: ExchangeFormData = {
+          fromCurrency: pair.from,
+          toCurrency: pair.to,
+          amount: config.formAmount || 1000,
+          wallet: getWalletForCurrency(pair.to),
+          email: config.formEmail
+        };
+
+        // Try smart collection
+        const engineResult = await smartCollect(page, exchanger.domain, formData);
+
+        if (!engineResult.success) {
+          throw new Error(engineResult.error || 'Smart collection failed');
+        }
+
+        // Take screenshot
+        const screenshotPath = `${config.screenshotsPath}/${exchanger.domain}_${pair.from}_${pair.to}_${Date.now()}.png`;
+        await page.screenshot({ path: screenshotPath, fullPage: true });
+
+        result = {
+          address: engineResult.address!,
+          network: engineResult.network || pair.network,
+          screenshotPath
+        };
+
+        logger.info(`[${exchanger.name}] Engine: ${engineResult.engineUsed}`);
+      }
 
       insertWallet(
         exchanger.id,
@@ -79,6 +125,17 @@ export async function collectFromExchanger(
   }
 
   return { success, failed };
+}
+
+// Helper to get wallet address for a currency
+function getWalletForCurrency(currency: string): string {
+  const wallets: Record<string, string> = {
+    'BTC': config.formWalletBTC || 'bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh',
+    'ETH': config.formWalletETH || '0x742d35Cc6634C0532925a3b844Bc9e7595f5bE12',
+    'USDT': config.formWalletUSDT || 'TN2DKuFEQz3mVsXVL4kAkGzFwfpVNvP8Ep',
+    'LTC': 'ltc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh'
+  };
+  return wallets[currency] || wallets['USDT'];
 }
 
 export async function runCollector(targetDomain?: string): Promise<void> {

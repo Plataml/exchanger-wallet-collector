@@ -39,6 +39,7 @@ export const config = {
 
   // Form data for creating orders
   formEmail: process.env.FORM_EMAIL || '',
+  formAmount: parseInt(process.env.FORM_AMOUNT || '1000', 10),
   formWalletBTC: process.env.FORM_WALLET_BTC || '',
   formWalletETH: process.env.FORM_WALLET_ETH || '',
   formWalletUSDT: process.env.FORM_WALLET_USDT || '',
