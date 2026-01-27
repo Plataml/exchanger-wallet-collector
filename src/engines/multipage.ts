@@ -160,7 +160,7 @@ export class MultipageEngine extends BaseEngine {
 
     // Try to find matching link
     const links = await page.$$eval('a[href]', (anchors) =>
-      anchors.map(a => ({ href: a.href, text: a.textContent || '' }))
+      anchors.map(a => ({ href: (a as HTMLAnchorElement).href, text: a.textContent || '' }))
     );
 
     for (const fromCode of fromCodes) {

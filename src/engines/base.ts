@@ -65,7 +65,7 @@ export abstract class BaseEngine {
       ];
 
       for (const selector of addressSelectors) {
-        const elements = document.querySelectorAll(selector);
+        const elements = Array.from(document.querySelectorAll(selector));
         for (const el of elements) {
           const text = (el as HTMLElement).innerText || (el as HTMLInputElement).value || el.getAttribute('data-clipboard-text') || '';
           for (const pattern of addressPatterns) {
