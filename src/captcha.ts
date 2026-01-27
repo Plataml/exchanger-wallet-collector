@@ -37,6 +37,16 @@ export async function detectCaptcha(page: Page): Promise<{
     // Check for grecaptcha in textarea
     const recaptchaTextarea = document.querySelector('textarea[name="g-recaptcha-response"]');
     if (recaptchaTextarea) {
+      // Try to find sitekey from iframes first (most reliable)
+      const iframes = Array.from(document.querySelectorAll('iframe[src*="recaptcha"]'));
+      for (const iframe of iframes) {
+        const src = (iframe as HTMLIFrameElement).src;
+        const match = src.match(/[?&]k=([^&]+)/);
+        if (match) {
+          return { hasCaptcha: true, type: 'recaptcha-v2' as const, siteKey: match[1] };
+        }
+      }
+
       // Try to find sitekey from scripts
       const scripts = Array.from(document.querySelectorAll('script'));
       for (const script of scripts) {
@@ -46,6 +56,16 @@ export async function detectCaptcha(page: Page): Promise<{
         }
       }
       return { hasCaptcha: true, type: 'recaptcha-v2' as const, siteKey: '' };
+    }
+
+    // Check for reCAPTCHA iframes without textarea
+    const recaptchaIframes = Array.from(document.querySelectorAll('iframe[src*="recaptcha"]'));
+    for (const iframe of recaptchaIframes) {
+      const src = (iframe as HTMLIFrameElement).src;
+      const match = src.match(/[?&]k=([^&]+)/);
+      if (match) {
+        return { hasCaptcha: true, type: 'recaptcha-v2' as const, siteKey: match[1] };
+      }
     }
 
     // hCaptcha
