@@ -50,7 +50,7 @@ async function explore(domain: string): Promise<void> {
     // Step 1: Load main page
     const url = `https://${domain}`;
     console.log(`[EXPLORE] Loading ${url}`);
-    await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 30000 });
+    await page.goto(url, { waitUntil: 'load', timeout: 60000 });
 
     result.url = page.url();
     result.title = await page.title();
