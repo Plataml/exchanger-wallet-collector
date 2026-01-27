@@ -7,7 +7,7 @@ interface ExchangerEntry {
   domain: string;
 }
 
-function main(): void {
+async function main(): Promise<void> {
   const exchangersPath = path.join(process.cwd(), 'exchangers.json');
 
   if (!fs.existsSync(exchangersPath)) {
@@ -22,7 +22,7 @@ function main(): void {
     process.exit(1);
   }
 
-  initDb();
+  await initDb();
 
   let imported = 0;
   for (const entry of data) {
@@ -43,4 +43,7 @@ function main(): void {
   console.log(`\nDone. Imported ${imported} new exchanger(s).`);
 }
 
-main();
+main().catch(error => {
+  console.error('Error:', error);
+  process.exit(1);
+});

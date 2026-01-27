@@ -166,7 +166,7 @@ async function main(): Promise<void> {
   // Remove protocol if provided
   domain = domain.replace(/^https?:\/\//, '').replace(/\/$/, '');
 
-  initDb();
+  await initDb();
   await explore(domain);
 }
 

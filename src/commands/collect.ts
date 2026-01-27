@@ -2,7 +2,7 @@ import { initDb } from '../db';
 import { runCollector } from '../collector';
 
 async function main(): Promise<void> {
-  initDb();
+  await initDb();
 
   // Parse --domain argument
   const args = process.argv.slice(2);

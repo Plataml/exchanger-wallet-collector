@@ -1,7 +1,7 @@
 import { initDb, getStats } from '../db';
 
-function main(): void {
-  initDb();
+async function main(): Promise<void> {
+  await initDb();
 
   const stats = getStats();
 
@@ -22,4 +22,7 @@ function main(): void {
   console.log('');
 }
 
-main();
+main().catch(error => {
+  console.error('Error:', error);
+  process.exit(1);
+});

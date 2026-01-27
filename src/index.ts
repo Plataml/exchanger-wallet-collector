@@ -6,7 +6,7 @@ import './adapters'; // Load all adapters
 async function main(): Promise<void> {
   logger.info('Exchanger Wallet Collector started');
 
-  initDb();
+  await initDb();
 
   // Parse command line args
   const args = process.argv.slice(2);
