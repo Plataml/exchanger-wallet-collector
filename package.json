@@ -1,0 +1,27 @@
+{
+  "name": "exchanger-wallet-collector",
+  "version": "1.0.0",
+  "description": "Autonomous blockchain address collector from crypto exchangers",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "ts-node src/index.ts",
+    "import-exchangers": "ts-node src/commands/import.ts",
+    "collect": "ts-node src/commands/collect.ts",
+    "stats": "ts-node src/commands/stats.ts"
+  },
+  "keywords": ["blockchain", "crypto", "collector"],
+  "license": "MIT",
+  "dependencies": {
+    "better-sqlite3": "^9.2.2",
+    "dotenv": "^16.3.1",
+    "playwright": "^1.40.0"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^7.6.8",
+    "@types/node": "^20.10.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.2"
+  }
+}

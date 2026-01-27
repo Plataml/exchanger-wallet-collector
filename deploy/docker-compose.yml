@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  collector:
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile
+    container_name: exchanger-collector
+    restart: unless-stopped
+    env_file:
+      - ../.env
+    volumes:
+      - ../data:/app/data
+      - ../exchangers.json:/app/exchangers.json:ro
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
