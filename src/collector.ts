@@ -51,8 +51,8 @@ export async function collectFromExchanger(
         logger.info(`[${exchanger.name}] No adapter, using smart engine`);
 
         // Navigate to exchanger
-        await page.goto(`https://${exchanger.domain}`, { waitUntil: 'load', timeout: 60000 });
-        await page.waitForTimeout(2000);
+        await page.goto(`https://${exchanger.domain}`, { waitUntil: 'domcontentloaded', timeout: 30000 });
+        await page.waitForTimeout(3000); // Wait for JS to initialize
 
         // Prepare form data
         const formData: ExchangeFormData = {
