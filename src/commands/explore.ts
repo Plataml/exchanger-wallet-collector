@@ -1,6 +1,6 @@
 import { chromium } from 'playwright';
 import { config } from '../config';
-import { initDb, getExchangerByDomain } from '../db';
+import { initDb } from '../db';
 import fs from 'fs';
 import path from 'path';
 
@@ -9,19 +9,9 @@ interface ExploreResult {
   url: string;
   title: string;
   screenshots: string[];
-  forms: FormInfo[];
-  links: LinkInfo[];
+  forms: Array<{ action: string; inputs: Array<{ name: string; type: string; placeholder?: string }> }>;
+  links: Array<{ text: string; href: string }>;
   selectors: string[];
-}
-
-interface FormInfo {
-  action: string;
-  inputs: { name: string; type: string; placeholder?: string }[];
-}
-
-interface LinkInfo {
-  text: string;
-  href: string;
 }
 
 async function explore(domain: string): Promise<void> {
@@ -32,7 +22,9 @@ async function explore(domain: string): Promise<void> {
 
   console.log(`[EXPLORE] Starting exploration of ${domain}`);
 
-  const launchOptions: any = { headless: config.headless };
+  const launchOptions: { headless: boolean; proxy?: { server: string } } = {
+    headless: config.headless
+  };
   if (config.proxyUrl) {
     launchOptions.proxy = { server: config.proxyUrl };
   }
@@ -71,14 +63,15 @@ async function explore(domain: string): Promise<void> {
 
     // Extract forms
     result.forms = await page.evaluate(() => {
-      const forms: FormInfo[] = [];
-      document.querySelectorAll('form').forEach(form => {
-        const inputs: { name: string; type: string; placeholder?: string }[] = [];
-        form.querySelectorAll('input, select, textarea').forEach((el: any) => {
+      const forms: Array<{ action: string; inputs: Array<{ name: string; type: string; placeholder?: string }> }> = [];
+      document.querySelectorAll('form').forEach((form: HTMLFormElement) => {
+        const inputs: Array<{ name: string; type: string; placeholder?: string }> = [];
+        form.querySelectorAll('input, select, textarea').forEach((el: Element) => {
+          const inputEl = el as HTMLInputElement;
           inputs.push({
-            name: el.name || el.id || '',
-            type: el.type || el.tagName.toLowerCase(),
-            placeholder: el.placeholder
+            name: inputEl.name || inputEl.id || '',
+            type: inputEl.type || el.tagName.toLowerCase(),
+            placeholder: inputEl.placeholder
           });
         });
         forms.push({ action: form.action, inputs });
@@ -89,8 +82,8 @@ async function explore(domain: string): Promise<void> {
     // Extract links with exchange-related keywords
     result.links = await page.evaluate(() => {
       const keywords = ['exchange', 'обмен', 'swap', 'trade', 'buy', 'sell', 'купить', 'продать'];
-      const links: LinkInfo[] = [];
-      document.querySelectorAll('a').forEach(a => {
+      const links: Array<{ text: string; href: string }> = [];
+      document.querySelectorAll('a').forEach((a: HTMLAnchorElement) => {
         const text = a.textContent?.trim() || '';
         const href = a.href;
         if (keywords.some(k => text.toLowerCase().includes(k) || href.toLowerCase().includes(k))) {
@@ -105,14 +98,15 @@ async function explore(domain: string): Promise<void> {
       const selectors: string[] = [];
       const keywords = ['amount', 'sum', 'wallet', 'address', 'card', 'email', 'submit', 'exchange', 'swap'];
 
-      document.querySelectorAll('input, button, select, [class*="currency"], [class*="crypto"]').forEach(el => {
+      document.querySelectorAll('input, button, select, [class*="currency"], [class*="crypto"]').forEach((el: Element) => {
+        const inputEl = el as HTMLInputElement;
         const id = el.id;
-        const name = (el as HTMLInputElement).name;
+        const name = inputEl.name;
         const className = el.className;
 
         if (id) selectors.push(`#${id}`);
         if (name) selectors.push(`[name="${name}"]`);
-        if (className && keywords.some(k => className.toLowerCase().includes(k))) {
+        if (className && typeof className === 'string' && keywords.some(k => className.toLowerCase().includes(k))) {
           selectors.push(`.${className.split(' ')[0]}`);
         }
       });
@@ -136,15 +130,18 @@ async function explore(domain: string): Promise<void> {
     console.log(`[EXPLORE] Exchange links: ${result.links.length}`);
     console.log(`[EXPLORE] Selectors: ${result.selectors.length}`);
 
-  } catch (error: any) {
-    console.error(`[EXPLORE] Error: ${error.message}`);
+  } catch (error: unknown) {
+    const errorMsg = error instanceof Error ? error.message : String(error);
+    console.error(`[EXPLORE] Error: ${errorMsg}`);
 
     // Try to save error screenshot
     try {
       const errorScreenshot = path.join(exploreDir, 'error.png');
       await page.screenshot({ path: errorScreenshot });
       console.log(`[EXPLORE] Error screenshot: ${errorScreenshot}`);
-    } catch {}
+    } catch {
+      // Ignore screenshot errors
+    }
 
   } finally {
     await browser.close();
