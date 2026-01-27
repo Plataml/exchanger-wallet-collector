@@ -1,6 +1,8 @@
 import { Page } from 'playwright';
 import { BaseEngine, ExchangeFormData, CollectionResult } from './base';
 import { EngineType } from './detector';
+import { detectCaptcha, solveCaptcha } from '../captcha';
+import { logger } from '../logger';
 
 export class MultipageEngine extends BaseEngine {
   type: EngineType = 'multipage';
@@ -80,6 +82,17 @@ export class MultipageEngine extends BaseEngine {
 
       // Step 7: Accept terms
       await this.acceptTerms(page);
+
+      // Step 7.5: Solve captcha if present
+      const captchaDetection = await detectCaptcha(page);
+      if (captchaDetection.hasCaptcha) {
+        logger.info(`Captcha detected: ${captchaDetection.type}`);
+        const captchaSolution = await solveCaptcha(page);
+        if (!captchaSolution.success) {
+          return { success: false, error: `Captcha failed: ${captchaSolution.error}` };
+        }
+        logger.info('Captcha solved successfully');
+      }
 
       // Step 8: Submit form
       const submitted = await this.clickElement(page, [

@@ -1,6 +1,8 @@
 import { Page } from 'playwright';
 import { BaseEngine, ExchangeFormData, CollectionResult } from './base';
 import { EngineType } from './detector';
+import { detectCaptcha, solveCaptcha } from '../captcha';
+import { logger } from '../logger';
 
 export class VueSpaEngine extends BaseEngine {
   type: EngineType = 'vue-spa';
@@ -67,7 +69,18 @@ export class VueSpaEngine extends BaseEngine {
       // Step 6: Accept terms if checkbox exists
       await this.acceptTerms(page);
 
-      // Step 7: Submit form
+      // Step 7: Solve captcha if present
+      const captchaDetection = await detectCaptcha(page);
+      if (captchaDetection.hasCaptcha) {
+        logger.info(`Captcha detected: ${captchaDetection.type}`);
+        const captchaSolution = await solveCaptcha(page);
+        if (!captchaSolution.success) {
+          return { success: false, error: `Captcha failed: ${captchaSolution.error}` };
+        }
+        logger.info('Captcha solved successfully');
+      }
+
+      // Step 8: Submit form
       const submitted = await this.clickElement(page, [
         'button[type="submit"]',
         '[class*="submit"], [class*="exchange"]',
@@ -79,11 +92,11 @@ export class VueSpaEngine extends BaseEngine {
         return { success: false, error: 'Could not find submit button' };
       }
 
-      // Step 8: Wait for result page
+      // Step 9: Wait for result page
       await page.waitForTimeout(3000);
       await page.waitForLoadState('networkidle', { timeout: 15000 }).catch(() => {});
 
-      // Step 9: Extract address
+      // Step 10: Extract address
       const extracted = await this.extractAddress(page);
 
       if (!extracted.address) {
