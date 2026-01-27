@@ -1,0 +1,55 @@
+{
+  "name": "Example Exchange",
+  "domain": "example-exchange.com",
+  "pairs": [
+    { "from": "USDT", "to": "BTC", "network": "TRC20" },
+    { "from": "BTC", "to": "USDT", "network": "BTC" }
+  ],
+  "steps": [
+    {
+      "action": "goto",
+      "url": "https://{domain}/exchange",
+      "description": "Open exchange page"
+    },
+    {
+      "action": "click",
+      "selector": "[data-currency='{pair.from}']",
+      "description": "Select source currency"
+    },
+    {
+      "action": "click",
+      "selector": "[data-currency='{pair.to}']",
+      "description": "Select target currency"
+    },
+    {
+      "action": "fill",
+      "selector": "input[name='amount']",
+      "value": "100",
+      "description": "Enter amount"
+    },
+    {
+      "action": "fill",
+      "selector": "input[name='wallet']",
+      "value": "TXYZabc123...",
+      "description": "Enter destination wallet"
+    },
+    {
+      "action": "fill",
+      "selector": "input[name='email']",
+      "value": "user@example.com",
+      "description": "Enter email"
+    },
+    {
+      "action": "click",
+      "selector": "button[type='submit']",
+      "description": "Submit form"
+    },
+    {
+      "action": "wait",
+      "selector": ".deposit-address",
+      "timeout": 15000,
+      "description": "Wait for deposit address"
+    }
+  ],
+  "addressSelector": ".deposit-address"
+}

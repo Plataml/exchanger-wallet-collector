@@ -1,76 +1,87 @@
 # Написание адаптеров для обменников
 
-## Базовый адаптер
+## Workflow на VPS
 
-Каждый обменник требует свой адаптер для навигации по сайту и извлечения адреса.
+### 1. Исследование сайта
 
-```typescript
-interface ExchangerAdapter {
-  name: string;
-  domain: string;
+```bash
+npm run explore -- --domain=example-exchange.com
+```
 
-  // Создать заявку и получить адрес
-  collect(page: Page, pair: CryptoPair): Promise<CollectResult>;
-}
+Результат сохраняется в `data/explore/example-exchange.com/`:
+- `01_main.png` - скриншот главной страницы
+- `page.html` - HTML страницы
+- `result.json` - найденные формы, ссылки, селекторы
 
-interface CollectResult {
-  address: string;
-  network: string;
-  screenshotPath: string;
+### 2. Создание JSON-адаптера
+
+Создайте файл `adapters/example-exchange.json`:
+
+```json
+{
+  "name": "Example Exchange",
+  "domain": "example-exchange.com",
+  "pairs": [
+    { "from": "USDT", "to": "BTC", "network": "TRC20" }
+  ],
+  "steps": [
+    {
+      "action": "goto",
+      "url": "https://example-exchange.com/exchange"
+    },
+    {
+      "action": "click",
+      "selector": "[data-currency='USDT']"
+    },
+    {
+      "action": "fill",
+      "selector": "input[name='amount']",
+      "value": "100"
+    },
+    {
+      "action": "click",
+      "selector": "button[type='submit']"
+    },
+    {
+      "action": "wait",
+      "selector": ".deposit-address",
+      "timeout": 15000
+    }
+  ],
+  "addressSelector": ".deposit-address"
 }
 ```
 
-## Создание нового адаптера
+### 3. Тестирование
 
-1. Создать файл `src/adapters/название-обменника.ts`
-2. Реализовать интерфейс `ExchangerAdapter`
-3. Зарегистрировать в `src/adapters/index.ts`
-
-## Пример адаптера
-
-```typescript
-import { Page } from 'playwright';
-import { ExchangerAdapter, CollectResult, CryptoPair } from '../types';
-
-export const exampleAdapter: ExchangerAdapter = {
-  name: 'Example Exchange',
-  domain: 'example.com',
-
-  async collect(page: Page, pair: CryptoPair): Promise<CollectResult> {
-    // 1. Перейти на страницу обмена
-    await page.goto(`https://${this.domain}/exchange`);
-
-    // 2. Выбрать криптопару
-    await page.selectOption('#from-currency', pair.from);
-    await page.selectOption('#to-currency', pair.to);
-
-    // 3. Заполнить форму
-    await page.fill('#amount', '0.01');
-    await page.fill('#wallet', 'destination-address');
-
-    // 4. Отправить заявку
-    await page.click('#submit-btn');
-
-    // 5. Дождаться адреса
-    await page.waitForSelector('.deposit-address');
-    const address = await page.textContent('.deposit-address');
-
-    // 6. Скриншот
-    const screenshotPath = `data/screenshots/${Date.now()}.png`;
-    await page.screenshot({ path: screenshotPath, fullPage: true });
-
-    return {
-      address: address!,
-      network: pair.network,
-      screenshotPath
-    };
-  }
-};
+```bash
+npm run collect -- --domain=example-exchange.com
 ```
+
+## Доступные действия
+
+| Action | Параметры | Описание |
+|--------|-----------|----------|
+| `goto` | `url` | Переход на URL |
+| `click` | `selector` | Клик по элементу |
+| `fill` | `selector`, `value` | Заполнение поля |
+| `select` | `selector`, `value` | Выбор в dropdown |
+| `wait` | `selector` или `timeout` | Ожидание |
+| `screenshot` | - | Промежуточный скриншот |
+| `extract` | `selector`, `variable` | Извлечь текст в переменную |
+
+## Плейсхолдеры
+
+В `value` и `url` можно использовать:
+
+- `{pair.from}` - исходная валюта (USDT)
+- `{pair.to}` - целевая валюта (BTC)
+- `{pair.network}` - сеть (TRC20)
+- `{var.name}` - переменная из `extract`
 
 ## Советы
 
-- Используйте `page.waitForSelector()` для ожидания элементов
-- Добавляйте случайные задержки между действиями
-- Обрабатывайте капчу и блокировки
-- Делайте скриншот сразу после появления адреса
+- Файлы с `_` в начале (`_example.json`) игнорируются
+- Используйте `explore` для поиска селекторов
+- Добавляйте `description` для отладки
+- Тестируйте на одном обменнике перед массовым запуском

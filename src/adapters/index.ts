@@ -1,4 +1,5 @@
 import { ExchangerAdapter } from '../types';
+import { loadJsonAdapters } from './json-adapter';
 
 // Registry of all adapters
 const adapters: Map<string, ExchangerAdapter> = new Map();
@@ -19,7 +20,17 @@ export function hasAdapter(domain: string): boolean {
   return adapters.has(domain);
 }
 
-// Import and register adapters here
-// Example:
-// import { exampleAdapter } from './example';
-// registerAdapter(exampleAdapter);
+export function getAdapterCount(): number {
+  return adapters.size;
+}
+
+// Load JSON-based adapters from adapters/ directory
+export function initAdapters(): void {
+  const jsonAdapters = loadJsonAdapters();
+  for (const adapter of jsonAdapters) {
+    registerAdapter(adapter);
+  }
+}
+
+// Auto-init on import
+initAdapters();
