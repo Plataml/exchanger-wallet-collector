@@ -10,7 +10,8 @@
     "import-exchangers": "ts-node src/commands/import.ts",
     "collect": "ts-node src/commands/collect.ts",
     "stats": "ts-node src/commands/stats.ts",
-    "explore": "ts-node src/commands/explore.ts"
+    "explore": "ts-node src/commands/explore.ts",
+    "analyze": "ts-node src/commands/analyze.ts"
   },
   "keywords": ["blockchain", "crypto", "collector"],
   "license": "MIT",
