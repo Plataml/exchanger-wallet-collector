@@ -1,8 +1,10 @@
 import { initDb } from './db';
 import { runCollector } from './collector';
+import { logger } from './logger';
+import './adapters'; // Load all adapters
 
 async function main(): Promise<void> {
-  console.log('Exchanger Wallet Collector started');
+  logger.info('Exchanger Wallet Collector started');
 
   initDb();
 
@@ -21,14 +23,17 @@ async function main(): Promise<void> {
     try {
       await runCollector(targetDomain);
     } catch (error) {
-      console.error('Collector error:', error);
+      logger.error(`Collector error: ${error}`);
     }
 
     // Wait before next cycle
     const waitTime = 60 * 60 * 1000; // 1 hour
-    console.log(`Waiting 1 hour before next cycle...`);
+    logger.info('Waiting 1 hour before next cycle...');
     await new Promise(resolve => setTimeout(resolve, waitTime));
   }
 }
 
-main().catch(console.error);
+main().catch(error => {
+  logger.error(`Fatal error: ${error}`);
+  process.exit(1);
+});
