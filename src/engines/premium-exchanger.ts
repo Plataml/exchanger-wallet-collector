@@ -276,13 +276,27 @@ export class PremiumExchangerEngine extends BaseEngine {
       logger.info('Step 4: Clicking submit button');
       const urlBeforeSubmit = page.url();
 
-      // Try to wait for navigation after clicking submit
+      // Set up network request monitoring for AJAX detection
+      const ajaxRequests: string[] = [];
+      const responseHandler = (response: any) => {
+        const url = response.url();
+        if (url.includes('exchange') || url.includes('order') || url.includes('submit') || url.includes('ajax')) {
+          ajaxRequests.push(`${response.status()} ${url}`);
+        }
+      };
+      page.on('response', responseHandler);
+
+      // Try to wait for navigation OR AJAX response after clicking submit
       try {
         await Promise.race([
           Promise.all([
             page.waitForNavigation({ timeout: 10000, waitUntil: 'domcontentloaded' }).catch(() => null),
             this.clickSubmitButton(page)
           ]),
+          // Wait for AJAX response
+          page.waitForResponse(resp =>
+            resp.url().includes('exchange') || resp.url().includes('order'), { timeout: 10000 }
+          ).catch(() => null),
           page.waitForTimeout(10000)
         ]);
       } catch {
@@ -290,6 +304,14 @@ export class PremiumExchangerEngine extends BaseEngine {
         await this.clickSubmitButton(page);
         await page.waitForTimeout(3000);
       }
+
+      // Log AJAX requests
+      if (ajaxRequests.length > 0) {
+        logger.info(`AJAX requests after submit: ${ajaxRequests.join(', ')}`);
+      } else {
+        logger.warn('No AJAX requests detected after submit');
+      }
+      page.off('response', responseHandler);
 
       // Debug: screenshot immediately after submit
       await this.saveDebugScreenshot(page, 'after-submit');
