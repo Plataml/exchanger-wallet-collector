@@ -43,7 +43,12 @@ export const config = {
   formWalletBTC: process.env.FORM_WALLET_BTC || '',
   formWalletETH: process.env.FORM_WALLET_ETH || '',
   formWalletUSDT: process.env.FORM_WALLET_USDT || '',
-  formCard: process.env.FORM_CARD || ''
+  formCard: process.env.FORM_CARD || '',
+  formCardUA: process.env.FORM_CARD_UA || '4405353630736979',  // Visa Приватбанк (Украина)
+  formPhone: process.env.FORM_PHONE || '9991234567',  // Phone for СБП transfers
+  formFio: process.env.FORM_FIO || 'Мунтян Виктор',  // Muntean Victor
+  formFioEn: process.env.FORM_FIO_EN || 'Muntean Victor',
+  formBank: process.env.FORM_BANK || 'Сбербанк'
 };
 
 export function randomDelay(): number {
