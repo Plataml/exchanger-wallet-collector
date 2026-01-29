@@ -5,12 +5,13 @@ export interface ExchangeFormData {
   fromCurrency: string;
   toCurrency: string;
   amount: number;
-  wallet: string;
+  wallet: string;       // Crypto wallet OR phone number for fiat
   email: string;
   // Optional extra fields
   cardNumber?: string;
-  phone?: string;
+  phone?: string;       // Phone number for СБП transfers
   name?: string;
+  bank?: string;        // Bank name for fiat transfers
 }
 
 export interface CollectionResult {

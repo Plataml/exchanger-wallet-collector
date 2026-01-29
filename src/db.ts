@@ -25,7 +25,7 @@ export async function initDb(): Promise<Database> {
   }
 
   // Create tables
-  db.run(`
+  db!.run(`
     CREATE TABLE IF NOT EXISTS exchangers (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       name TEXT UNIQUE,
@@ -61,7 +61,7 @@ export async function initDb(): Promise<Database> {
   `);
 
   saveDb();
-  return db;
+  return db!;
 }
 
 export function getDb(): Database {
