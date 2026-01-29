@@ -321,6 +321,61 @@ export class PremiumExchangerEngine extends BaseEngine {
         await this.saveDebugScreenshot(page, 'after-captcha-submit');
       }
 
+      // Step 4.6: Check for BLOCKING errors (bot detection, geo-block, temp email block)
+      const blockingError = await page.evaluate(() => {
+        const errorTexts = [
+          'не можете проводить транзакции',
+          'вы заблокированы',
+          'доступ заблокирован',
+          'access denied',
+          'blocked',
+          'запрещен',
+          'подозрительная активность',
+          'suspicious activity',
+          'временно заблокирован',
+          'temporarily blocked',
+          'bot detected',
+          'автоматический запрос',
+          'automated request',
+          'слишком много попыток',
+          'too many attempts',
+          'email не принимается',
+          'email запрещен',
+          'временный email',
+          'temp email',
+          'disposable email'
+        ];
+
+        const bodyText = document.body?.innerText?.toLowerCase() || '';
+
+        // Check for error messages in alerts/popups
+        const alertElements = document.querySelectorAll('.swal2-popup, .alert, .error, [class*="error"], [role="alert"]');
+        let alertText = '';
+        alertElements.forEach(el => {
+          if ((el as HTMLElement).offsetParent !== null) {
+            alertText += ' ' + (el as HTMLElement).innerText?.toLowerCase();
+          }
+        });
+
+        const allText = bodyText + ' ' + alertText;
+
+        for (const errorText of errorTexts) {
+          if (allText.includes(errorText)) {
+            // Find the exact error message
+            const errorMatch = allText.match(new RegExp(`.{0,30}${errorText}.{0,50}`, 'i'));
+            return errorMatch ? errorMatch[0].trim() : errorText;
+          }
+        }
+
+        return null;
+      });
+
+      if (blockingError) {
+        logger.error(`Transaction blocked by exchanger: ${blockingError}`);
+        await this.saveDebugScreenshot(page, 'transaction-blocked');
+        return { success: false, error: `Exchanger blocked transaction: ${blockingError}` };
+      }
+
       // Step 5: Handle confirmation popup (ФИО confirmation)
       // Wait for popup to appear (SweetAlert2 or similar)
       logger.info('Step 5: Looking for confirmation popup...');
