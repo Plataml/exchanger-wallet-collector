@@ -215,10 +215,56 @@ export class PremiumExchangerEngine extends BaseEngine {
         }
       }
 
+      // Step 3.6: Close any chat widgets that might interfere
+      await this.closeChatWidgets(page);
+
+      // Step 3.7: Check if form is valid (no blocking errors)
+      const formValid = await page.evaluate(() => {
+        // Check if there are blocking validation errors
+        const errorElements = document.querySelectorAll('.js_error, .error-message, .field-error');
+        let hasBlockingError = false;
+
+        errorElements.forEach(el => {
+          const text = (el as HTMLElement).innerText?.trim() || '';
+          const isVisible = (el as HTMLElement).offsetParent !== null;
+          // Skip "max/min" limit messages that are just informational
+          if (isVisible && text && !text.includes('max') && !text.includes('min') && text.length < 100) {
+            hasBlockingError = true;
+          }
+        });
+
+        // Also check HTML5 validation
+        const form = document.querySelector('form.xchange_form, form') as HTMLFormElement;
+        const isFormValid = form ? form.checkValidity() : true;
+
+        return { hasBlockingError, isFormValid };
+      });
+
+      if (formValid.hasBlockingError) {
+        logger.warn('Form has blocking validation errors');
+      }
+      if (!formValid.isFormValid) {
+        logger.warn('Form HTML5 validation failed');
+      }
+
       // Step 4: Click "Обменять" submit button
       logger.info('Step 4: Clicking submit button');
-      await this.clickSubmitButton(page);
-      await page.waitForTimeout(2000);
+      const urlBeforeSubmit = page.url();
+
+      // Try to wait for navigation after clicking submit
+      try {
+        await Promise.race([
+          Promise.all([
+            page.waitForNavigation({ timeout: 10000, waitUntil: 'domcontentloaded' }).catch(() => null),
+            this.clickSubmitButton(page)
+          ]),
+          page.waitForTimeout(10000)
+        ]);
+      } catch {
+        // Navigation didn't happen, just click and wait
+        await this.clickSubmitButton(page);
+        await page.waitForTimeout(3000);
+      }
 
       // Debug: screenshot immediately after submit
       await this.saveDebugScreenshot(page, 'after-submit');
@@ -1096,6 +1142,61 @@ export class PremiumExchangerEngine extends BaseEngine {
           logger.warn(`Checkbox fallback failed: ${e}`);
         }
       }
+    }
+  }
+
+  private async closeChatWidgets(page: Page): Promise<void> {
+    // Close common chat widgets that might interfere with form submission
+    const closed = await page.evaluate(() => {
+      const closedWidgets: string[] = [];
+
+      // Common chat widget close button selectors
+      const closeSelectors = [
+        // Jivo Chat
+        '.jivo-close-btn', 'button[data-jivo-close]', '.jivo_close_btn',
+        '[class*="jivo"] [class*="close"]', '[id*="jivo"] [class*="close"]',
+        // Tawk.to
+        '.tawk-min-container', '[class*="tawk"] [class*="close"]',
+        // Crisp
+        '[data-chat-close]', '.crisp-client [class*="close"]',
+        // LiveChat
+        '[class*="livechat"] [class*="close"]', '.lc-1g17fy5',
+        // Generic close buttons in chat-like widgets
+        '[class*="chat"][class*="widget"] [class*="close"]',
+        '[class*="chat"] button[class*="close"]',
+        '[id*="chat"] [class*="close"]',
+        // Minimize buttons
+        '[class*="chat"][class*="minimize"]', '[class*="chat"] [class*="min"]'
+      ];
+
+      for (const selector of closeSelectors) {
+        try {
+          const buttons = document.querySelectorAll(selector);
+          buttons.forEach(btn => {
+            if ((btn as HTMLElement).offsetParent !== null) {
+              (btn as HTMLElement).click();
+              closedWidgets.push(selector);
+            }
+          });
+        } catch { /* ignore */ }
+      }
+
+      // Try to hide chat containers completely
+      const chatContainers = document.querySelectorAll(
+        '[class*="jivo"], [id*="jivo"], [class*="tawk"], [id*="tawk"], ' +
+        '[class*="crisp"], [id*="crisp"], [class*="livechat"], ' +
+        '[class*="chat-widget"], [class*="chat-container"]'
+      );
+      chatContainers.forEach(el => {
+        (el as HTMLElement).style.display = 'none';
+        closedWidgets.push('hidden: ' + el.className.substring(0, 30));
+      });
+
+      return closedWidgets;
+    });
+
+    if (closed.length > 0) {
+      logger.info(`Closed/hidden chat widgets: ${closed.join(', ')}`);
     }
   }
 
