@@ -12,11 +12,19 @@ import fs from 'fs';
 // Initialize engine system
 let enginesInitialized = false;
 
-// Default pairs to try
+// Default pairs to try - CRYPTO -> FIAT direction to get deposit addresses
+// We send crypto, receive fiat - this shows us the deposit address for crypto
 const DEFAULT_PAIRS: CryptoPair[] = [
-  { from: 'USDT', to: 'BTC', network: 'TRC20' },
-  { from: 'BTC', to: 'USDT', network: 'BTC' },
-  { from: 'ETH', to: 'USDT', network: 'ERC20' }
+  { from: 'BTC', to: 'SBPRUB', network: 'BTC' },       // BTC -> Сбербанк RUB
+  { from: 'USDTTRC20', to: 'SBPRUB', network: 'TRC20' }, // USDT TRC20 -> Сбербанк RUB
+  { from: 'ETH', to: 'SBPRUB', network: 'ERC20' }     // ETH -> Сбербанк RUB
+];
+
+// Alternative pairs for RU exchangers
+const RU_PAIRS: CryptoPair[] = [
+  { from: 'BTC', to: 'SBPRUB', network: 'BTC' },      // BTC -> СБП RUB
+  { from: 'USDTTRC20', to: 'SBPRUB', network: 'TRC20' }, // USDT TRC20 -> СБП RUB
+  { from: 'ETH', to: 'SBPRUB', network: 'ERC20' }     // ETH -> СБП RUB
 ];
 
 export async function collectFromExchanger(
@@ -50,17 +58,26 @@ export async function collectFromExchanger(
         // Use smart engine system
         logger.info(`[${exchanger.name}] No adapter, using smart engine`);
 
-        // Navigate to exchanger
-        await page.goto(`https://${exchanger.domain}`, { waitUntil: 'domcontentloaded', timeout: 30000 });
+        // Navigate to exchanger with proper URL parameters for exchange direction
+        // For 365cash.co style: ?from=BTC&to=SBPRUB
+        const exchangeUrl = buildExchangeUrl(exchanger.domain, pair.from, pair.to);
+        logger.info(`Navigating to: ${exchangeUrl}`);
+        await page.goto(exchangeUrl, { waitUntil: 'domcontentloaded', timeout: 30000 });
         await page.waitForTimeout(3000); // Wait for JS to initialize
 
         // Prepare form data
+        // For Crypto -> Fiat: we provide phone/bank to receive fiat
+        // The exchanger will show us the crypto deposit address
+        const isCryptoToFiat = pair.to.includes('RUB') || pair.to.includes('UAH');
+
         const formData: ExchangeFormData = {
           fromCurrency: pair.from,
           toCurrency: pair.to,
-          amount: config.formAmount || 1000,
-          wallet: getWalletForCurrency(pair.to),
-          email: config.formEmail
+          amount: isCryptoToFiat ? getAmountForCrypto(pair.from) : (config.formAmount || 1000),
+          wallet: isCryptoToFiat ? (config.formPhone || '9991234567') : getWalletForCurrency(pair.to),
+          email: config.formEmail,
+          phone: config.formPhone || '9991234567',
+          bank: 'Сбербанк RUB'
         };
 
         // Try smart collection
@@ -136,6 +153,32 @@ function getWalletForCurrency(currency: string): string {
     'LTC': 'ltc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh'
   };
   return wallets[currency] || wallets['USDT'];
+}
+
+// Build URL with exchange direction parameters
+function buildExchangeUrl(domain: string, fromCurrency: string, toCurrency: string): string {
+  // Most exchangers support URL parameters for pre-selecting exchange direction
+  // Common formats:
+  // - ?from=BTC&to=SBPRUB (365cash.co style)
+  // - ?send=BTC&receive=RUB
+  // - /exchange/btc-to-rub
+
+  // Default to query parameter style (most common for Vue SPA exchangers)
+  return `https://${domain}/?from=${fromCurrency}&to=${toCurrency}`;
+}
+
+// Helper to get minimum amount for crypto (for Crypto -> Fiat exchanges)
+// Note: Many exchangers have minimum ~50000 RUB, so amounts should be higher
+function getAmountForCrypto(currency: string): number {
+  const amounts: Record<string, number> = {
+    'BTC': 0.01,           // ~$1000 at $100k/BTC - meets most minimums
+    'ETH': 0.3,            // ~$1000 at $3.3k/ETH
+    'USDTTRC20': 1000,     // 1000 USDT - meets 50000 RUB minimum
+    'USDTERC20': 1000,
+    'USDT': 1000,
+    'LTC': 5               // ~$500 at $100/LTC
+  };
+  return amounts[currency] || 1000;
 }
 
 export async function runCollector(targetDomain?: string): Promise<void> {
