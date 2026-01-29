@@ -41,28 +41,53 @@ export class PremiumExchangerEngine extends BaseEngine {
       logger.info(`Using temp email: ${tempMailbox.email}`);
 
       // Step 1: Navigate to exchange page
-      // Try direct URL first, fallback to main page with query params
+      // Try direct URLs with different currency code variations
       const baseUrl = new URL(page.url()).origin;
-      const directUrl = `${baseUrl}/exchange_${data.fromCurrency}_to_${data.toCurrency}/`;
-      const fallbackUrl = `${baseUrl}/?from=${data.fromCurrency}&to=${data.toCurrency}`;
+      const fromVariations = this.getCurrencyVariations(data.fromCurrency);
+      const toVariations = this.getCurrencyVariations(data.toCurrency);
 
-      logger.info(`Step 1: Trying direct URL: ${directUrl}`);
-      await page.goto(directUrl, { waitUntil: 'domcontentloaded', timeout: 30000 });
-      await page.waitForTimeout(3000);
+      let foundValidPage = false;
 
-      // Check if we got 404 or error page
-      const is404 = await page.evaluate(() => {
-        const text = document.body?.innerText?.toLowerCase() || '';
-        return text.includes('404') || text.includes('ошибка') ||
-               text.includes('не найден') || text.includes('not found');
-      });
+      // Try different URL variations
+      for (const fromCode of fromVariations) {
+        if (foundValidPage) break;
+        for (const toCode of toVariations) {
+          const directUrl = `${baseUrl}/exchange_${fromCode}_to_${toCode}/`;
+          logger.info(`Step 1: Trying URL: ${directUrl}`);
 
-      if (is404) {
-        logger.info(`Direct URL returned 404, trying fallback: ${fallbackUrl}`);
+          try {
+            await page.goto(directUrl, { waitUntil: 'domcontentloaded', timeout: 15000 });
+            await page.waitForTimeout(2000);
+
+            // Check if we got valid exchange page (not 404)
+            const is404 = await page.evaluate(() => {
+              const text = document.body?.innerText?.toLowerCase() || '';
+              const title = document.title?.toLowerCase() || '';
+              return text.includes('404') || text.includes('не найден') ||
+                     text.includes('not found') || title.includes('404') ||
+                     (document.body?.innerText?.length || 0) < 500;
+            });
+
+            if (!is404) {
+              logger.info(`Found valid exchange page: ${directUrl}`);
+              foundValidPage = true;
+              break;
+            }
+          } catch {
+            // URL failed, try next
+            continue;
+          }
+        }
+      }
+
+      // Fallback to main page with query params and UI selection
+      if (!foundValidPage) {
+        const fallbackUrl = `${baseUrl}/?from=${data.fromCurrency}&to=${data.toCurrency}`;
+        logger.info(`No direct URL worked, trying fallback: ${fallbackUrl}`);
         await page.goto(fallbackUrl, { waitUntil: 'domcontentloaded', timeout: 30000 });
         await page.waitForTimeout(3000);
 
-        // Select currencies via UI if needed
+        // Select currencies via UI
         await this.selectCurrenciesViaUI(page, data.fromCurrency, data.toCurrency);
       }
 
@@ -328,8 +353,6 @@ export class PremiumExchangerEngine extends BaseEngine {
           'вы заблокированы',
           'доступ заблокирован',
           'access denied',
-          'blocked',
-          'запрещен',
           'подозрительная активность',
           'suspicious activity',
           'временно заблокирован',
@@ -344,6 +367,15 @@ export class PremiumExchangerEngine extends BaseEngine {
           'временный email',
           'temp email',
           'disposable email'
+        ];
+
+        // These are AML warnings shown to ALL users, not actual blocks
+        const amlWarnings = [
+          'запрещенными платформами',
+          'capitalist',
+          'aml политик',
+          'правила обмена',
+          'отмывание денег'
         ];
 
         const bodyText = document.body?.innerText?.toLowerCase() || '';
@@ -361,6 +393,14 @@ export class PremiumExchangerEngine extends BaseEngine {
 
         for (const errorText of errorTexts) {
           if (allText.includes(errorText)) {
+            // Check if this is just an AML warning (shown to everyone)
+            const isAmlWarning = amlWarnings.some(w => allText.includes(w));
+
+            // Skip AML warnings - they are informational, not blocking
+            if (isAmlWarning && !allText.includes('не можете') && !allText.includes('заблокирован')) {
+              continue;
+            }
+
             // Find the exact error message
             const errorMatch = allText.match(new RegExp(`.{0,30}${errorText}.{0,50}`, 'i'));
             return errorMatch ? errorMatch[0].trim() : errorText;
@@ -465,7 +505,44 @@ export class PremiumExchangerEngine extends BaseEngine {
 
   private buildExchangeUrl(baseUrl: string, fromCurrency: string, toCurrency: string): string {
     const url = new URL(baseUrl);
-    return `${url.origin}/exchange_${fromCurrency}_to_${toCurrency}/`;
+    // Normalize currency codes for different CMS variations
+    const normalizedFrom = this.normalizeCurrencyCode(fromCurrency);
+    const normalizedTo = this.normalizeCurrencyCode(toCurrency);
+    return `${url.origin}/exchange_${normalizedFrom}_to_${normalizedTo}/`;
+  }
+
+  /**
+   * Normalize currency codes for different CMS variations
+   * Different exchangers use different codes for the same currencies
+   */
+  private normalizeCurrencyCode(code: string): string {
+    const mappings: Record<string, string[]> = {
+      // Original code -> [alternatives to try]
+      'SBPRUB': ['SBERRUB', 'SBPRUB', 'SBRUB', 'CARDSBERRUB'],
+      'CARDRUB': ['CARDRUB', 'TCSBRUB', 'ACRUB', 'SBERRUB'],
+      'BTC': ['BTC', 'BITCOIN'],
+      'ETH': ['ETH', 'ETHEREUM'],
+      'USDTTRC20': ['USDTTRC20', 'USDTTRC', 'USDTTRX', 'TRCUSDT'],
+      'USDTERC20': ['USDTERC20', 'USDTERC', 'USDTETH', 'ERCUSDT'],
+    };
+
+    // Return original if no mapping found
+    return mappings[code]?.[0] || code;
+  }
+
+  /**
+   * Get alternative currency code variations to try
+   */
+  private getCurrencyVariations(code: string): string[] {
+    const variations: Record<string, string[]> = {
+      'SBPRUB': ['SBERRUB', 'SBPRUB', 'SBRUB', 'CARDSBERRUB', 'SBERBANKSPP'],
+      'CARDRUB': ['CARDRUB', 'TCSBRUB', 'ACRUB', 'SBERRUB', 'CARDSBERRUB'],
+      'BTC': ['BTC', 'BITCOIN'],
+      'ETH': ['ETH', 'ETHEREUM', 'ETHERC20'],
+      'USDTTRC20': ['USDTTRC20', 'USDTTRC', 'USDTTRX', 'TRCUSDT', 'USDTRON'],
+      'USDTERC20': ['USDTERC20', 'USDTERC', 'USDTETH', 'ERCUSDT', 'USDETH'],
+    };
+    return variations[code] || [code];
   }
 
   private async selectCurrenciesViaUI(page: Page, fromCurrency: string, toCurrency: string): Promise<void> {
