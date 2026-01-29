@@ -1,21 +1,27 @@
 /**
- * Temporary Email Service using mail.tm API
- * Free API for disposable email addresses
+ * Temporary Email Service using 1secmail API
+ * Less likely to be blocked by exchangers than mail.tm
  */
 
 import { logger } from './logger';
 
-const API_BASE = 'https://api.mail.tm';
+const SECMAIL_API = 'https://www.1secmail.com/api/v1';
+
+// Available 1secmail domains (less known = less likely blocked)
+const SECMAIL_DOMAINS = ['kzccv.com', 'qiott.com', 'wuuvo.com', 'icznn.com', 'vjuum.com'];
 
 export interface TempMailbox {
   id: string;
   email: string;
   password: string;
   token: string;
+  // 1secmail specific
+  login: string;
+  domain: string;
 }
 
 export interface EmailMessage {
-  id: string;
+  id: string | number;
   from: { address: string; name: string };
   to: { address: string; name: string }[];
   subject: string;
@@ -25,7 +31,7 @@ export interface EmailMessage {
 }
 
 export interface EmailContent {
-  id: string;
+  id: string | number;
   from: { address: string; name: string };
   subject: string;
   text: string;
@@ -34,18 +40,7 @@ export interface EmailContent {
 }
 
 /**
- * Get available domains
- */
-async function getDomains(): Promise<string[]> {
-  const response = await fetch(`${API_BASE}/domains`, {
-    headers: { 'Accept': 'application/json' }
-  });
-  const data = await response.json() as { domain: string; isActive: boolean }[];
-  return data.filter(d => d.isActive).map(d => d.domain);
-}
-
-/**
- * Generate random string for email/password
+ * Generate random string for email login
  */
 function randomString(length: number): string {
   const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
@@ -57,95 +52,92 @@ function randomString(length: number): string {
 }
 
 /**
- * Create a new temporary email account
+ * Create a new temporary email using 1secmail
+ * No registration required - just generate random address
  */
 export async function createTempMailbox(): Promise<TempMailbox> {
-  // Get available domain
-  const domains = await getDomains();
-  if (domains.length === 0) {
-    throw new Error('No available email domains');
-  }
-  const domain = domains[0];
-
-  // Generate credentials
+  // Use a random less-known domain
+  const domain = SECMAIL_DOMAINS[Math.floor(Math.random() * SECMAIL_DOMAINS.length)];
   const login = randomString(10);
   const email = `${login}@${domain}`;
-  const password = randomString(12);
-
-  // Create account
-  const createResponse = await fetch(`${API_BASE}/accounts`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json'
-    },
-    body: JSON.stringify({ address: email, password })
-  });
-
-  if (!createResponse.ok) {
-    const error = await createResponse.text();
-    throw new Error(`Failed to create mailbox: ${error}`);
-  }
-
-  const account = await createResponse.json() as { id: string };
-
-  // Get auth token
-  const tokenResponse = await fetch(`${API_BASE}/token`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json'
-    },
-    body: JSON.stringify({ address: email, password })
-  });
-
-  if (!tokenResponse.ok) {
-    throw new Error('Failed to get auth token');
-  }
-
-  const tokenData = await tokenResponse.json() as { token: string };
 
   logger.info(`Created temp mailbox: ${email}`);
 
   return {
-    id: account.id,
+    id: login,
     email,
-    password,
-    token: tokenData.token
+    password: '', // Not needed for 1secmail
+    token: '',    // Not needed for 1secmail
+    login,
+    domain
   };
 }
 
 /**
- * Get list of messages in mailbox
+ * 1secmail message format
  */
-export async function getMessages(mailbox: TempMailbox): Promise<EmailMessage[]> {
-  const response = await fetch(`${API_BASE}/messages`, {
-    headers: {
-      'Authorization': `Bearer ${mailbox.token}`,
-      'Accept': 'application/json'
-    }
-  });
+interface SecMailMessage {
+  id: number;
+  from: string;
+  subject: string;
+  date: string;
+}
 
-  if (!response.ok) {
-    return [];
-  }
-
-  const data = await response.json() as { 'hydra:member': EmailMessage[] };
-  return data['hydra:member'] || [];
+interface SecMailMessageFull {
+  id: number;
+  from: string;
+  subject: string;
+  date: string;
+  body: string;
+  textBody: string;
+  htmlBody: string;
 }
 
 /**
- * Read full email content
+ * Get list of messages in mailbox using 1secmail API
+ */
+export async function getMessages(mailbox: TempMailbox): Promise<EmailMessage[]> {
+  try {
+    const url = `${SECMAIL_API}/?action=getMessages&login=${mailbox.login}&domain=${mailbox.domain}`;
+    const response = await fetch(url);
+
+    if (!response.ok) {
+      return [];
+    }
+
+    const messages = await response.json() as SecMailMessage[];
+
+    return messages.map(msg => ({
+      id: String(msg.id),
+      from: { address: msg.from, name: msg.from.split('@')[0] },
+      to: [{ address: mailbox.email, name: mailbox.login }],
+      subject: msg.subject,
+      intro: msg.subject,
+      seen: false,
+      createdAt: msg.date
+    }));
+  } catch (error) {
+    logger.warn(`Failed to get messages: ${error}`);
+    return [];
+  }
+}
+
+/**
+ * Read full email content using 1secmail API
  */
 export async function readMessage(mailbox: TempMailbox, messageId: string): Promise<EmailContent> {
-  const response = await fetch(`${API_BASE}/messages/${messageId}`, {
-    headers: {
-      'Authorization': `Bearer ${mailbox.token}`,
-      'Accept': 'application/json'
-    }
-  });
+  const url = `${SECMAIL_API}/?action=readMessage&login=${mailbox.login}&domain=${mailbox.domain}&id=${messageId}`;
+  const response = await fetch(url);
+  const msg = await response.json() as SecMailMessageFull;
 
-  return response.json() as Promise<EmailContent>;
+  return {
+    id: String(msg.id),
+    from: { address: msg.from, name: msg.from.split('@')[0] },
+    subject: msg.subject,
+    text: msg.textBody || msg.body,
+    html: msg.htmlBody ? [msg.htmlBody] : [],
+    createdAt: msg.date
+  };
 }
 
 /**
@@ -166,7 +158,7 @@ export async function waitForEmail(
 
     for (const msg of messages) {
       if (pattern.test(msg.subject) || pattern.test(msg.from.address)) {
-        const content = await readMessage(mailbox, msg.id);
+        const content = await readMessage(mailbox, String(msg.id));
         logger.info(`Found email: "${msg.subject}" from ${msg.from.address}`);
         return content;
       }
@@ -265,18 +257,9 @@ export async function getVerificationCode(
 }
 
 /**
- * Delete mailbox (cleanup)
+ * Delete mailbox (cleanup) - not needed for 1secmail but kept for API compatibility
  */
 export async function deleteTempMailbox(mailbox: TempMailbox): Promise<void> {
-  try {
-    await fetch(`${API_BASE}/accounts/${mailbox.id}`, {
-      method: 'DELETE',
-      headers: {
-        'Authorization': `Bearer ${mailbox.token}`
-      }
-    });
-    logger.info(`Deleted temp mailbox: ${mailbox.email}`);
-  } catch {
-    // Ignore deletion errors
-  }
+  // 1secmail doesn't require deletion - emails auto-expire
+  logger.info(`Temp mailbox expired: ${mailbox.email}`);
 }
