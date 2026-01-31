@@ -1,19 +1,25 @@
-[Читай docs/index.md для навигации по проекту](docs/index.md)
+# START HERE
 
-## Проект
+**[docs/index.md](docs/index.md)** - навигация по всей документации проекта
 
-Автономный сборщик блокчейн-адресов с криптообменников.
+## Правила
 
-## Команды
+1. **НЕ открывать сайты обменников на локальной машине!**
+   - Только через VPS: `ssh root@93.114.128.73`
+   - Путь на VPS: `/root/exchanger-wallet-collector`
 
-- `npm run import-exchangers` - импорт обменников из exchangers.json
-- `npm run collect` - запуск сбора кошельков
-- `npm run collect -- --domain=example.com` - сбор с конкретного обменника
-- `npm run stats` - статистика сбора
+2. **Команды запускать на VPS:**
+   - `npm run collect -- --domain=example.com`
+   - `npm run analyze -- --domain=example.com`
+   - `npm run stats`
 
-## Структура
+## Цель проекта
 
-- `src/` - исходный код
-- `docs/` - документация
-- `data/` - БД и скриншоты
-- `deploy/` - Docker и systemd
+Автономный сбор блокчейн-адресов с криптообменников при создании заявок на обмен.
+
+## Быстрые ссылки
+
+- [docs/status.md](docs/status.md) - текущий статус и прогресс
+- [docs/setup.md](docs/setup.md) - установка
+- [docs/architecture.md](docs/architecture.md) - архитектура
+- [docs/antidetect.md](docs/antidetect.md) - антидетект браузер

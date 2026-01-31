@@ -3,6 +3,8 @@ dist/
 data/
 .env
 *.log
+debug-*.png
+.playwright-mcp/
 
 # Adapters (contain site-specific configs)
 adapters/*.json

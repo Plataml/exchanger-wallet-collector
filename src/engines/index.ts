@@ -4,13 +4,16 @@ import { BaseEngine, ExchangeFormData, CollectionResult } from './base';
 import { VueSpaEngine } from './vue-spa';
 import { MultipageEngine } from './multipage';
 import { PremiumExchangerEngine } from './premium-exchanger';
+import { IexExchangerEngine } from './iex-exchanger';
+import { BoxExchangerEngine } from './box-exchanger';
 import { getBestSelectors, recordSuccess, recordFailure, initPatternsTable } from './learned-patterns';
 import { logger } from '../logger';
 
 // Registry of available engines
-// PremiumExchanger first as it's the most common CMS (2/3 of exchangers)
 const engines: BaseEngine[] = [
   new PremiumExchangerEngine(),
+  new IexExchangerEngine(),
+  new BoxExchangerEngine(),
   new VueSpaEngine(),
   new MultipageEngine()
 ];
