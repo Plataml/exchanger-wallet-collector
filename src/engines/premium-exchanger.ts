@@ -48,34 +48,40 @@ export class PremiumExchangerEngine extends BaseEngine {
 
       let foundValidPage = false;
 
+      // URL prefixes to try (different CMS use different formats)
+      const urlPrefixes = ['exchange', 'xchange'];
+
       // Try different URL variations
-      for (const fromCode of fromVariations) {
+      for (const prefix of urlPrefixes) {
         if (foundValidPage) break;
-        for (const toCode of toVariations) {
-          const directUrl = `${baseUrl}/exchange_${fromCode}_to_${toCode}/`;
-          logger.info(`Step 1: Trying URL: ${directUrl}`);
+        for (const fromCode of fromVariations) {
+          if (foundValidPage) break;
+          for (const toCode of toVariations) {
+            const directUrl = `${baseUrl}/${prefix}_${fromCode}_to_${toCode}/`;
+            logger.info(`Step 1: Trying URL: ${directUrl}`);
 
-          try {
-            await page.goto(directUrl, { waitUntil: 'domcontentloaded', timeout: 15000 });
-            await page.waitForTimeout(2000);
+            try {
+              await page.goto(directUrl, { waitUntil: 'domcontentloaded', timeout: 15000 });
+              await page.waitForTimeout(2000);
 
-            // Check if we got valid exchange page (not 404)
-            const is404 = await page.evaluate(() => {
-              const text = document.body?.innerText?.toLowerCase() || '';
-              const title = document.title?.toLowerCase() || '';
-              return text.includes('404') || text.includes('не найден') ||
-                     text.includes('not found') || title.includes('404') ||
-                     (document.body?.innerText?.length || 0) < 500;
-            });
+              // Check if we got valid exchange page (not 404)
+              const is404 = await page.evaluate(() => {
+                const text = document.body?.innerText?.toLowerCase() || '';
+                const title = document.title?.toLowerCase() || '';
+                return text.includes('404') || text.includes('не найден') ||
+                       text.includes('not found') || title.includes('404') ||
+                       (document.body?.innerText?.length || 0) < 500;
+              });
 
-            if (!is404) {
-              logger.info(`Found valid exchange page: ${directUrl}`);
-              foundValidPage = true;
-              break;
+              if (!is404) {
+                logger.info(`Found valid exchange page: ${directUrl}`);
+                foundValidPage = true;
+                break;
+              }
+            } catch {
+              // URL failed, try next
+              continue;
             }
-          } catch {
-            // URL failed, try next
-            continue;
           }
         }
       }
