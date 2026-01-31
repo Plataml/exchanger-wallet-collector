@@ -139,6 +139,19 @@ export class MultipageEngine extends BaseEngine {
             };
           }
         }
+
+        // Save debug screenshot
+        const timestamp = Date.now();
+        const screenshotPath = `debug-multipage-${timestamp}.png`;
+        await page.screenshot({ path: screenshotPath, fullPage: true });
+        logger.info(`Debug screenshot saved: ${screenshotPath}`);
+
+        // Also log the page URL and HTML snippet
+        const currentUrl = page.url();
+        const bodyText = await page.evaluate(() => document.body?.innerText?.substring(0, 2000) || '');
+        logger.info(`Current URL: ${currentUrl}`);
+        logger.info(`Page text preview: ${bodyText.substring(0, 500)}...`);
+
         return { success: false, error: 'Could not extract deposit address' };
       }
 

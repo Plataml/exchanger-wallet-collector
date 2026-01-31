@@ -1,6 +1,6 @@
 # Статус проекта
 
-**Последнее обновление:** 2026-01-31
+**Последнее обновление:** 2026-01-31 (актуализировано)
 
 ## Главная цель
 
@@ -16,26 +16,43 @@
 ### Детекция CMS (802 просканировано)
 | CMS | Количество | Статус движка |
 |-----|------------|---------------|
-| PremiumExchanger | 246 | ✅ Есть |
-| BoxExchanger | 27 | ❌ Нужен |
-| iEXExchanger | 74 | ❌ Нужен |
+| VueSpa | 333 | ✅ Готов (общий) |
+| iEXExchanger | 74 | ✅ Готов |
+| BoxExchanger | 27 | ✅ Готов |
+| PremiumExchanger | 12 | ✅ Готов |
 | Exchanger-CMS | 7 | ❌ Нужен |
-| Custom/Unknown | 448 | - |
+| Cloudflare | 65 | ⚠️ Антидетект |
+| Unknown | 279 | - |
+| Multipage | 2 | ✅ Готов |
+| Errors | 3 | — |
+
+**Покрытие:** 448 сайтов с движками (56%), из них 65 за Cloudflare
 
 ## Реализованные движки
 
-### 1. PremiumExchangerEngine
+### 1. PremiumExchangerEngine (12 сайтов)
 - Самый распространённый CMS (~30% обменников)
 - Поддержка URL форматов: `exchange_` и `xchange_`
-- Поддержка вариаций кодов валют (SBERRUB, SBPRUB, SBRFRUB)
+- Поддержка вариаций кодов валют (SBERRUB, SBPRUB, SBRFRUF)
 - Email верификация через Gmail IMAP
 - Обход капчи через 2captcha
 
-### 2. VueSpaEngine
-- Vue.js SPA обменники
+### 2. IexExchangerEngine (74 сайта)
+- Vue 3 SPA с Sanctum авторизацией
+- API-based exchange flow
+- Поддержка dropdown селекторов валют
+- Email верификация (код или ссылка)
+
+### 3. BoxExchangerEngine (27 сайтов)
+- Nuxt.js SPA с exchange-calculator
+- Поддержка кастомных dropdown компонентов
+- Email верификация
+
+### 4. VueSpaEngine
+- Vue.js SPA обменники (общий)
 - Динамическая загрузка форм
 
-### 3. MultipageEngine
+### 5. MultipageEngine
 - Многостраничные обменники
 - Пошаговые формы
 
@@ -107,10 +124,19 @@ FORM_WALLET_USDT=TN2DKuFEQz3mVsXVL4kAkGzFwfpVNvP8Ep
 
 ## Следующие шаги
 
-1. **Исправить распознавание форм** - SmartFormFiller или адаптеры
-2. **Создать движок BoxExchanger** - 27 сайтов
-3. **Создать движок iEXExchanger** - 74 сайта
-4. **Запустить массовый сбор** на работающих обменниках
+См. **[plan-phase-1-2.md](plan-phase-1-2.md)** для детального плана.
+
+### Фаза 1: Тестирование
+1. Протестировать PremiumExchanger на 5 сайтах
+2. Протестировать IexExchanger на 5 сайтах
+3. Протестировать BoxExchanger на 5 сайтах
+4. Исправить найденные баги
+
+### Фаза 2: Расширение
+1. Создать движок Exchanger-CMS (7 сайтов)
+2. Протестировать VueSpa на 20 сайтах
+3. Проанализировать Unknown (279 сайтов)
+4. Запустить массовый сбор на 448 сайтах
 
 ## Полезные команды
 

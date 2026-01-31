@@ -6,6 +6,16 @@ import { recordSuccess } from '../engines/learned-patterns';
 import fs from 'fs';
 import path from 'path';
 
+interface DiscoveredField {
+  tag: string;
+  type: string;
+  name: string;
+  id: string;
+  placeholder: string;
+  className: string;
+  selector: string;
+}
+
 interface AnalysisResult {
   domain: string;
   engineType: string;
@@ -16,11 +26,12 @@ interface AnalysisResult {
     found: boolean;
     value?: string;
   }>;
+  discoveredFields: DiscoveredField[];
   exchangePairs: string[];
   screenshots: string[];
 }
 
-async function analyzeExchanger(domain: string): Promise<void> {
+async function analyzeExchanger(domain: string, customUrl?: string): Promise<void> {
   const analyzeDir = path.join(config.dataPath, 'analyze', domain);
   if (!fs.existsSync(analyzeDir)) {
     fs.mkdirSync(analyzeDir, { recursive: true });
@@ -41,14 +52,16 @@ async function analyzeExchanger(domain: string): Promise<void> {
     confidence: 0,
     indicators: [],
     fields: {},
+    discoveredFields: [],
     exchangePairs: [],
     screenshots: []
   };
 
   try {
     // Load page
-    console.log('📄 Loading page...');
-    await page.goto(`https://${domain}`, { waitUntil: 'domcontentloaded', timeout: 30000 });
+    const pageUrl = customUrl || `https://${domain}`;
+    console.log(`📄 Loading page: ${pageUrl}`);
+    await page.goto(pageUrl, { waitUntil: 'domcontentloaded', timeout: 30000 });
     await page.waitForTimeout(3000);
 
     // Screenshot
@@ -79,6 +92,22 @@ async function analyzeExchanger(domain: string): Promise<void> {
       } else {
         console.log(`   ❌ ${fieldType}: not found`);
       }
+    }
+
+    // Discover ALL fields on page (for adapter creation)
+    console.log('\n🔎 Discovered form elements:');
+    const allFields = await discoverAllFields(page);
+    result.discoveredFields = allFields;
+    if (allFields.length > 0) {
+      for (const field of allFields) {
+        const info = [field.tag];
+        if (field.type) info.push(`type="${field.type}"`);
+        if (field.name) info.push(`name="${field.name}"`);
+        if (field.placeholder) info.push(`placeholder="${field.placeholder.substring(0, 30)}"`);
+        console.log(`   ${field.selector} → ${info.join(', ')}`);
+      }
+    } else {
+      console.log('   No form elements found');
     }
 
     // Find exchange pair URLs
@@ -207,6 +236,73 @@ async function analyzeFormFields(page: Page): Promise<Record<string, { selector:
   });
 }
 
+// Discover all visible input fields on the page
+async function discoverAllFields(page: Page): Promise<Array<{
+  tag: string;
+  type: string;
+  name: string;
+  id: string;
+  placeholder: string;
+  className: string;
+  selector: string;
+}>> {
+  return page.evaluate(() => {
+    const results: Array<{
+      tag: string;
+      type: string;
+      name: string;
+      id: string;
+      placeholder: string;
+      className: string;
+      selector: string;
+    }> = [];
+
+    // Find all inputs, textareas, selects
+    const elements = document.querySelectorAll('input, textarea, select, button');
+
+    elements.forEach((el) => {
+      const htmlEl = el as HTMLElement;
+      // Skip hidden elements
+      if (htmlEl.offsetParent === null && htmlEl.tagName !== 'INPUT') return;
+
+      const input = el as HTMLInputElement;
+      const tag = el.tagName.toLowerCase();
+      const type = input.type || '';
+      const name = input.name || '';
+      const id = input.id || '';
+      const placeholder = input.placeholder || '';
+      const className = el.className || '';
+
+      // Build best selector
+      let selector = tag;
+      if (id) {
+        selector = `#${id}`;
+      } else if (name) {
+        selector = `${tag}[name="${name}"]`;
+      } else if (placeholder) {
+        selector = `${tag}[placeholder*="${placeholder.substring(0, 20)}"]`;
+      } else if (className && typeof className === 'string') {
+        const firstClass = className.split(' ')[0];
+        if (firstClass && !firstClass.includes('_')) {
+          selector = `${tag}.${firstClass}`;
+        }
+      }
+
+      results.push({
+        tag,
+        type,
+        name,
+        id,
+        placeholder,
+        className: typeof className === 'string' ? className.substring(0, 50) : '',
+        selector
+      });
+    });
+
+    return results;
+  });
+}
+
 async function findExchangePairs(page: Page): Promise<string[]> {
   return page.evaluate(() => {
     const patterns = [
@@ -235,22 +331,37 @@ async function findExchangePairs(page: Page): Promise<string[]> {
 async function main(): Promise<void> {
   const args = process.argv.slice(2);
   let domain: string | undefined;
+  let url: string | undefined;
 
   for (const arg of args) {
     if (arg.startsWith('--domain=')) {
-      domain = arg.split('=')[1];
+      domain = arg.substring('--domain='.length);
+    }
+    if (arg.startsWith('--url=')) {
+      url = arg.substring('--url='.length);
     }
   }
 
-  if (!domain) {
-    console.error('Usage: npm run analyze -- --domain=example.com');
+  if (!domain && !url) {
+    console.error('Usage: npm run analyze -- --domain=example.com [--url=https://example.com/path]');
     process.exit(1);
   }
 
-  domain = domain.replace(/^https?:\/\//, '').replace(/\/$/, '');
+  if (url && !domain) {
+    // Extract domain from URL
+    try {
+      const parsed = new URL(url);
+      domain = parsed.host;
+    } catch {
+      console.error('Invalid URL');
+      process.exit(1);
+    }
+  }
+
+  domain = domain!.replace(/^https?:\/\//, '').replace(/\/$/, '');
 
   await initDb();
-  await analyzeExchanger(domain);
+  await analyzeExchanger(domain, url);
 }
 
 main().catch(error => {
