@@ -1,21 +1,17 @@
 /**
- * Temporary Email Service using 1secmail API
- * Less likely to be blocked by exchangers than mail.tm
+ * Gmail IMAP Email Service for verification codes
+ * Uses real Gmail account to avoid temp-email blocks by exchangers
  */
 
+import { ImapFlow } from 'imapflow';
 import { logger } from './logger';
-
-const SECMAIL_API = 'https://www.1secmail.com/api/v1';
-
-// Available 1secmail domains (less known = less likely blocked)
-const SECMAIL_DOMAINS = ['kzccv.com', 'qiott.com', 'wuuvo.com', 'icznn.com', 'vjuum.com'];
 
 export interface TempMailbox {
   id: string;
   email: string;
   password: string;
   token: string;
-  // 1secmail specific
+  // Gmail specific
   login: string;
   domain: string;
 }
@@ -39,105 +35,176 @@ export interface EmailContent {
   createdAt: string;
 }
 
-/**
- * Generate random string for email login
- */
-function randomString(length: number): string {
-  const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
-  let result = '';
-  for (let i = 0; i < length; i++) {
-    result += chars.charAt(Math.floor(Math.random() * chars.length));
+// Gmail IMAP config from environment
+const GMAIL_CONFIG = {
+  host: 'imap.gmail.com',
+  port: 993,
+  secure: true,
+  auth: {
+    user: process.env.GMAIL_USER || '',
+    pass: (process.env.GMAIL_APP_PASSWORD || '').replace(/\s/g, '') // Remove spaces from app password
   }
-  return result;
+};
+
+/**
+ * Create IMAP client connection
+ */
+async function createImapClient(): Promise<ImapFlow> {
+  const client = new ImapFlow({
+    host: GMAIL_CONFIG.host,
+    port: GMAIL_CONFIG.port,
+    secure: GMAIL_CONFIG.secure,
+    auth: GMAIL_CONFIG.auth,
+    logger: false // Disable verbose logging
+  });
+
+  await client.connect();
+  return client;
 }
 
 /**
- * Create a new temporary email using 1secmail
- * No registration required - just generate random address
+ * Create a "virtual" mailbox using Gmail
+ * Returns Gmail address - no actual mailbox creation needed
  */
 export async function createTempMailbox(): Promise<TempMailbox> {
-  // Use a random less-known domain
-  const domain = SECMAIL_DOMAINS[Math.floor(Math.random() * SECMAIL_DOMAINS.length)];
-  const login = randomString(10);
-  const email = `${login}@${domain}`;
+  const email = GMAIL_CONFIG.auth.user;
 
-  logger.info(`Created temp mailbox: ${email}`);
+  if (!email) {
+    throw new Error('GMAIL_USER not configured in .env');
+  }
+
+  logger.info(`Using Gmail mailbox: ${email}`);
 
   return {
-    id: login,
+    id: email,
     email,
-    password: '', // Not needed for 1secmail
-    token: '',    // Not needed for 1secmail
-    login,
-    domain
+    password: '',
+    token: '',
+    login: email.split('@')[0],
+    domain: 'gmail.com'
   };
 }
 
 /**
- * 1secmail message format
+ * Get recent messages from Gmail INBOX
  */
-interface SecMailMessage {
-  id: number;
-  from: string;
-  subject: string;
-  date: string;
-}
+export async function getMessages(_mailbox: TempMailbox): Promise<EmailMessage[]> {
+  let client: ImapFlow | null = null;
 
-interface SecMailMessageFull {
-  id: number;
-  from: string;
-  subject: string;
-  date: string;
-  body: string;
-  textBody: string;
-  htmlBody: string;
-}
-
-/**
- * Get list of messages in mailbox using 1secmail API
- */
-export async function getMessages(mailbox: TempMailbox): Promise<EmailMessage[]> {
   try {
-    const url = `${SECMAIL_API}/?action=getMessages&login=${mailbox.login}&domain=${mailbox.domain}`;
-    const response = await fetch(url);
+    client = await createImapClient();
+    await client.mailboxOpen('INBOX');
 
-    if (!response.ok) {
-      return [];
+    // Get messages from last 10 minutes (recent verification emails)
+    const tenMinutesAgo = new Date(Date.now() - 10 * 60 * 1000);
+
+    const messages: EmailMessage[] = [];
+
+    // Search for recent unseen messages
+    for await (const msg of client.fetch(
+      { seen: false, since: tenMinutesAgo },
+      { envelope: true, uid: true }
+    )) {
+      const envelope = msg.envelope;
+      if (!envelope) continue;
+
+      messages.push({
+        id: String(msg.uid),
+        from: {
+          address: envelope.from?.[0]?.address || '',
+          name: envelope.from?.[0]?.name || ''
+        },
+        to: envelope.to?.map(t => ({
+          address: t.address || '',
+          name: t.name || ''
+        })) || [],
+        subject: envelope.subject || '',
+        intro: envelope.subject || '',
+        seen: false,
+        createdAt: envelope.date?.toISOString() || new Date().toISOString()
+      });
     }
 
-    const messages = await response.json() as SecMailMessage[];
-
-    return messages.map(msg => ({
-      id: String(msg.id),
-      from: { address: msg.from, name: msg.from.split('@')[0] },
-      to: [{ address: mailbox.email, name: mailbox.login }],
-      subject: msg.subject,
-      intro: msg.subject,
-      seen: false,
-      createdAt: msg.date
-    }));
+    return messages;
   } catch (error) {
-    logger.warn(`Failed to get messages: ${error}`);
+    logger.warn(`Failed to get Gmail messages: ${error}`);
     return [];
+  } finally {
+    if (client) {
+      await client.logout().catch(() => {});
+    }
   }
 }
 
 /**
- * Read full email content using 1secmail API
+ * Read full email content by UID
  */
-export async function readMessage(mailbox: TempMailbox, messageId: string): Promise<EmailContent> {
-  const url = `${SECMAIL_API}/?action=readMessage&login=${mailbox.login}&domain=${mailbox.domain}&id=${messageId}`;
-  const response = await fetch(url);
-  const msg = await response.json() as SecMailMessageFull;
+export async function readMessage(_mailbox: TempMailbox, messageId: string): Promise<EmailContent> {
+  let client: ImapFlow | null = null;
 
-  return {
-    id: String(msg.id),
-    from: { address: msg.from, name: msg.from.split('@')[0] },
-    subject: msg.subject,
-    text: msg.textBody || msg.body,
-    html: msg.htmlBody ? [msg.htmlBody] : [],
-    createdAt: msg.date
-  };
+  try {
+    client = await createImapClient();
+    await client.mailboxOpen('INBOX');
+
+    // Fetch message with body
+    const msg = await client.fetchOne(messageId, {
+      envelope: true,
+      source: true
+    }, { uid: true });
+
+    if (!msg) {
+      throw new Error(`Message ${messageId} not found`);
+    }
+
+    // Parse email source
+    const source = msg.source?.toString() || '';
+
+    // Extract text and HTML parts (simplified parsing)
+    let textBody = '';
+    let htmlBody = '';
+
+    // Try to extract text content
+    const textMatch = source.match(/Content-Type: text\/plain[\s\S]*?\r\n\r\n([\s\S]*?)(?=\r\n--|\r\n\r\n--|\Z)/i);
+    if (textMatch) {
+      textBody = textMatch[1].replace(/=\r\n/g, '').replace(/=([0-9A-F]{2})/gi, (_match: string, hex: string) =>
+        String.fromCharCode(parseInt(hex, 16))
+      );
+    }
+
+    // Try to extract HTML content
+    const htmlMatch = source.match(/Content-Type: text\/html[\s\S]*?\r\n\r\n([\s\S]*?)(?=\r\n--|\r\n\r\n--|\Z)/i);
+    if (htmlMatch) {
+      htmlBody = htmlMatch[1].replace(/=\r\n/g, '').replace(/=([0-9A-F]{2})/gi, (_match: string, hex: string) =>
+        String.fromCharCode(parseInt(hex, 16))
+      );
+    }
+
+    // Fallback: use entire source if no parts found
+    if (!textBody && !htmlBody) {
+      textBody = source;
+    }
+
+    const envelope = msg.envelope;
+
+    return {
+      id: messageId,
+      from: {
+        address: envelope?.from?.[0]?.address || '',
+        name: envelope?.from?.[0]?.name || ''
+      },
+      subject: envelope?.subject || '',
+      text: textBody,
+      html: htmlBody ? [htmlBody] : [],
+      createdAt: envelope?.date?.toISOString() || new Date().toISOString()
+    };
+  } catch (error) {
+    logger.error(`Failed to read Gmail message ${messageId}: ${error}`);
+    throw error;
+  } finally {
+    if (client) {
+      await client.logout().catch(() => {});
+    }
+  }
 }
 
 /**
@@ -146,7 +213,7 @@ export async function readMessage(mailbox: TempMailbox, messageId: string): Prom
 export async function waitForEmail(
   mailbox: TempMailbox,
   pattern: RegExp,
-  timeoutMs: number = 90000,
+  timeoutMs: number = 120000,
   pollIntervalMs: number = 5000
 ): Promise<EmailContent | null> {
   const startTime = Date.now();
@@ -154,14 +221,26 @@ export async function waitForEmail(
   logger.info(`Waiting for email matching /${pattern.source}/ to ${mailbox.email}...`);
 
   while (Date.now() - startTime < timeoutMs) {
-    const messages = await getMessages(mailbox);
+    try {
+      const messages = await getMessages(mailbox);
 
-    for (const msg of messages) {
-      if (pattern.test(msg.subject) || pattern.test(msg.from.address)) {
-        const content = await readMessage(mailbox, String(msg.id));
-        logger.info(`Found email: "${msg.subject}" from ${msg.from.address}`);
-        return content;
+      logger.info(`Found ${messages.length} recent messages in Gmail`);
+
+      for (const msg of messages) {
+        // Check if message matches pattern (subject or sender)
+        const matchesSubject = pattern.test(msg.subject);
+        const matchesSender = pattern.test(msg.from.address);
+
+        logger.info(`Checking email: "${msg.subject}" from ${msg.from.address} - matches: ${matchesSubject || matchesSender}`);
+
+        if (matchesSubject || matchesSender) {
+          const content = await readMessage(mailbox, String(msg.id));
+          logger.info(`Found matching email: "${msg.subject}" from ${msg.from.address}`);
+          return content;
+        }
       }
+    } catch (error) {
+      logger.warn(`Error checking Gmail: ${error}`);
     }
 
     // Wait before next poll
@@ -220,7 +299,14 @@ export function extractVerificationCode(email: EmailContent): string | null {
     return sixDigitMatch[1];
   }
 
-  // Pattern 7: Any standalone alphanumeric 5-8 chars that looks like a code
+  // Pattern 7: 4-digit code
+  const fourDigitMatch = body.match(/\b(\d{4})\b/);
+  if (fourDigitMatch) {
+    logger.info(`Extracted 4-digit code: ${fourDigitMatch[1]}`);
+    return fourDigitMatch[1];
+  }
+
+  // Pattern 8: Any standalone alphanumeric 5-8 chars that looks like a code
   const standaloneMatch = body.match(/\b([A-Z0-9]{5,8})\b/g);
   if (standaloneMatch) {
     // Filter out common words and find most code-like match
@@ -235,7 +321,7 @@ export function extractVerificationCode(email: EmailContent): string | null {
   }
 
   logger.warn('Could not extract verification code from email');
-  logger.debug(`Email body: ${body.substring(0, 500)}...`);
+  logger.info(`Email body preview: ${body.substring(0, 500)}...`);
   return null;
 }
 
@@ -245,7 +331,7 @@ export function extractVerificationCode(email: EmailContent): string | null {
 export async function getVerificationCode(
   mailbox: TempMailbox,
   senderPattern: RegExp = /./,
-  timeoutMs: number = 90000
+  timeoutMs: number = 120000
 ): Promise<string | null> {
   const email = await waitForEmail(mailbox, senderPattern, timeoutMs);
 
@@ -257,9 +343,35 @@ export async function getVerificationCode(
 }
 
 /**
- * Delete mailbox (cleanup) - not needed for 1secmail but kept for API compatibility
+ * Delete mailbox (cleanup) - not needed for Gmail
  */
 export async function deleteTempMailbox(mailbox: TempMailbox): Promise<void> {
-  // 1secmail doesn't require deletion - emails auto-expire
-  logger.info(`Temp mailbox expired: ${mailbox.email}`);
+  // Gmail doesn't need cleanup - just log
+  logger.info(`Gmail session ended for: ${mailbox.email}`);
+}
+
+/**
+ * Test Gmail connection
+ */
+export async function testGmailConnection(): Promise<boolean> {
+  let client: ImapFlow | null = null;
+
+  try {
+    logger.info('Testing Gmail IMAP connection...');
+    client = await createImapClient();
+    await client.mailboxOpen('INBOX');
+
+    // Get mailbox status
+    const status = await client.status('INBOX', { messages: true, unseen: true });
+    logger.info(`Gmail connected! Inbox has ${status.messages} messages, ${status.unseen} unseen`);
+
+    return true;
+  } catch (error) {
+    logger.error(`Gmail connection failed: ${error}`);
+    return false;
+  } finally {
+    if (client) {
+      await client.logout().catch(() => {});
+    }
+  }
 }

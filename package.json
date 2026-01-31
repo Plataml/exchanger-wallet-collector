@@ -11,14 +11,20 @@
     "collect": "ts-node src/commands/collect.ts",
     "stats": "ts-node src/commands/stats.ts",
     "explore": "ts-node src/commands/explore.ts",
-    "analyze": "ts-node src/commands/analyze.ts"
+    "analyze": "ts-node src/commands/analyze.ts",
+    "detect-cms": "ts-node src/commands/detect-cms.ts"
   },
-  "keywords": ["blockchain", "crypto", "collector"],
+  "keywords": [
+    "blockchain",
+    "crypto",
+    "collector"
+  ],
   "license": "MIT",
   "dependencies": {
-    "sql.js": "^1.10.0",
     "dotenv": "^16.3.1",
-    "playwright": "^1.58.0"
+    "imapflow": "^1.2.8",
+    "playwright": "^1.58.0",
+    "sql.js": "^1.10.0"
   },
   "devDependencies": {
     "@types/node": "^20.10.0",
