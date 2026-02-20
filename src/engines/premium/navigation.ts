@@ -33,7 +33,8 @@ export function getCurrencyNames(code: string): string[] {
 }
 
 /**
- * Navigate to exchange page using direct URL patterns
+ * Navigate to exchange page.
+ * Strategy: 1) scrape exchange links from current page, 2) try generated URLs
  */
 export async function navigateToExchangePage(
   page: Page,
@@ -41,36 +42,72 @@ export async function navigateToExchangePage(
   toCurrency: string
 ): Promise<boolean> {
   const baseUrl = new URL(page.url()).origin;
+
+  // Strategy 1: Find matching exchange link on current page
+  const fromCodes = getCurrencyVariations(fromCurrency).map(c => c.toLowerCase());
+  const toCodes = getCurrencyVariations(toCurrency).map(c => c.toLowerCase());
+
+  const matchedLink = await page.evaluate(({ fromCodes, toCodes }) => {
+    const links = Array.from(document.querySelectorAll('a[href]'));
+    for (const a of links) {
+      const href = (a.getAttribute('href') || '').toLowerCase();
+      if (!href.includes('exchange') && !href.includes('xchange')) continue;
+      const hasFrom = fromCodes.some(c => href.includes(c));
+      const hasTo = toCodes.some(c => href.includes(c));
+      if (hasFrom && hasTo) return a.getAttribute('href');
+    }
+    return null;
+  }, { fromCodes, toCodes });
+
+  if (matchedLink) {
+    const url = matchedLink.startsWith('http') ? matchedLink : baseUrl + matchedLink;
+    logger.info(`Found exchange link on page: ${url}`);
+    try {
+      await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 15000 });
+      await page.waitForTimeout(2000);
+      return true;
+    } catch { /* fall through to URL generation */ }
+  }
+
+  // Strategy 2: Generate URLs with common patterns
   const fromVariations = getCurrencyVariations(fromCurrency);
   const toVariations = getCurrencyVariations(toCurrency);
-  const urlPrefixes = ['exchange', 'xchange'];
 
-  for (const prefix of urlPrefixes) {
-    for (const fromCode of fromVariations) {
-      for (const toCode of toVariations) {
-        const directUrl = `${baseUrl}/${prefix}_${fromCode}_to_${toCode}/`;
-        logger.info(`Trying URL: ${directUrl}`);
-
-        try {
-          await page.goto(directUrl, { waitUntil: 'domcontentloaded', timeout: 15000 });
-          await page.waitForTimeout(2000);
-
-          const is404 = await page.evaluate(() => {
-            const text = document.body?.innerText?.toLowerCase() || '';
-            const title = document.title?.toLowerCase() || '';
-            return text.includes('404') || text.includes('не найден') ||
-                   text.includes('not found') || title.includes('404') ||
-                   (document.body?.innerText?.length || 0) < 500;
-          });
-
-          if (!is404) {
-            logger.info(`Found valid exchange page: ${directUrl}`);
-            return true;
-          }
-        } catch {
-          continue;
+  // Build prioritized URL list (most common formats first, limit total)
+  const urls: string[] = [];
+  for (const prefix of ['exchange', 'xchange']) {
+    for (const [sep, transform] of [['_', (s: string) => s], ['-', (s: string) => s.toLowerCase()]] as const) {
+      // Only first 2 variations for each to keep it fast
+      for (const fromCode of fromVariations.slice(0, 2)) {
+        for (const toCode of toVariations.slice(0, 2)) {
+          const f = transform(fromCode);
+          const t = transform(toCode);
+          urls.push(`${baseUrl}/${prefix}${sep}${f}${sep}to${sep}${t}/`);
         }
       }
+    }
+  }
+
+  for (const directUrl of urls) {
+    logger.info(`Trying URL: ${directUrl}`);
+    try {
+      await page.goto(directUrl, { waitUntil: 'domcontentloaded', timeout: 10000 });
+      await page.waitForTimeout(1500);
+
+      const is404 = await page.evaluate(() => {
+        const text = document.body?.innerText?.toLowerCase() || '';
+        const title = document.title?.toLowerCase() || '';
+        return text.includes('404') || text.includes('не найден') ||
+               text.includes('not found') || title.includes('404') ||
+               (document.body?.innerText?.length || 0) < 500;
+      });
+
+      if (!is404) {
+        logger.info(`Found valid exchange page: ${directUrl}`);
+        return true;
+      }
+    } catch {
+      continue;
     }
   }
 
