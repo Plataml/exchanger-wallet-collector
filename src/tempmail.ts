@@ -1,6 +1,8 @@
 /**
- * Gmail IMAP Email Service for verification codes
- * Uses real Gmail account to avoid temp-email blocks by exchangers
+ * Generic IMAP Email Service for verification codes
+ * Works with any IMAP provider: Gmail, Yandex, Mail.ru, custom SMTP, etc.
+ * Config via env: IMAP_HOST, IMAP_PORT, IMAP_USER, IMAP_PASS
+ * Falls back to GMAIL_USER/GMAIL_APP_PASSWORD for backward compatibility
  */
 
 import { ImapFlow } from 'imapflow';
@@ -11,7 +13,6 @@ export interface TempMailbox {
   email: string;
   password: string;
   token: string;
-  // Gmail specific
   login: string;
   domain: string;
 }
@@ -35,27 +36,34 @@ export interface EmailContent {
   createdAt: string;
 }
 
-// Gmail IMAP config from environment
-const GMAIL_CONFIG = {
-  host: 'imap.gmail.com',
-  port: 993,
-  secure: true,
+// Generic IMAP config — works with any provider
+const IMAP_CONFIG = {
+  host: process.env.IMAP_HOST || 'imap.gmail.com',
+  port: parseInt(process.env.IMAP_PORT || '993', 10),
+  secure: process.env.IMAP_SECURE !== 'false',
   auth: {
-    user: process.env.GMAIL_USER || '',
-    pass: (process.env.GMAIL_APP_PASSWORD || '').replace(/\s/g, '') // Remove spaces from app password
+    user: process.env.IMAP_USER || process.env.GMAIL_USER || '',
+    pass: (process.env.IMAP_PASS || process.env.GMAIL_APP_PASSWORD || '').replace(/\s/g, '')
   }
 };
+
+/**
+ * Check if IMAP email is configured
+ */
+export function isEmailConfigured(): boolean {
+  return !!(IMAP_CONFIG.auth.user && IMAP_CONFIG.auth.pass);
+}
 
 /**
  * Create IMAP client connection
  */
 async function createImapClient(): Promise<ImapFlow> {
   const client = new ImapFlow({
-    host: GMAIL_CONFIG.host,
-    port: GMAIL_CONFIG.port,
-    secure: GMAIL_CONFIG.secure,
-    auth: GMAIL_CONFIG.auth,
-    logger: false // Disable verbose logging
+    host: IMAP_CONFIG.host,
+    port: IMAP_CONFIG.port,
+    secure: IMAP_CONFIG.secure,
+    auth: IMAP_CONFIG.auth,
+    logger: false
   });
 
   await client.connect();
@@ -63,30 +71,30 @@ async function createImapClient(): Promise<ImapFlow> {
 }
 
 /**
- * Create a "virtual" mailbox using Gmail
- * Returns Gmail address - no actual mailbox creation needed
+ * Create a mailbox reference using configured IMAP email
  */
 export async function createTempMailbox(): Promise<TempMailbox> {
-  const email = GMAIL_CONFIG.auth.user;
+  const email = IMAP_CONFIG.auth.user;
 
   if (!email) {
-    throw new Error('GMAIL_USER not configured in .env');
+    throw new Error('IMAP email not configured. Set IMAP_USER+IMAP_PASS (or GMAIL_USER+GMAIL_APP_PASSWORD) in .env');
   }
 
-  logger.info(`Using Gmail mailbox: ${email}`);
+  const [login, domain] = email.split('@');
+  logger.info(`Using IMAP mailbox: ${email} (${IMAP_CONFIG.host})`);
 
   return {
     id: email,
     email,
     password: '',
     token: '',
-    login: email.split('@')[0],
-    domain: 'gmail.com'
+    login: login || email,
+    domain: domain || 'unknown'
   };
 }
 
 /**
- * Get recent messages from Gmail INBOX
+ * Get recent messages from INBOX
  */
 export async function getMessages(_mailbox: TempMailbox): Promise<EmailMessage[]> {
   let client: ImapFlow | null = null;
@@ -95,12 +103,9 @@ export async function getMessages(_mailbox: TempMailbox): Promise<EmailMessage[]
     client = await createImapClient();
     await client.mailboxOpen('INBOX');
 
-    // Get messages from last 10 minutes (recent verification emails)
     const tenMinutesAgo = new Date(Date.now() - 10 * 60 * 1000);
-
     const messages: EmailMessage[] = [];
 
-    // Search for recent unseen messages
     for await (const msg of client.fetch(
       { seen: false, since: tenMinutesAgo },
       { envelope: true, uid: true }
@@ -127,7 +132,7 @@ export async function getMessages(_mailbox: TempMailbox): Promise<EmailMessage[]
 
     return messages;
   } catch (error) {
-    logger.warn(`Failed to get Gmail messages: ${error}`);
+    logger.warn(`Failed to get IMAP messages: ${error}`);
     return [];
   } finally {
     if (client) {
@@ -146,7 +151,6 @@ export async function readMessage(_mailbox: TempMailbox, messageId: string): Pro
     client = await createImapClient();
     await client.mailboxOpen('INBOX');
 
-    // Fetch message with body
     const msg = await client.fetchOne(messageId, {
       envelope: true,
       source: true
@@ -156,14 +160,11 @@ export async function readMessage(_mailbox: TempMailbox, messageId: string): Pro
       throw new Error(`Message ${messageId} not found`);
     }
 
-    // Parse email source
     const source = msg.source?.toString() || '';
 
-    // Extract text and HTML parts (simplified parsing)
     let textBody = '';
     let htmlBody = '';
 
-    // Try to extract text content
     const textMatch = source.match(/Content-Type: text\/plain[\s\S]*?\r\n\r\n([\s\S]*?)(?=\r\n--|\r\n\r\n--|\Z)/i);
     if (textMatch) {
       textBody = textMatch[1].replace(/=\r\n/g, '').replace(/=([0-9A-F]{2})/gi, (_match: string, hex: string) =>
@@ -171,7 +172,6 @@ export async function readMessage(_mailbox: TempMailbox, messageId: string): Pro
       );
     }
 
-    // Try to extract HTML content
     const htmlMatch = source.match(/Content-Type: text\/html[\s\S]*?\r\n\r\n([\s\S]*?)(?=\r\n--|\r\n\r\n--|\Z)/i);
     if (htmlMatch) {
       htmlBody = htmlMatch[1].replace(/=\r\n/g, '').replace(/=([0-9A-F]{2})/gi, (_match: string, hex: string) =>
@@ -179,7 +179,6 @@ export async function readMessage(_mailbox: TempMailbox, messageId: string): Pro
       );
     }
 
-    // Fallback: use entire source if no parts found
     if (!textBody && !htmlBody) {
       textBody = source;
     }
@@ -198,7 +197,7 @@ export async function readMessage(_mailbox: TempMailbox, messageId: string): Pro
       createdAt: envelope?.date?.toISOString() || new Date().toISOString()
     };
   } catch (error) {
-    logger.error(`Failed to read Gmail message ${messageId}: ${error}`);
+    logger.error(`Failed to read IMAP message ${messageId}: ${error}`);
     throw error;
   } finally {
     if (client) {
@@ -224,14 +223,13 @@ export async function waitForEmail(
     try {
       const messages = await getMessages(mailbox);
 
-      logger.info(`Found ${messages.length} recent messages in Gmail`);
+      logger.debug(`Found ${messages.length} recent messages`);
 
       for (const msg of messages) {
-        // Check if message matches pattern (subject or sender)
         const matchesSubject = pattern.test(msg.subject);
         const matchesSender = pattern.test(msg.from.address);
 
-        logger.info(`Checking email: "${msg.subject}" from ${msg.from.address} - matches: ${matchesSubject || matchesSender}`);
+        logger.debug(`Checking: "${msg.subject}" from ${msg.from.address} - match: ${matchesSubject || matchesSender}`);
 
         if (matchesSubject || matchesSender) {
           const content = await readMessage(mailbox, String(msg.id));
@@ -240,10 +238,9 @@ export async function waitForEmail(
         }
       }
     } catch (error) {
-      logger.warn(`Error checking Gmail: ${error}`);
+      logger.warn(`Error checking IMAP: ${error}`);
     }
 
-    // Wait before next poll
     await new Promise(r => setTimeout(r, pollIntervalMs));
   }
 
@@ -257,62 +254,53 @@ export async function waitForEmail(
 export function extractVerificationCode(email: EmailContent): string | null {
   const body = email.text || (email.html ? email.html.join(' ') : '');
 
-  // Pattern 1: Code after keyword (код/code/pin/пин) - alphanumeric 4-10 chars
   const keywordCodeMatch = body.match(/(?:код|code|pin|пин|token|токен)[:\s]*([A-Z0-9]{4,10})\b/i);
   if (keywordCodeMatch) {
     logger.info(`Extracted code after keyword: ${keywordCodeMatch[1]}`);
     return keywordCodeMatch[1];
   }
 
-  // Pattern 2: Code in brackets/quotes after keyword
   const bracketMatch = body.match(/(?:код|code|pin)[:\s]*[«"'\[]([A-Z0-9]{4,12})[»"'\]]/i);
   if (bracketMatch) {
     logger.info(`Extracted code in brackets: ${bracketMatch[1]}`);
     return bracketMatch[1];
   }
 
-  // Pattern 3: Standalone bold/highlighted code (often in HTML)
   const boldMatch = body.match(/<(?:b|strong|code)>([A-Z0-9]{4,10})<\/(?:b|strong|code)>/i);
   if (boldMatch) {
     logger.info(`Extracted bold code: ${boldMatch[1]}`);
     return boldMatch[1];
   }
 
-  // Pattern 4: Confirmation/verification link
   const linkMatch = body.match(/https?:\/\/[^\s<>"]+(?:confirm|verify|activate|code|token)[^\s<>"]*/i);
   if (linkMatch) {
     logger.info(`Found confirmation link: ${linkMatch[0]}`);
     return linkMatch[0];
   }
 
-  // Pattern 5: "verification/confirmation code is/:" pattern
   const verifyCodeMatch = body.match(/(?:verification|confirmation|подтверждения|верификации)\s+(?:code|код)\s*(?:is|:)?\s*([A-Z0-9]{4,10})\b/i);
   if (verifyCodeMatch) {
     logger.info(`Extracted verification code: ${verifyCodeMatch[1]}`);
     return verifyCodeMatch[1];
   }
 
-  // Pattern 6: Standalone 6-digit code (most common for 2FA)
   const sixDigitMatch = body.match(/\b(\d{6})\b/);
   if (sixDigitMatch) {
     logger.info(`Extracted 6-digit code: ${sixDigitMatch[1]}`);
     return sixDigitMatch[1];
   }
 
-  // Pattern 7: 4-digit code
   const fourDigitMatch = body.match(/\b(\d{4})\b/);
   if (fourDigitMatch) {
     logger.info(`Extracted 4-digit code: ${fourDigitMatch[1]}`);
     return fourDigitMatch[1];
   }
 
-  // Pattern 8: Any standalone alphanumeric 5-8 chars that looks like a code
   const standaloneMatch = body.match(/\b([A-Z0-9]{5,8})\b/g);
   if (standaloneMatch) {
-    // Filter out common words and find most code-like match
     const codelike = standaloneMatch.find(m =>
-      /\d/.test(m) && /[A-Z]/i.test(m) || // Has both letters and numbers
-      /^\d{5,8}$/.test(m) // Or is 5-8 digits
+      /\d/.test(m) && /[A-Z]/i.test(m) ||
+      /^\d{5,8}$/.test(m)
     );
     if (codelike) {
       logger.info(`Extracted standalone code: ${codelike}`);
@@ -321,7 +309,7 @@ export function extractVerificationCode(email: EmailContent): string | null {
   }
 
   logger.warn('Could not extract verification code from email');
-  logger.info(`Email body preview: ${body.substring(0, 500)}...`);
+  logger.debug(`Email body preview: ${body.substring(0, 500)}...`);
   return null;
 }
 
@@ -343,31 +331,29 @@ export async function getVerificationCode(
 }
 
 /**
- * Delete mailbox (cleanup) - not needed for Gmail
+ * Delete mailbox (cleanup) - IMAP doesn't need cleanup
  */
 export async function deleteTempMailbox(mailbox: TempMailbox): Promise<void> {
-  // Gmail doesn't need cleanup - just log
-  logger.info(`Gmail session ended for: ${mailbox.email}`);
+  logger.debug(`IMAP session ended for: ${mailbox.email}`);
 }
 
 /**
- * Test Gmail connection
+ * Test IMAP connection
  */
-export async function testGmailConnection(): Promise<boolean> {
+export async function testImapConnection(): Promise<boolean> {
   let client: ImapFlow | null = null;
 
   try {
-    logger.info('Testing Gmail IMAP connection...');
+    logger.info(`Testing IMAP connection to ${IMAP_CONFIG.host}...`);
     client = await createImapClient();
     await client.mailboxOpen('INBOX');
 
-    // Get mailbox status
     const status = await client.status('INBOX', { messages: true, unseen: true });
-    logger.info(`Gmail connected! Inbox has ${status.messages} messages, ${status.unseen} unseen`);
+    logger.info(`IMAP connected! Inbox: ${status.messages} messages, ${status.unseen} unseen`);
 
     return true;
   } catch (error) {
-    logger.error(`Gmail connection failed: ${error}`);
+    logger.error(`IMAP connection failed: ${error}`);
     return false;
   } finally {
     if (client) {

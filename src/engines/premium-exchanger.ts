@@ -4,7 +4,7 @@ import { EngineType } from './detector';
 import { detectCaptcha, solveCaptcha } from '../captcha';
 import { config } from '../config';
 import { logger } from '../logger';
-import { createTempMailbox, getVerificationCode, deleteTempMailbox, TempMailbox } from '../tempmail';
+import { createTempMailbox, getVerificationCode, deleteTempMailbox, isEmailConfigured, TempMailbox } from '../tempmail';
 import { SmartFormFiller } from './smart-form';
 import { NetworkInterceptor } from '../utils/network-interceptor';
 import { humanClick } from '../utils/human-mouse';
@@ -51,10 +51,18 @@ export class PremiumExchangerEngine extends BaseEngine {
   async collectAddress(page: Page, data: ExchangeFormData): Promise<CollectionResult> {
     let tempMailbox: TempMailbox | null = null;
     const interceptor = this.createInterceptor(page);
+    const hasEmail = isEmailConfigured();
+    const emailForForm = hasEmail ? '' : config.formEmail; // Use form email if IMAP not available
 
     try {
-      tempMailbox = await createTempMailbox();
-      logger.info(`Using email: ${tempMailbox.email}`);
+      if (hasEmail) {
+        tempMailbox = await createTempMailbox();
+        logger.info(`Using IMAP email: ${tempMailbox.email}`);
+      } else {
+        logger.warn('IMAP not configured — email verification will be skipped');
+      }
+
+      const formEmail = tempMailbox?.email || emailForForm || 'test@example.com';
 
       // Step 1: Navigate to exchange page
       const foundPage = await navigateToExchangePage(page, data.fromCurrency, data.toCurrency);
@@ -85,7 +93,7 @@ export class PremiumExchangerEngine extends BaseEngine {
       const validation = smartFiller.hasRequiredFields();
       if (!validation.valid) {
         logger.warn(`Missing fields: ${validation.missing.join(', ')}`);
-        const fallbackResult = await tryFallbackFill(page, data.amount, data.toCurrency, tempMailbox.email);
+        const fallbackResult = await tryFallbackFill(page, data.amount, data.toCurrency, formEmail);
         if (!fallbackResult) {
           return { success: false, error: `Missing fields: ${validation.missing.join(', ')}` };
         }
@@ -95,7 +103,7 @@ export class PremiumExchangerEngine extends BaseEngine {
           amount: data.amount,
           card: cardValue,
           wallet: data.wallet,
-          email: tempMailbox.email,
+          email: formEmail,
           name: config.formFio,
           phone: config.formPhone
         });
@@ -144,20 +152,24 @@ export class PremiumExchangerEngine extends BaseEngine {
       await handleConfirmationPopup(page);
       await page.waitForTimeout(2000);
 
-      // Step 6: Email verification
-      logger.info('Step 6: Waiting for email...');
-      const domain = new URL(page.url()).hostname;
-      const code = await getVerificationCode(tempMailbox, new RegExp(domain, 'i'), 120000);
+      // Step 6: Email verification (only if IMAP configured)
+      if (tempMailbox) {
+        logger.info('Step 6: Waiting for verification email...');
+        const domain = new URL(page.url()).hostname;
+        const code = await getVerificationCode(tempMailbox, new RegExp(domain, 'i'), 120000);
 
-      if (!code) {
-        await this.saveDebugScreenshot(page, 'no-email-code');
-        return { success: false, error: 'Email verification failed' };
-      }
-
-      if (/^\d+$/.test(code)) {
-        await enterVerificationCode(page, code);
-      } else if (code.startsWith('http')) {
-        await page.goto(code, { waitUntil: 'domcontentloaded' });
+        if (!code) {
+          await this.saveDebugScreenshot(page, 'no-email-code');
+          logger.warn('Email verification failed — continuing without it');
+        } else if (/^\d+$/.test(code)) {
+          await enterVerificationCode(page, code);
+        } else if (code.startsWith('http')) {
+          await page.goto(code, { waitUntil: 'domcontentloaded' });
+        }
+      } else {
+        logger.info('Step 6: Skipping email verification (IMAP not configured)');
+        // Wait a bit for page to settle after submit
+        await page.waitForTimeout(3000);
       }
 
       // Step 7-8: AML and create order
