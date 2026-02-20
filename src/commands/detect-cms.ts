@@ -190,10 +190,25 @@ async function main() {
   const outputFile = outputArg ? outputArg.split('=')[1] : 'data/cms-detection-v2.json';
   const onlyUnknown = args.includes('--only-unknown');
   const onlyErrors = args.includes('--only-errors');
+  const resume = args.includes('--resume');
 
   // Initialize
   await initDb();
   let exchangers = getActiveExchangers() as Exchanger[];
+
+  // Resume: load previous results and skip already scanned domains
+  let previousResults: CMSDetectionResult[] = [];
+  let previousStats: DetectionStats | null = null;
+
+  if (resume && fs.existsSync(outputFile)) {
+    const prevData = JSON.parse(fs.readFileSync(outputFile, 'utf-8'));
+    previousResults = prevData.results as CMSDetectionResult[];
+    previousStats = prevData.stats as DetectionStats;
+    const scannedDomains = new Set(previousResults.map(r => r.domain));
+    const before = exchangers.length;
+    exchangers = exchangers.filter(e => !scannedDomains.has(e.domain));
+    logger.info(`Resume mode: loaded ${previousResults.length} previous results, ${before - exchangers.length} skipped, ${exchangers.length} remaining`);
+  }
 
   // Filter by previous results if requested
   if (onlyUnknown || onlyErrors) {
@@ -220,7 +235,7 @@ async function main() {
   const toScan = limit > 0 ? exchangers.slice(0, limit) : exchangers;
   logger.info(`Starting CMS detection v2 for ${toScan.length} exchangers...`);
 
-  const stats: DetectionStats = {
+  const stats: DetectionStats = previousStats || {
     total: toScan.length,
     scanned: 0,
     premiumExchanger: 0,
@@ -235,7 +250,11 @@ async function main() {
     errorsByType: {}
   };
 
-  const results: CMSDetectionResult[] = [];
+  if (resume) {
+    stats.total = previousResults.length + toScan.length;
+  }
+
+  const results: CMSDetectionResult[] = [...previousResults];
 
   // Launch browser
   const browser = await chromium.launch({

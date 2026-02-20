@@ -3,6 +3,8 @@ import { BaseEngine, ExchangeFormData, CollectionResult } from './base';
 import { EngineType } from './detector';
 import { detectCaptcha, solveCaptcha } from '../captcha';
 import { logger } from '../logger';
+import { config } from '../config';
+import { humanClick } from '../utils/human-mouse';
 
 export class MultipageEngine extends BaseEngine {
   type: EngineType = 'multipage';
@@ -20,6 +22,8 @@ export class MultipageEngine extends BaseEngine {
   }
 
   async collectAddress(page: Page, data: ExchangeFormData): Promise<CollectionResult> {
+    const interceptor = this.createInterceptor(page);
+
     try {
       // Step 1: Navigate to specific exchange pair page
       const exchangeUrl = await this.findExchangePairUrl(page, data.fromCurrency, data.toCurrency);
@@ -95,6 +99,7 @@ export class MultipageEngine extends BaseEngine {
       }
 
       // Step 8: Submit form
+      interceptor.start();
       const submitted = await this.clickElement(page, [
         'button[type="submit"]',
         '#submit, .submit, .btn-submit',
@@ -120,8 +125,8 @@ export class MultipageEngine extends BaseEngine {
       // Step 10: Wait for order/result page
       await page.waitForLoadState('networkidle', { timeout: 15000 }).catch(() => {});
 
-      // Step 11: Extract address
-      const extracted = await this.extractAddress(page);
+      // Step 11: Extract address (cascade: DOM -> iframe -> API)
+      let extracted = await this.extractAddressEnhanced(page, interceptor);
 
       if (!extracted.address) {
         // Maybe address is on a separate payment page
@@ -129,7 +134,7 @@ export class MultipageEngine extends BaseEngine {
         if (paymentLink) {
           await paymentLink.click();
           await page.waitForTimeout(3000);
-          const paymentExtracted = await this.extractAddress(page);
+          const paymentExtracted = await this.extractAddressEnhanced(page, interceptor);
           if (paymentExtracted.address) {
             return {
               success: true,
@@ -167,6 +172,8 @@ export class MultipageEngine extends BaseEngine {
         success: false,
         error: error instanceof Error ? error.message : String(error)
       };
+    } finally {
+      interceptor.stop();
     }
   }
 

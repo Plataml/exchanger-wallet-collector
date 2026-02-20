@@ -5,6 +5,7 @@ import { detectCaptcha, solveCaptcha } from '../captcha';
 import { logger } from '../logger';
 import { createTempMailbox, getVerificationCode, deleteTempMailbox, TempMailbox } from '../tempmail';
 import { config } from '../config';
+import { humanClick } from '../utils/human-mouse';
 
 /**
  * Engine for BoxExchanger CMS
@@ -27,6 +28,7 @@ export class BoxExchangerEngine extends BaseEngine {
 
   async collectAddress(page: Page, data: ExchangeFormData): Promise<CollectionResult> {
     let tempMailbox: TempMailbox | null = null;
+    const interceptor = this.createInterceptor(page);
 
     try {
       tempMailbox = await createTempMailbox();
@@ -74,6 +76,7 @@ export class BoxExchangerEngine extends BaseEngine {
 
       // Step 8: Submit
       logger.info('[BOX] Step 8: Submitting...');
+      interceptor.start();
       await this.clickSubmitButton(page);
       await page.waitForTimeout(5000);
 
@@ -100,9 +103,16 @@ export class BoxExchangerEngine extends BaseEngine {
         }
       }
 
-      // Step 10: Extract deposit address
+      // Step 10: Extract deposit address (cascade: DOM -> iframe -> API)
       logger.info('[BOX] Step 10: Extracting address...');
-      const extracted = await this.extractDepositAddress(page);
+      let extracted = await this.extractDepositAddress(page);
+
+      if (!extracted.address) {
+        const enhanced = await this.extractAddressEnhanced(page, interceptor);
+        if (enhanced.address) {
+          extracted = { address: enhanced.address, network: enhanced.network, memo: enhanced.memo };
+        }
+      }
 
       if (!extracted.address) {
         await this.saveDebugScreenshot(page, 'no-address');
@@ -124,6 +134,7 @@ export class BoxExchangerEngine extends BaseEngine {
         error: error instanceof Error ? error.message : String(error)
       };
     } finally {
+      interceptor.stop();
       if (tempMailbox) {
         await deleteTempMailbox(tempMailbox).catch(() => {});
       }
@@ -301,7 +312,7 @@ export class BoxExchangerEngine extends BaseEngine {
       try {
         const btn = await page.$(selector);
         if (btn && await btn.isVisible()) {
-          await btn.click();
+          await humanClick(page, btn, { enabled: config.humanMouse });
           logger.info(`[BOX] Submit clicked`);
           return;
         }

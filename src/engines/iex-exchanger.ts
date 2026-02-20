@@ -5,6 +5,7 @@ import { detectCaptcha, solveCaptcha } from '../captcha';
 import { logger } from '../logger';
 import { createTempMailbox, getVerificationCode, deleteTempMailbox, TempMailbox } from '../tempmail';
 import { config } from '../config';
+import { humanClick } from '../utils/human-mouse';
 
 /**
  * Engine for iEXExchanger CMS
@@ -29,6 +30,7 @@ export class IexExchangerEngine extends BaseEngine {
 
   async collectAddress(page: Page, data: ExchangeFormData): Promise<CollectionResult> {
     let tempMailbox: TempMailbox | null = null;
+    const interceptor = this.createInterceptor(page);
 
     try {
       tempMailbox = await createTempMailbox();
@@ -74,6 +76,7 @@ export class IexExchangerEngine extends BaseEngine {
 
       // Step 7: Submit exchange
       logger.info('[IEX] Step 7: Submitting exchange...');
+      interceptor.start();
       await this.clickSubmitButton(page);
       await page.waitForTimeout(5000);
 
@@ -93,9 +96,16 @@ export class IexExchangerEngine extends BaseEngine {
         await page.waitForTimeout(3000);
       }
 
-      // Step 9: Extract deposit address
+      // Step 9: Extract deposit address (cascade: DOM -> iframe -> API)
       logger.info('[IEX] Step 9: Extracting deposit address...');
-      const extracted = await this.extractDepositAddress(page);
+      let extracted = await this.extractDepositAddress(page);
+
+      if (!extracted.address) {
+        const enhanced = await this.extractAddressEnhanced(page, interceptor);
+        if (enhanced.address) {
+          extracted = { address: enhanced.address, network: enhanced.network, memo: enhanced.memo };
+        }
+      }
 
       if (!extracted.address) {
         await this.saveDebugScreenshot(page, 'no-address');
@@ -117,6 +127,7 @@ export class IexExchangerEngine extends BaseEngine {
         error: error instanceof Error ? error.message : String(error)
       };
     } finally {
+      interceptor.stop();
       if (tempMailbox) {
         await deleteTempMailbox(tempMailbox).catch(() => {});
       }
@@ -301,7 +312,7 @@ export class IexExchangerEngine extends BaseEngine {
       try {
         const btn = await page.$(selector);
         if (btn && await btn.isVisible()) {
-          await btn.click();
+          await humanClick(page, btn, { enabled: config.humanMouse });
           logger.info(`[IEX] Submit clicked`);
           return;
         }

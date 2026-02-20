@@ -6,6 +6,8 @@ import { config } from '../config';
 import { logger } from '../logger';
 import { createTempMailbox, getVerificationCode, deleteTempMailbox, TempMailbox } from '../tempmail';
 import { SmartFormFiller } from './smart-form';
+import { NetworkInterceptor } from '../utils/network-interceptor';
+import { humanClick } from '../utils/human-mouse';
 import {
   navigateToExchangePage,
   selectCurrenciesViaUI,
@@ -48,6 +50,7 @@ export class PremiumExchangerEngine extends BaseEngine {
 
   async collectAddress(page: Page, data: ExchangeFormData): Promise<CollectionResult> {
     let tempMailbox: TempMailbox | null = null;
+    const interceptor = this.createInterceptor(page);
 
     try {
       tempMailbox = await createTempMailbox();
@@ -114,6 +117,9 @@ export class PremiumExchangerEngine extends BaseEngine {
       await closeChatWidgets(page);
       await this.saveDebugScreenshot(page, 'before-submit');
 
+      // Start network interception before submit
+      interceptor.start();
+
       await clickSubmitButton(page);
       await page.waitForTimeout(3000);
       await this.saveDebugScreenshot(page, 'after-submit');
@@ -162,8 +168,15 @@ export class PremiumExchangerEngine extends BaseEngine {
       // Step 9: Payment page
       const paymentPage = await goToPaymentPage(page);
 
-      // Step 10: Extract address
-      const extracted = await extractDepositAddress(paymentPage);
+      // Step 10: Extract address (cascade: DOM -> iframe -> API)
+      let extracted = await extractDepositAddress(paymentPage);
+      if (!extracted.address) {
+        // Fallback: try iframe and network interceptor
+        const enhanced = await this.extractAddressEnhanced(paymentPage, interceptor);
+        if (enhanced.address) {
+          extracted = { address: enhanced.address, network: enhanced.network, memo: enhanced.memo };
+        }
+      }
       if (!extracted.address) {
         await this.saveDebugScreenshot(paymentPage, 'no-address');
         return { success: false, error: 'Could not extract address' };
@@ -184,6 +197,7 @@ export class PremiumExchangerEngine extends BaseEngine {
         error: error instanceof Error ? error.message : String(error)
       };
     } finally {
+      interceptor.stop();
       if (tempMailbox) {
         await deleteTempMailbox(tempMailbox).catch(() => {});
       }

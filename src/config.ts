@@ -48,7 +48,10 @@ export const config = {
   formPhone: process.env.FORM_PHONE || '9991234567',  // Phone for СБП transfers
   formFio: process.env.FORM_FIO || 'Мунтян Виктор',  // Muntean Victor
   formFioEn: process.env.FORM_FIO_EN || 'Muntean Victor',
-  formBank: process.env.FORM_BANK || 'Сбербанк'
+  formBank: process.env.FORM_BANK || 'Сбербанк',
+
+  // Human-like mouse simulation (Bezier curves before clicks)
+  humanMouse: process.env.HUMAN_MOUSE !== 'false',
 };
 
 export function randomDelay(): number {

@@ -1,5 +1,6 @@
 import { chromium, Browser, BrowserContext, Page } from 'playwright';
 import { config } from './config';
+import { logger } from './logger';
 
 let browser: Browser | null = null;
 
@@ -39,6 +40,19 @@ export async function closeBrowser(): Promise<void> {
   if (browser) {
     await browser.close();
     browser = null;
+  }
+}
+
+export async function clearBrowserStorage(page: Page): Promise<void> {
+  try {
+    await page.evaluate(() => {
+      try { localStorage.clear(); } catch {}
+      try { sessionStorage.clear(); } catch {}
+    });
+    await page.context().clearCookies();
+    logger.debug('Browser storage cleared');
+  } catch (err) {
+    logger.debug(`Failed to clear storage: ${err}`);
   }
 }
 

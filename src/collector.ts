@@ -1,5 +1,5 @@
 import { Page } from 'playwright';
-import { createPage, closeBrowser } from './browser';
+import { createPage, closeBrowser, clearBrowserStorage } from './browser';
 import { getActiveExchangers, insertWallet, insertAttempt, getExchangerByDomain } from './db';
 import { config, randomDelay, sleep } from './config';
 import { getAdapter } from './adapters';
@@ -7,6 +7,7 @@ import { smartCollect, initEngines, ExchangeFormData } from './engines';
 import { CryptoPair, Exchanger } from './types';
 import { logger } from './logger';
 import { notifySuccess, notifyError } from './telegram';
+import { AmountDetector } from './utils/amount-detector';
 import fs from 'fs';
 
 // Initialize engine system
@@ -48,6 +49,7 @@ export async function collectFromExchanger(
       logger.info(`[${exchanger.name}] Collecting ${pair.from}->${pair.to} (${pair.network})`);
 
       page = await createPage();
+      await clearBrowserStorage(page);
 
       let result: { address: string; network: string; screenshotPath: string };
 
@@ -70,10 +72,21 @@ export async function collectFromExchanger(
         // The exchanger will show us the crypto deposit address
         const isCryptoToFiat = pair.to.includes('RUB') || pair.to.includes('UAH');
 
+        // Detect minimum amount dynamically instead of using hardcoded values
+        let amount: number;
+        if (isCryptoToFiat) {
+          const detector = new AmountDetector(page);
+          const detected = await detector.detectMinimum(pair.from, pair.to, getAmountForCrypto(pair.from));
+          amount = detected.amount;
+          logger.info(`Amount for ${pair.from}: ${amount} (method: ${detected.method}, confidence: ${(detected.confidence * 100).toFixed(0)}%)`);
+        } else {
+          amount = config.formAmount || 1000;
+        }
+
         const formData: ExchangeFormData = {
           fromCurrency: pair.from,
           toCurrency: pair.to,
-          amount: isCryptoToFiat ? getAmountForCrypto(pair.from) : (config.formAmount || 1000),
+          amount,
           wallet: isCryptoToFiat ? (config.formPhone || '9991234567') : getWalletForCurrency(pair.to),
           email: config.formEmail,
           phone: config.formPhone || '9991234567',

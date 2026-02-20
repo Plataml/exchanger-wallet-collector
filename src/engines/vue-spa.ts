@@ -3,6 +3,8 @@ import { BaseEngine, ExchangeFormData, CollectionResult } from './base';
 import { EngineType } from './detector';
 import { detectCaptcha, solveCaptcha } from '../captcha';
 import { logger } from '../logger';
+import { config } from '../config';
+import { humanClick } from '../utils/human-mouse';
 
 export class VueSpaEngine extends BaseEngine {
   type: EngineType = 'vue-spa';
@@ -19,6 +21,8 @@ export class VueSpaEngine extends BaseEngine {
   }
 
   async collectAddress(page: Page, data: ExchangeFormData): Promise<CollectionResult> {
+    const interceptor = this.createInterceptor(page);
+
     try {
       // Wait for Vue app to mount
       await page.waitForTimeout(2000);
@@ -118,6 +122,7 @@ export class VueSpaEngine extends BaseEngine {
       logger.info('Attempting form submission...');
 
       // Step 7: Submit main form - click "Обменять" button
+      interceptor.start();
       let submitted = false;
 
       // Try multiple approaches to click the submit button
@@ -132,7 +137,7 @@ export class VueSpaEngine extends BaseEngine {
         try {
           const btn = await page.$(selector);
           if (btn && await btn.isVisible()) {
-            await btn.click();
+            await humanClick(page, btn, { enabled: config.humanMouse });
             submitted = true;
             logger.info('Clicked submit button');
             break;
@@ -197,8 +202,15 @@ export class VueSpaEngine extends BaseEngine {
         await page.waitForLoadState('networkidle', { timeout: 15000 }).catch(() => {});
       }
 
-      // Step 10: Extract deposit address from order page
-      const extracted = await this.extractDepositAddress(page);
+      // Step 10: Extract deposit address from order page (cascade: DOM -> iframe -> API)
+      let extracted = await this.extractDepositAddress(page);
+
+      if (!extracted.address) {
+        const enhanced = await this.extractAddressEnhanced(page, interceptor);
+        if (enhanced.address) {
+          extracted = { address: enhanced.address, network: enhanced.network, memo: enhanced.memo };
+        }
+      }
 
       if (!extracted.address) {
         // Save debug screenshot
@@ -228,6 +240,8 @@ export class VueSpaEngine extends BaseEngine {
         success: false,
         error: error instanceof Error ? error.message : String(error)
       };
+    } finally {
+      interceptor.stop();
     }
   }
 

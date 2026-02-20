@@ -1,5 +1,7 @@
-import { Page } from 'playwright';
+import { Page, Frame } from 'playwright';
 import { EngineType } from './detector';
+import { NetworkInterceptor, InterceptedAddress } from '../utils/network-interceptor';
+import { logger } from '../logger';
 
 export interface ExchangeFormData {
   fromCurrency: string;
@@ -108,6 +110,131 @@ export abstract class BaseEngine {
 
       return result;
     });
+  }
+
+  // Create a network interceptor for the page
+  protected createInterceptor(page: Page): NetworkInterceptor {
+    return new NetworkInterceptor(page);
+  }
+
+  // Search for addresses inside iframes (payment gateways)
+  protected async extractAddressFromFrames(page: Page): Promise<{ address?: string; network?: string; memo?: string }> {
+    const frames = page.frames();
+    const FRAME_URL_KEYWORDS = ['checkout', 'pay', 'invoice', 'gateway', 'payment', 'deposit', 'wallet', 'order', 'crypto'];
+    const FRAME_CONTENT_KEYWORDS = ['bitcoin', 'ethereum', 'tether', 'usdt', 'btc', 'eth', 'wallet', 'address', 'deposit', 'кошелёк', 'адрес'];
+
+    for (const frame of frames) {
+      if (frame === page.mainFrame()) continue;
+
+      const frameUrl = frame.url().toLowerCase();
+      const isRelevantUrl = FRAME_URL_KEYWORDS.some(kw => frameUrl.includes(kw));
+
+      if (!isRelevantUrl) {
+        try {
+          const hasContent = await frame.evaluate((keywords: string[]) => {
+            const text = document.body?.innerText?.toLowerCase() || '';
+            return keywords.some(kw => text.includes(kw));
+          }, FRAME_CONTENT_KEYWORDS);
+          if (!hasContent) continue;
+        } catch {
+          continue;
+        }
+      }
+
+      try {
+        const result = await frame.evaluate(() => {
+          const res: { address?: string; network?: string; memo?: string } = {};
+          const patterns = [
+            /\b(bc1[a-zA-HJ-NP-Z0-9]{39,59})\b/,
+            /\b([13][a-km-zA-HJ-NP-Z1-9]{25,34})\b/,
+            /\b(0x[a-fA-F0-9]{40})\b/,
+            /\b(T[a-zA-Z0-9]{33})\b/,
+            /\b([LM][a-km-zA-HJ-NP-Z1-9]{26,33})\b/,
+            /\b(ltc1[a-zA-HJ-NP-Z0-9]{39,59})\b/,
+            /\b(r[0-9a-zA-Z]{24,34})\b/,
+          ];
+          const selectors = [
+            '[data-clipboard-text]', '[data-copy]',
+            '.wallet-address, .crypto-address, .deposit-address',
+            'input[readonly]', '.address-text', '[class*="address"]',
+          ];
+
+          for (const sel of selectors) {
+            const elements = Array.from(document.querySelectorAll(sel));
+            for (const el of elements) {
+              const text = (el as HTMLElement).getAttribute('data-clipboard-text') ||
+                          (el as HTMLInputElement).value ||
+                          (el as HTMLElement).innerText || '';
+              for (const p of patterns) {
+                const m = text.match(p);
+                if (m) { res.address = m[1]; break; }
+              }
+              if (res.address) break;
+            }
+            if (res.address) break;
+          }
+
+          if (!res.address) {
+            const bodyText = document.body?.innerText || '';
+            for (const p of patterns) {
+              const m = bodyText.match(p);
+              if (m) { res.address = m[1]; break; }
+            }
+          }
+
+          if (res.address) {
+            if (res.address.startsWith('bc1') || res.address.startsWith('1') || res.address.startsWith('3')) res.network = 'BTC';
+            else if (res.address.startsWith('T')) res.network = 'TRC20';
+            else if (res.address.startsWith('0x')) res.network = 'ERC20';
+            else if (res.address.startsWith('L') || res.address.startsWith('ltc1')) res.network = 'LTC';
+          }
+
+          return res;
+        });
+
+        if (result.address) {
+          logger.info(`Found address in iframe: ${frame.url()}`);
+          return result;
+        }
+      } catch {
+        continue;
+      }
+    }
+
+    return {};
+  }
+
+  // Enhanced address extraction: DOM -> Iframe -> Network API (cascading strategy)
+  protected async extractAddressEnhanced(
+    page: Page,
+    interceptor?: NetworkInterceptor
+  ): Promise<{ address?: string; network?: string; memo?: string; source?: string }> {
+    // Level 1: DOM extraction (existing method)
+    const domResult = await this.extractAddress(page);
+    if (domResult.address) {
+      return { ...domResult, source: 'dom' };
+    }
+
+    // Level 2: Iframe extraction
+    const iframeResult = await this.extractAddressFromFrames(page);
+    if (iframeResult.address) {
+      return { ...iframeResult, source: 'iframe' };
+    }
+
+    // Level 3: Network interception
+    if (interceptor) {
+      const networkResult = interceptor.getBestAddress();
+      if (networkResult) {
+        return {
+          address: networkResult.address,
+          network: networkResult.network,
+          memo: networkResult.memo,
+          source: networkResult.source,
+        };
+      }
+    }
+
+    return {};
   }
 
   // Wait for form to be ready
