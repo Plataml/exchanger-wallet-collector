@@ -140,6 +140,7 @@ export async function enterVerificationCode(page: Page, code: string): Promise<v
 
 /**
  * Check agreement checkboxes
+ * Handles PremiumBox jcheckbox (hidden inputs with styled labels)
  */
 export async function checkAgreementCheckboxes(page: Page): Promise<void> {
   const jsChecked = await page.evaluate(() => {
@@ -150,22 +151,32 @@ export async function checkAgreementCheckboxes(page: Page): Promise<void> {
       const input = cb as HTMLInputElement;
       if (input.checked) return;
 
-      const label = cb.closest('label')?.textContent?.toLowerCase() || '';
-      const parent = cb.closest('div, p, span, td, tr')?.textContent?.toLowerCase() || '';
+      const labelEl = cb.closest('label');
+      const parentEl = cb.closest('div, p, span, td, tr');
+      const labelText = (labelEl?.textContent || '').toLowerCase();
+      const parentText = (parentEl?.textContent || '').toLowerCase();
       const name = (input.name || '').toLowerCase();
       const id = (input.id || '').toLowerCase();
 
-      const allText = `${label} ${parent}`;
+      const allText = `${labelText} ${parentText}`;
       const isAgreement =
         allText.includes('согласен') || allText.includes('прочитал') ||
         allText.includes('принимаю') || allText.includes('agree') ||
         allText.includes('aml') || allText.includes('политик') ||
+        allText.includes('ознакомлен') || allText.includes('правил') ||
         name.includes('agree') || name.includes('aml') ||
+        name.includes('check_rule') || name.includes('tos') ||
         id.includes('agree') || id.includes('aml');
 
       if (isAgreement) {
-        input.checked = true;
-        input.dispatchEvent(new Event('change', { bubbles: true }));
+        // For hidden jcheckbox inputs, click the parent label via JS
+        if (labelEl) {
+          labelEl.click();
+        } else {
+          input.checked = true;
+          input.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+          input.dispatchEvent(new Event('change', { bubbles: true }));
+        }
         count++;
       }
     });
@@ -174,7 +185,29 @@ export async function checkAgreementCheckboxes(page: Page): Promise<void> {
   });
 
   if (jsChecked > 0) {
-    logger.info(`Checked ${jsChecked} agreement checkbox(es)`);
+    logger.info(`Clicked ${jsChecked} agreement checkbox label(s)`);
+    await page.waitForTimeout(500);
+
+    // Verify and force-set any still unchecked
+    const fixed = await page.evaluate(() => {
+      let count = 0;
+      const cbs = document.querySelectorAll('input[type="checkbox"]');
+      cbs.forEach(cb => {
+        const input = cb as HTMLInputElement;
+        if (input.checked) return;
+        const name = (input.name || '').toLowerCase();
+        if (name.includes('check') || name.includes('agree') || name.includes('rule') || name.includes('aml')) {
+          input.checked = true;
+          input.dispatchEvent(new Event('change', { bubbles: true }));
+          count++;
+        }
+      });
+      return count;
+    });
+
+    if (fixed > 0) {
+      logger.warn(`Force-checked ${fixed} still-unchecked checkbox(es)`);
+    }
   }
 }
 

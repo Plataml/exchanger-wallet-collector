@@ -175,6 +175,14 @@ export class PremiumExchangerEngine extends BaseEngine {
       });
       if (validationError) {
         logger.warn(`Post-submit validation error: ${validationError}`);
+        // If form validation failed, don't wait for email — return error
+        const isFormError = validationError.includes('поле') || validationError.includes('заполн') ||
+          validationError.includes('обязатель') || validationError.includes('не приняли') ||
+          validationError.includes('условия') || validationError.includes('минимал');
+        if (isFormError) {
+          await this.saveDebugScreenshot(page, 'validation-error');
+          return { success: false, error: `Form validation: ${validationError}` };
+        }
       }
 
       // Step 5: Handle popup
