@@ -295,34 +295,109 @@ export async function clickCreateOrderButton(page: Page): Promise<void> {
  * Go to payment page (handles new tab)
  */
 export async function goToPaymentPage(page: Page): Promise<Page> {
-  const [newPage] = await Promise.all([
-    page.context().waitForEvent('page', { timeout: 30000 }).catch(() => null),
-    (async () => {
-      const selectors = [
-        'button:has-text("Перейти к оплате")',
-        'a:has-text("Перейти к оплате")',
-        '.payment-btn',
-        'a[href*="payment"]'
-      ];
+  // First check if there are any payment buttons/links visible
+  const paymentSelectors = [
+    'button:has-text("Перейти к оплате")',
+    'a:has-text("Перейти к оплате")',
+    'button:has-text("Оплатить")',
+    'a:has-text("Оплатить")',
+    '.payment-btn',
+    'a[href*="payment"]',
+    'a[href*="pay"]',
+    'a[href*="order"]'
+  ];
 
-      for (const selector of selectors) {
-        try {
-          const btn = await page.$(selector);
-          if (btn && await btn.isVisible()) {
-            await btn.click();
-            return;
-          }
-        } catch { continue; }
+  let buttonFound = false;
+  for (const selector of paymentSelectors) {
+    try {
+      const btn = await page.$(selector);
+      if (btn && await btn.isVisible()) {
+        buttonFound = true;
+        // Wait for potential new tab when clicking
+        const [newPage] = await Promise.all([
+          page.context().waitForEvent('page', { timeout: 5000 }).catch(() => null),
+          btn.click()
+        ]);
+
+        if (newPage) {
+          await newPage.waitForLoadState('domcontentloaded');
+          logger.info(`Opened payment page in new tab`);
+          return newPage;
+        }
+        // Button clicked but no new tab — page might have navigated
+        await page.waitForTimeout(2000);
+        break;
       }
-    })()
-  ]);
+    } catch { continue; }
+  }
 
-  if (newPage) {
-    await newPage.waitForLoadState('domcontentloaded');
-    return newPage;
+  if (!buttonFound) {
+    logger.debug('No payment button found — staying on current page');
   }
 
   return page;
+}
+
+/**
+ * Analyze post-submit page state for diagnostics
+ */
+export async function analyzePostSubmitState(page: Page): Promise<{
+  state: 'email_verification' | 'order_created' | 'payment_page' | 'error' | 'unknown';
+  details: string;
+}> {
+  return page.evaluate(() => {
+    const text = (document.body?.innerText || '').toLowerCase();
+    const url = window.location.href.toLowerCase();
+
+    // Check for email verification prompts
+    const emailKeywords = [
+      'подтвердите', 'подтверждение', 'verification',
+      'код подтверждения', 'проверьте почту', 'check your email',
+      'отправили письмо', 'sent.*email', 'введите код',
+      'enter.*code', 'verify your email'
+    ];
+    for (const kw of emailKeywords) {
+      if (text.includes(kw)) {
+        return { state: 'email_verification' as const, details: `Keyword: "${kw}"` };
+      }
+    }
+
+    // Check for order/payment page indicators
+    const orderKeywords = ['заявка создана', 'заказ создан', 'order created', 'order #', 'заявка №'];
+    for (const kw of orderKeywords) {
+      if (text.includes(kw)) {
+        return { state: 'order_created' as const, details: `Keyword: "${kw}"` };
+      }
+    }
+
+    // Check for payment page (deposit address should be here)
+    const paymentKeywords = [
+      'оплат', 'переведите', 'отправьте', 'deposit', 'send',
+      'адрес кошелька', 'wallet address', 'qr', 'адрес для оплаты'
+    ];
+    for (const kw of paymentKeywords) {
+      if (text.includes(kw)) {
+        return { state: 'payment_page' as const, details: `Keyword: "${kw}"` };
+      }
+    }
+
+    // Check URL for clues
+    if (url.includes('order') || url.includes('payment') || url.includes('pay')) {
+      return { state: 'payment_page' as const, details: `URL: ${url}` };
+    }
+
+    // Check for errors
+    const errorKeywords = ['ошибка', 'error', 'не удалось', 'failed'];
+    for (const kw of errorKeywords) {
+      if (text.includes(kw)) {
+        return { state: 'error' as const, details: `Keyword: "${kw}"` };
+      }
+    }
+
+    // Get first 200 chars of visible text for diagnostics
+    const visibleText = text.substring(0, 200).replace(/\s+/g, ' ').trim();
+    return { state: 'unknown' as const, details: `Page text: "${visibleText}"` };
+  });
 }
 
 /**

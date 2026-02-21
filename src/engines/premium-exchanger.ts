@@ -28,7 +28,8 @@ import {
   acceptAmlPolicy,
   clickCreateOrderButton,
   goToPaymentPage,
-  checkBlockingError
+  checkBlockingError,
+  analyzePostSubmitState
 } from './premium/ui-handlers';
 import { extractDepositAddress } from './premium/address-extractor';
 
@@ -137,16 +138,18 @@ export class PremiumExchangerEngine extends BaseEngine {
       interceptor.start();
 
       await clickSubmitButton(page);
-      await page.waitForTimeout(3000);
+
+      // Wait for AJAX/navigation to complete (networkidle = no requests for 500ms)
+      await page.waitForLoadState('networkidle', { timeout: 8000 }).catch(() => null);
       await this.saveDebugScreenshot(page, 'after-submit');
 
-      // Check for post-submit captcha
+      // Check for post-submit captcha (PremiumBox double-captcha pattern)
       const postCaptcha = await detectCaptcha(page);
       if (postCaptcha.hasCaptcha) {
         const solution = await solveCaptcha(page);
         if (solution.success) {
           await clickSubmitButton(page);
-          await page.waitForTimeout(3000);
+          await page.waitForLoadState('networkidle', { timeout: 8000 }).catch(() => null);
         }
       }
 
@@ -179,7 +182,6 @@ export class PremiumExchangerEngine extends BaseEngine {
       });
       if (validationError) {
         logger.warn(`Post-submit validation error: ${validationError}`);
-        // If form validation failed, don't wait for email — return error
         const isFormError = validationError.includes('поле') || validationError.includes('заполн') ||
           validationError.includes('обязатель') || validationError.includes('не приняли') ||
           validationError.includes('условия') || validationError.includes('минимал') ||
@@ -191,28 +193,37 @@ export class PremiumExchangerEngine extends BaseEngine {
         }
       }
 
+      // Analyze page state after submit
+      const pageState = await analyzePostSubmitState(page);
+      logger.info(`Post-submit state: ${pageState.state} (${pageState.details})`);
+
       // Step 5: Handle popup
       await handleConfirmationPopup(page);
       await page.waitForTimeout(2000);
 
-      // Step 6: Email verification (only if IMAP configured)
-      if (tempMailbox) {
-        logger.info('Step 6: Waiting for verification email...');
-        const domain = new URL(page.url()).hostname;
-        const code = await getVerificationCode(tempMailbox, new RegExp(domain, 'i'), 120000);
+      // Step 6: Email verification
+      if (pageState.state === 'email_verification' || tempMailbox) {
+        if (tempMailbox) {
+          logger.info('Step 6: Waiting for verification email...');
+          const domain = new URL(page.url()).hostname;
+          const code = await getVerificationCode(tempMailbox, new RegExp(domain, 'i'), 120000);
 
-        if (!code) {
-          await this.saveDebugScreenshot(page, 'no-email-code');
-          logger.warn('Email verification failed — continuing without it');
-        } else if (/^\d+$/.test(code)) {
-          await enterVerificationCode(page, code);
-        } else if (code.startsWith('http')) {
-          await page.goto(code, { waitUntil: 'domcontentloaded' });
+          if (!code) {
+            await this.saveDebugScreenshot(page, 'no-email-code');
+            logger.warn('Email verification failed — continuing without it');
+          } else if (/^\d+$/.test(code)) {
+            await enterVerificationCode(page, code);
+          } else if (code.startsWith('http')) {
+            await page.goto(code, { waitUntil: 'domcontentloaded' });
+          }
+        } else if (pageState.state === 'email_verification') {
+          logger.warn('Step 6: Email verification required but IMAP not configured — cannot proceed');
+          await this.saveDebugScreenshot(page, 'email-required');
+          return { success: false, error: 'Email verification required (IMAP not configured)' };
         }
       } else {
-        logger.info('Step 6: Skipping email verification (IMAP not configured)');
-        // Wait a bit for page to settle after submit
-        await page.waitForTimeout(3000);
+        logger.info('Step 6: No email verification needed');
+        await page.waitForTimeout(2000);
       }
 
       // Step 7-8: AML and create order

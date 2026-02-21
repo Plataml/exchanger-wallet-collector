@@ -26,11 +26,21 @@ export async function launchBrowser(): Promise<Browser> {
 }
 
 export async function createContext(): Promise<BrowserContext> {
-  const b = await launchBrowser();
-  return b.newContext({
+  const contextOptions = {
     viewport: { width: 1280, height: 720 },
     userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
-  });
+  };
+
+  try {
+    const b = await launchBrowser();
+    return await b.newContext(contextOptions);
+  } catch (error) {
+    // Browser likely crashed — force reconnect
+    logger.warn(`Browser context failed, restarting browser: ${error}`);
+    browser = null;
+    const b = await launchBrowser();
+    return await b.newContext(contextOptions);
+  }
 }
 
 export async function createPage(): Promise<Page> {
