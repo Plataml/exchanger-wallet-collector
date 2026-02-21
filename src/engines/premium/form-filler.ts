@@ -11,16 +11,30 @@ export function getCardForCurrency(toCurrency: string, resolvedUrl?: string): st
   if (toCurrency.includes('UAH') || toCurrency.includes('CARDUAH')) {
     return config.formCardUA;
   }
-  // Check resolved URL for SBP vs Sberbank (URL is more reliable than toCurrency)
+
+  // URL-based detection is most reliable (resolvedUrl = actual exchange page URL)
   const url = (resolvedUrl || '').toLowerCase();
-  if (url.includes('sbp') && !url.includes('sber')) {
-    return config.formPhone; // SBP uses phone number
+  if (url) {
+    // Check for Sberbank first (sber* URLs need card number)
+    if (url.includes('sber')) {
+      logger.info(`getCardForCurrency: URL contains 'sber' → using card`);
+      return config.formCard || config.formPhone;
+    }
+    // SBP URLs need phone number
+    if (url.includes('sbp')) {
+      logger.info(`getCardForCurrency: URL contains 'sbp' → using phone`);
+      return config.formPhone;
+    }
   }
-  // SBP check before generic RUB check
-  if (toCurrency.includes('SBP') && !toCurrency.includes('SBER')) {
+
+  // Currency code fallback (when no URL or URL doesn't match)
+  if (toCurrency.includes('SBER')) {
+    return config.formCard || config.formPhone;
+  }
+  if (toCurrency.includes('SBP')) {
     return config.formPhone;
   }
-  if (toCurrency.includes('SBER') || toCurrency.includes('CARD') || toCurrency.includes('RUB')) {
+  if (toCurrency.includes('CARD') || toCurrency.includes('RUB')) {
     return config.formCard || config.formPhone;
   }
   return config.formWalletBTC;
