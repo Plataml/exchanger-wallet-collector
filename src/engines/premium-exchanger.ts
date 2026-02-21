@@ -99,7 +99,7 @@ export class PremiumExchangerEngine extends BaseEngine {
           return { success: false, error: `Missing fields: ${validation.missing.join(', ')}` };
         }
       } else {
-        const cardValue = getCardForCurrency(data.toCurrency);
+        const cardValue = getCardForCurrency(data.toCurrency, page.url());
         await smartFiller.fillForm({
           amount: data.amount,
           card: cardValue,
@@ -178,7 +178,8 @@ export class PremiumExchangerEngine extends BaseEngine {
         // If form validation failed, don't wait for email — return error
         const isFormError = validationError.includes('поле') || validationError.includes('заполн') ||
           validationError.includes('обязатель') || validationError.includes('не приняли') ||
-          validationError.includes('условия') || validationError.includes('минимал');
+          validationError.includes('условия') || validationError.includes('минимал') ||
+          validationError.includes('неверн') || validationError.includes('номер счета');
         if (isFormError) {
           await this.saveDebugScreenshot(page, 'validation-error');
           return { success: false, error: `Form validation: ${validationError}` };

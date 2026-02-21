@@ -3,17 +3,25 @@ import { config } from '../../config';
 import { logger } from '../../logger';
 
 /**
- * Get card/phone value based on target currency
+ * Get card/phone value based on target currency and resolved URL
+ * SBP (System for Quick Payments) requires phone number
+ * Sberbank/card transfers require card number
  */
-export function getCardForCurrency(toCurrency: string): string {
+export function getCardForCurrency(toCurrency: string, resolvedUrl?: string): string {
   if (toCurrency.includes('UAH') || toCurrency.includes('CARDUAH')) {
     return config.formCardUA;
   }
+  // Check resolved URL for SBP vs Sberbank (URL is more reliable than toCurrency)
+  const url = (resolvedUrl || '').toLowerCase();
+  if (url.includes('sbp') && !url.includes('sber')) {
+    return config.formPhone; // SBP uses phone number
+  }
+  // SBP check before generic RUB check
+  if (toCurrency.includes('SBP') && !toCurrency.includes('SBER')) {
+    return config.formPhone;
+  }
   if (toCurrency.includes('SBER') || toCurrency.includes('CARD') || toCurrency.includes('RUB')) {
     return config.formCard || config.formPhone;
-  }
-  if (toCurrency.includes('SBP')) {
-    return config.formPhone;
   }
   return config.formWalletBTC;
 }
