@@ -176,6 +176,11 @@ export class SmartFormFiller {
           purpose = 'phone';
           confidence = 0.9;
         }
+        // PremiumBox custom fields (cf2, cf6, cf7 etc.) — likely FIO/name
+        else if (/^cf\d+$/.test(name) && type !== 'hidden' && !name.startsWith('cfget')) {
+          purpose = 'name';
+          confidence = 0.7;
+        }
         // Submit button
         else if (type === 'submit' || tag === 'button' ||
                  className.includes('submit') || className.includes('btn') ||

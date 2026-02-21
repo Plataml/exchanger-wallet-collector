@@ -5,9 +5,11 @@ import { logger } from './logger';
 let browser: Browser | null = null;
 
 export async function launchBrowser(): Promise<Browser> {
-  if (browser) {
+  if (browser && browser.isConnected()) {
     return browser;
   }
+  // Reset if disconnected
+  browser = null;
 
   const launchOptions: any = {
     headless: config.headless

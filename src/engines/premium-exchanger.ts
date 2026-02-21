@@ -15,7 +15,8 @@ import {
 } from './premium/navigation';
 import {
   getCardForCurrency,
-  tryFallbackFill
+  tryFallbackFill,
+  fillPersonalData
 } from './premium/form-filler';
 import {
   clickSubmitButton,
@@ -109,6 +110,9 @@ export class PremiumExchangerEngine extends BaseEngine {
         });
       }
 
+      // Fill PremiumBox custom fields (cf6=FIO, etc.) that SmartFormFiller may miss
+      await fillPersonalData(page, formEmail);
+
       // Step 3: Handle captcha
       const captcha = await detectCaptcha(page);
       if (captcha.hasCaptcha) {
@@ -148,6 +152,31 @@ export class PremiumExchangerEngine extends BaseEngine {
         return { success: false, error: `Blocked: ${blockError}` };
       }
 
+      // Check for form validation errors (AJAX forms stay on same page)
+      const validationError = await page.evaluate(() => {
+        const errorSelectors = [
+          '.error:not(:empty)', '.field-error:not(:empty)', '.xchange_error:not(:empty)',
+          '[class*="error"]:not(script):not(style)', '.alert-danger', '.form-error'
+        ];
+        for (const sel of errorSelectors) {
+          const els = document.querySelectorAll(sel);
+          for (const el of Array.from(els)) {
+            const htmlEl = el as HTMLElement;
+            if (htmlEl.offsetParent !== null && htmlEl.innerText?.trim()) {
+              const text = htmlEl.innerText.trim();
+              if (text.length > 5 && text.length < 300 &&
+                  !text.includes('©') && !text.includes('cookie')) {
+                return text;
+              }
+            }
+          }
+        }
+        return null;
+      });
+      if (validationError) {
+        logger.warn(`Post-submit validation error: ${validationError}`);
+      }
+
       // Step 5: Handle popup
       await handleConfirmationPopup(page);
       await page.waitForTimeout(2000);
@@ -177,20 +206,36 @@ export class PremiumExchangerEngine extends BaseEngine {
       await clickCreateOrderButton(page);
       await page.waitForTimeout(3000);
 
-      // Step 9: Payment page
-      const paymentPage = await goToPaymentPage(page);
-
-      // Step 10: Extract address (cascade: DOM -> iframe -> API)
-      let extracted = await extractDepositAddress(paymentPage);
+      // Step 9: Try extracting address from CURRENT page first (AJAX forms)
+      let extracted = await extractDepositAddress(page);
       if (!extracted.address) {
-        // Fallback: try iframe and network interceptor
-        const enhanced = await this.extractAddressEnhanced(paymentPage, interceptor);
-        if (enhanced.address) {
-          extracted = { address: enhanced.address, network: enhanced.network, memo: enhanced.memo };
+        // Check network interceptor for addresses found in API responses
+        const apiAddr = interceptor.getAddresses();
+        if (apiAddr.length > 0) {
+          extracted = { address: apiAddr[0].address, network: apiAddr[0].network };
+          logger.info(`Address found via API interceptor: ${apiAddr[0].address}`);
         }
       }
+
+      // If no address on current page, try payment page navigation
       if (!extracted.address) {
-        await this.saveDebugScreenshot(paymentPage, 'no-address');
+        const paymentPage = await goToPaymentPage(page);
+
+        extracted = await extractDepositAddress(paymentPage);
+        if (!extracted.address) {
+          // Fallback: try iframe and network interceptor
+          const enhanced = await this.extractAddressEnhanced(paymentPage, interceptor);
+          if (enhanced.address) {
+            extracted = { address: enhanced.address, network: enhanced.network, memo: enhanced.memo };
+          }
+        }
+        if (!extracted.address) {
+          await this.saveDebugScreenshot(paymentPage, 'no-address');
+        }
+      }
+
+      if (!extracted.address) {
+        await this.saveDebugScreenshot(page, 'no-address');
         return { success: false, error: 'Could not extract address' };
       }
 
