@@ -98,23 +98,17 @@ export async function fillRecipientDetails(page: Page, value: string): Promise<b
 
 /**
  * Fill personal data (FIO, email) — PremiumBox custom fields
- * PremiumBox CMS uses cf2, cf6, cf7 etc. for personal data fields
+ * Note: cf* fields can be anything (email, FIO, etc.) — check labels first
  */
 export async function fillPersonalData(page: Page, email: string): Promise<void> {
-  // Fill FIO — try PremiumBox custom fields + generic selectors
+  // Fill FIO — only use selectors known to be FIO fields
   const fioFilled = await page.evaluate((fio) => {
     const selectors = [
-      'input[name="cf6"]',
-      'input[name="cf2"]',
-      'input[name="cf7"]',
-      'input#cf6',
-      'input#cf2',
       'input[name*="fio"]',
       'input[placeholder*="ФИО"]',
       'input[placeholder*="Фамилия"]',
       'input[placeholder*="имя"]',
       'input[placeholder*="ваше имя"]',
-      'input[placeholder*="name"]',
     ];
     for (const sel of selectors) {
       const input = document.querySelector(sel) as HTMLInputElement;
@@ -127,6 +121,27 @@ export async function fillPersonalData(page: Page, email: string): Promise<void>
         return sel;
       }
     }
+
+    // Check PremiumBox cf* fields by their <label> text
+    const cfInputs = document.querySelectorAll('input[name^="cf"]');
+    for (const el of Array.from(cfInputs)) {
+      const input = el as HTMLInputElement;
+      if (input.type === 'hidden' || input.offsetParent === null || input.value) continue;
+      if (input.name.startsWith('cfget')) continue; // phone fields
+      // Check label
+      const labelEl = document.querySelector(`label[for="${input.id}"]`);
+      const labelText = (labelEl?.textContent || '').toLowerCase();
+      if (labelText.includes('mail') || labelText.includes('почт')) continue; // email field, not FIO
+      if (labelText.includes('фио') || labelText.includes('имя') || labelText.includes('name') || labelText.includes('фамил')) {
+        input.focus();
+        input.value = fio;
+        input.dispatchEvent(new Event('input', { bubbles: true }));
+        input.dispatchEvent(new Event('change', { bubbles: true }));
+        input.dispatchEvent(new Event('blur', { bubbles: true }));
+        return `${input.name} (label: ${labelText.trim()})`;
+      }
+    }
+
     return null;
   }, config.formFio);
 
@@ -134,7 +149,7 @@ export async function fillPersonalData(page: Page, email: string): Promise<void>
     logger.info(`Filled FIO field: ${fioFilled}`);
   }
 
-  // Fill email (only if not already filled)
+  // Fill email — check exchange form fields and PremiumBox cf* email fields
   const emailFilled = await page.evaluate((emailVal) => {
     const selectors = [
       'input[name="email"]',
@@ -143,6 +158,20 @@ export async function fillPersonalData(page: Page, email: string): Promise<void>
       'input[placeholder*="e-mail"]',
       '#email'
     ];
+
+    // Also find PremiumBox cf* fields labeled as email
+    const cfInputs = document.querySelectorAll('input[name^="cf"]');
+    for (const el of Array.from(cfInputs)) {
+      const input = el as HTMLInputElement;
+      if (input.type === 'hidden' || input.offsetParent === null || input.value) continue;
+      if (input.name.startsWith('cfget')) continue;
+      const labelEl = document.querySelector(`label[for="${input.id}"]`);
+      const labelText = (labelEl?.textContent || '').toLowerCase();
+      if (labelText.includes('mail') || labelText.includes('почт')) {
+        selectors.unshift(`#${input.id}`); // Add to beginning with highest priority
+      }
+    }
+
     for (const sel of selectors) {
       const input = document.querySelector(sel) as HTMLInputElement;
       if (input && input.offsetParent !== null && !input.value) {
@@ -160,31 +189,6 @@ export async function fillPersonalData(page: Page, email: string): Promise<void>
     logger.info(`Filled email field: ${emailFilled}`);
   }
 
-  // Fill any remaining empty visible PremiumBox cf* text fields with FIO
-  // These are often required custom fields without recognizable names
-  const extraFilled = await page.evaluate((fio) => {
-    const filled: string[] = [];
-    const cfInputs = document.querySelectorAll('input[name^="cf"]');
-    for (const el of Array.from(cfInputs)) {
-      const input = el as HTMLInputElement;
-      if (input.type === 'hidden' || input.type === 'checkbox' || input.type === 'radio') continue;
-      if (input.offsetParent === null) continue; // hidden
-      if (input.value) continue; // already filled
-      // Skip phone fields (cfget* or has +7 placeholder)
-      if (input.name.startsWith('cfget') || (input.placeholder || '').includes('+7')) continue;
-      input.focus();
-      input.value = fio;
-      input.dispatchEvent(new Event('input', { bubbles: true }));
-      input.dispatchEvent(new Event('change', { bubbles: true }));
-      input.dispatchEvent(new Event('blur', { bubbles: true }));
-      filled.push(input.name);
-    }
-    return filled;
-  }, config.formFio);
-
-  if (extraFilled.length > 0) {
-    logger.info(`Filled extra PremiumBox fields: ${extraFilled.join(', ')}`);
-  }
 }
 
 /**

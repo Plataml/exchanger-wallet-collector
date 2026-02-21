@@ -154,10 +154,11 @@ export class SmartFormFiller {
           purpose = 'card';
           confidence = 0.9;
         }
-        // Email field
+        // Email field (handles "e-mail" with hyphen too)
         else if (type === 'email' || name.includes('email') || name.includes('mail') ||
                  placeholder.includes('email') || placeholder.includes('почт') ||
-                 placeholder.includes('@') || label.includes('email')) {
+                 placeholder.includes('@') ||
+                 label.includes('email') || label.includes('e-mail') || label.includes('mail')) {
           purpose = 'email';
           confidence = 0.95;
         }
