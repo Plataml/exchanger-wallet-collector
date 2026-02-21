@@ -87,9 +87,9 @@ export async function collectFromExchanger(
           fromCurrency: pair.from,
           toCurrency: pair.to,
           amount,
-          wallet: isCryptoToFiat ? (config.formPhone || '9991234567') : getWalletForCurrency(pair.to),
+          wallet: isCryptoToFiat ? (config.formPhone || '+79261234567') : getWalletForCurrency(pair.to),
           email: config.formEmail,
-          phone: config.formPhone || '9991234567',
+          phone: config.formPhone || '+79261234567',
           bank: 'Сбербанк RUB'
         };
 

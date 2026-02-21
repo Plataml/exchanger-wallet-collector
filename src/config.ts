@@ -45,8 +45,8 @@ export const config = {
   formWalletUSDT: process.env.FORM_WALLET_USDT || '',
   formCard: process.env.FORM_CARD || '',
   formCardUA: process.env.FORM_CARD_UA || '4405353630736979',  // Visa Приватбанк (Украина)
-  formPhone: process.env.FORM_PHONE || '9991234567',  // Phone for СБП transfers
-  formFio: process.env.FORM_FIO || 'Мунтян Виктор',  // Muntean Victor
+  formPhone: process.env.FORM_PHONE || '+79261234567',  // Phone for СБП (+7 prefix required)
+  formFio: process.env.FORM_FIO || 'Иванов Иван Иванович',
   formFioEn: process.env.FORM_FIO_EN || 'Muntean Victor',
   formBank: process.env.FORM_BANK || 'Сбербанк',
 
