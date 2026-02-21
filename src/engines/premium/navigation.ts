@@ -47,14 +47,23 @@ export async function navigateToExchangePage(
   const fromCodes = getCurrencyVariations(fromCurrency).map(c => c.toLowerCase());
   const toCodes = getCurrencyVariations(toCurrency).map(c => c.toLowerCase());
 
+  // Find link where FROM currency appears BEFORE "to" and TO currency AFTER "to"
   const matchedLink = await page.evaluate(({ fromCodes, toCodes }) => {
     const links = Array.from(document.querySelectorAll('a[href]'));
     for (const a of links) {
       const href = (a.getAttribute('href') || '').toLowerCase();
       if (!href.includes('exchange') && !href.includes('xchange')) continue;
-      const hasFrom = fromCodes.some(c => href.includes(c));
-      const hasTo = toCodes.some(c => href.includes(c));
-      if (hasFrom && hasTo) return a.getAttribute('href');
+
+      // Split by "to" separator: check direction (from-CODE-to-CODE)
+      const toIdx = href.indexOf('-to-') !== -1 ? href.indexOf('-to-') : href.indexOf('_to_');
+      if (toIdx === -1) continue;
+
+      const beforeTo = href.substring(0, toIdx);
+      const afterTo = href.substring(toIdx + 4);
+      const hasFromBeforeTo = fromCodes.some(c => beforeTo.includes(c));
+      const hasToAfterTo = toCodes.some(c => afterTo.includes(c));
+
+      if (hasFromBeforeTo && hasToAfterTo) return a.getAttribute('href');
     }
     return null;
   }, { fromCodes, toCodes });
