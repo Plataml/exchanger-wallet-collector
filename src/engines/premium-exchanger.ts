@@ -16,7 +16,8 @@ import {
 import {
   getCardForCurrency,
   tryFallbackFill,
-  fillPersonalData
+  fillPersonalData,
+  fillSelectDropdowns
 } from './premium/form-filler';
 import {
   clickSubmitButton,
@@ -113,6 +114,9 @@ export class PremiumExchangerEngine extends BaseEngine {
       // Fill PremiumBox custom fields (cf6=FIO, etc.) that SmartFormFiller may miss
       await fillPersonalData(page, formEmail);
 
+      // Fill any unselected <select> dropdowns (bank selector for SBP, etc.)
+      await fillSelectDropdowns(page);
+
       // Step 3: Handle captcha
       const captcha = await detectCaptcha(page);
       if (captcha.hasCaptcha) {
@@ -179,7 +183,8 @@ export class PremiumExchangerEngine extends BaseEngine {
         const isFormError = validationError.includes('поле') || validationError.includes('заполн') ||
           validationError.includes('обязатель') || validationError.includes('не приняли') ||
           validationError.includes('условия') || validationError.includes('минимал') ||
-          validationError.includes('неверн') || validationError.includes('номер счета');
+          validationError.includes('неверн') || validationError.includes('номер счета') ||
+          validationError.includes('не выбрано') || validationError.includes('выбрано');
         if (isFormError) {
           await this.saveDebugScreenshot(page, 'validation-error');
           return { success: false, error: `Form validation: ${validationError}` };

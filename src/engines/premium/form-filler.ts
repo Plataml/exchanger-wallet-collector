@@ -214,6 +214,80 @@ export async function fillPersonalData(page: Page, email: string): Promise<void>
 }
 
 /**
+ * Fill any unselected <select> dropdowns (bank selector for SBP, etc.)
+ * For bank selects, prefer Сбербанк; for others, pick the first meaningful option
+ */
+export async function fillSelectDropdowns(page: Page): Promise<void> {
+  const result = await page.evaluate(() => {
+    const filled: string[] = [];
+    const selects = document.querySelectorAll('select');
+
+    for (const sel of Array.from(selects)) {
+      const htmlSel = sel as HTMLSelectElement;
+      if (htmlSel.offsetParent === null) continue; // hidden
+      if (htmlSel.value && htmlSel.value !== '' && htmlSel.value !== '0') continue; // already selected
+
+      const options = Array.from(htmlSel.options);
+      // Skip if only one option (no real choice)
+      if (options.length <= 1) continue;
+
+      // Check if this is a bank selector
+      const name = (htmlSel.name || '').toLowerCase();
+      const id = (htmlSel.id || '').toLowerCase();
+      const labelEl = document.querySelector(`label[for="${htmlSel.id}"]`);
+      const labelText = (labelEl?.textContent || '').toLowerCase();
+      const parentText = (htmlSel.closest('div, tr, td')?.textContent || '').toLowerCase();
+      const context = `${name} ${id} ${labelText} ${parentText}`;
+      const isBankSelector = context.includes('банк') || context.includes('bank') ||
+        context.includes('платеж') || context.includes('payment') ||
+        context.includes('получатель') || context.includes('sbp') || context.includes('сбп');
+
+      let selectedValue = '';
+
+      if (isBankSelector) {
+        // Prefer Sberbank for bank selectors
+        const preferredBanks = ['сбербанк', 'sberbank', 'сбер', 'sber'];
+        for (const bank of preferredBanks) {
+          const match = options.find(o => o.text.toLowerCase().includes(bank));
+          if (match && match.value) {
+            selectedValue = match.value;
+            break;
+          }
+        }
+      }
+
+      // Fallback: select first non-empty, non-placeholder option
+      if (!selectedValue) {
+        const meaningful = options.find(o =>
+          o.value && o.value !== '' && o.value !== '0' &&
+          !o.text.toLowerCase().includes('выбрать') &&
+          !o.text.toLowerCase().includes('выберите') &&
+          !o.text.toLowerCase().includes('не выбрано')
+        );
+        if (meaningful) {
+          selectedValue = meaningful.value;
+        }
+      }
+
+      if (selectedValue) {
+        htmlSel.value = selectedValue;
+        htmlSel.dispatchEvent(new Event('change', { bubbles: true }));
+        const selectedText = options.find(o => o.value === selectedValue)?.text || selectedValue;
+        filled.push(`${htmlSel.name || htmlSel.id}: ${selectedText.trim()}`);
+      }
+    }
+
+    return filled;
+  });
+
+  if (result.length > 0) {
+    for (const f of result) {
+      logger.info(`Filled select: ${f}`);
+    }
+  }
+}
+
+/**
  * Fallback fill method using old selectors
  */
 export async function tryFallbackFill(
