@@ -12,11 +12,13 @@ export class VueSpaEngine extends BaseEngine {
 
   async canHandle(page: Page): Promise<boolean> {
     return page.evaluate(() => {
-      return !!(
-        document.querySelector('[class*="v-"], [id*="v-radio"]') ||
-        document.querySelector('[name*="Requisites"]') ||
-        document.querySelector('[class*="_"][class*="_"]')
+      // Require real Vue.js indicators, not just CSS module patterns
+      const hasVueElements = !!document.querySelector('[class*="v-"], [id*="v-radio"]');
+      const hasVueRequisites = !!document.querySelector('[name*="Requisites"]');
+      const hasDataVAttributes = Array.from(document.querySelectorAll('*')).some(el =>
+        Array.from(el.attributes).some(attr => attr.name.startsWith('data-v-'))
       );
+      return hasVueElements || hasVueRequisites || hasDataVAttributes;
     });
   }
 
