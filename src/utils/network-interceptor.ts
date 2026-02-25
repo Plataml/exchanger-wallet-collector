@@ -54,9 +54,12 @@ export interface InterceptedMinAmount {
 }
 
 const MIN_AMOUNT_KEYS = [
-  'min_amount', 'minimum', 'min_sum', 'min', 'minAmount',
-  'minimum_amount', 'min_value', 'from_min', 'amount_min',
+  'min_amount', 'min_sum', 'minamount', 'minimum_amount',
+  'min_value', 'from_min', 'amount_min',
 ];
+
+// Exact match keys (not substring) — to avoid false positives like "minWidth"
+const MIN_AMOUNT_EXACT_KEYS = ['min', 'minimum'];
 
 export class NetworkInterceptor {
   private page: Page;
@@ -234,10 +237,14 @@ export class NetworkInterceptor {
   private searchJsonForMinAmount(obj: any, url: string, depth = 0): void {
     if (depth > 8 || !obj) return;
 
+    // Skip non-exchange URLs (chat widgets, analytics, etc.)
+    const skipUrlPatterns = /me-talk|tawk|jivosite|chatra|intercom|crisp|drift|livechat|carrotquest|google|facebook|yandex|metrica/i;
+    if (skipUrlPatterns.test(url)) return;
+
     if (typeof obj === 'object' && !Array.isArray(obj)) {
       for (const [key, value] of Object.entries(obj)) {
         const lk = key.toLowerCase();
-        if (MIN_AMOUNT_KEYS.some(k => lk.includes(k))) {
+        if (MIN_AMOUNT_KEYS.some(k => lk.includes(k)) || MIN_AMOUNT_EXACT_KEYS.includes(lk)) {
           const num = parseFloat(String(value));
           if (!isNaN(num) && num > 0) {
             const existing = this.interceptedMinAmounts.find(m => m.url === url);

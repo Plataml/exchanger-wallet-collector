@@ -182,11 +182,15 @@ export class PremiumExchangerEngine extends BaseEngine {
       });
       if (validationError) {
         logger.warn(`Post-submit validation error: ${validationError}`);
-        const isFormError = validationError.includes('поле') || validationError.includes('заполн') ||
-          validationError.includes('обязатель') || validationError.includes('не приняли') ||
-          validationError.includes('условия') || validationError.includes('минимал') ||
-          validationError.includes('неверн') || validationError.includes('номер счета') ||
-          validationError.includes('не выбрано') || validationError.includes('выбрано');
+        const errLower = validationError.toLowerCase();
+        const isFormError = errLower.includes('поле') || errLower.includes('заполн') ||
+          errLower.includes('обязатель') || errLower.includes('не приняли') ||
+          errLower.includes('условия') || errLower.includes('минимал') ||
+          errLower.includes('неверн') || errLower.includes('номер счета') ||
+          errLower.includes('не выбрано') || errLower.includes('выбрано') ||
+          errLower.includes('min') || errLower.includes('maximum') ||
+          errLower.includes('invalid') || errLower.includes('incorrect') ||
+          errLower.includes('ошибк') || errLower.includes('некоррект');
         if (isFormError) {
           await this.saveDebugScreenshot(page, 'validation-error');
           return { success: false, error: `Form validation: ${validationError}` };
