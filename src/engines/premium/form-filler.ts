@@ -220,27 +220,37 @@ export async function fillPersonalData(page: Page, email: string): Promise<void>
 export async function fillSelectDropdowns(page: Page): Promise<void> {
   const result = await page.evaluate(() => {
     const filled: string[] = [];
+    const skipped: string[] = [];
     const selects = document.querySelectorAll('select');
 
     for (const sel of Array.from(selects)) {
       const htmlSel = sel as HTMLSelectElement;
-      if (htmlSel.offsetParent === null) continue; // hidden
-      if (htmlSel.value && htmlSel.value !== '' && htmlSel.value !== '0') continue; // already selected
+      // Skip currency selectors (already chosen by navigation)
+      const id = (htmlSel.id || '').toLowerCase();
+      if (id === 'select_give' || id === 'select_get') continue;
+
+      // Skip selects inside registration/profile forms (form_field_id-*)
+      if (id.startsWith('form_field_id')) continue;
+      if (htmlSel.closest('.userwalletsform, .rb_form, [id*="userwallets"]')) continue;
+
+      // Skip if already has a meaningful value
+      if (htmlSel.value && htmlSel.value !== '' && htmlSel.value !== '0') {
+        skipped.push(`${htmlSel.name || htmlSel.id}=${htmlSel.value}`);
+        continue;
+      }
 
       const options = Array.from(htmlSel.options);
-      // Skip if only one option (no real choice)
       if (options.length <= 1) continue;
 
       // Check if this is a bank selector
       const name = (htmlSel.name || '').toLowerCase();
-      const id = (htmlSel.id || '').toLowerCase();
       const labelEl = document.querySelector(`label[for="${htmlSel.id}"]`);
       const labelText = (labelEl?.textContent || '').toLowerCase();
-      const parentText = (htmlSel.closest('div, tr, td')?.textContent || '').toLowerCase();
-      const context = `${name} ${id} ${labelText} ${parentText}`;
+      const context = `${name} ${id} ${labelText}`;
       const isBankSelector = context.includes('банк') || context.includes('bank') ||
         context.includes('платеж') || context.includes('payment') ||
-        context.includes('получатель') || context.includes('sbp') || context.includes('сбп');
+        context.includes('получатель') || context.includes('sbp') || context.includes('сбп') ||
+        name.startsWith('cfget');
 
       let selectedValue = '';
 
@@ -249,7 +259,7 @@ export async function fillSelectDropdowns(page: Page): Promise<void> {
         const preferredBanks = ['сбербанк', 'sberbank', 'сбер', 'sber'];
         for (const bank of preferredBanks) {
           const match = options.find(o => o.text.toLowerCase().includes(bank));
-          if (match && match.value) {
+          if (match && match.value && match.value !== '0') {
             selectedValue = match.value;
             break;
           }
@@ -262,7 +272,8 @@ export async function fillSelectDropdowns(page: Page): Promise<void> {
           o.value && o.value !== '' && o.value !== '0' &&
           !o.text.toLowerCase().includes('выбрать') &&
           !o.text.toLowerCase().includes('выберите') &&
-          !o.text.toLowerCase().includes('не выбрано')
+          !o.text.toLowerCase().includes('не выбрано') &&
+          !o.text.toLowerCase().includes('--')
         );
         if (meaningful) {
           selectedValue = meaningful.value;
@@ -272,18 +283,24 @@ export async function fillSelectDropdowns(page: Page): Promise<void> {
       if (selectedValue) {
         htmlSel.value = selectedValue;
         htmlSel.dispatchEvent(new Event('change', { bubbles: true }));
+        htmlSel.dispatchEvent(new Event('input', { bubbles: true }));
         const selectedText = options.find(o => o.value === selectedValue)?.text || selectedValue;
         filled.push(`${htmlSel.name || htmlSel.id}: ${selectedText.trim()}`);
       }
     }
 
-    return filled;
+    return { filled, skipped };
   });
 
-  if (result.length > 0) {
-    for (const f of result) {
+  if (result.skipped.length > 0) {
+    logger.debug(`Select dropdowns already filled: ${result.skipped.join(', ')}`);
+  }
+  if (result.filled.length > 0) {
+    for (const f of result.filled) {
       logger.info(`Filled select: ${f}`);
     }
+  } else {
+    logger.debug(`No select dropdowns needed filling (found ${result.skipped.length} already filled)`);
   }
 }
 
