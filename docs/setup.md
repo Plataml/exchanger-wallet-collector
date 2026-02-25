@@ -5,7 +5,7 @@
 ```
 IP: 93.114.128.73
 User: root
-Password: v9DUhZQFpyRAp
+Password: j9GmKsdZUWmsHAch#
 Путь: /root/exchanger-wallet-collector
 ```
 
