@@ -1,9 +1,6 @@
 import { Page } from 'playwright';
-import Anthropic from '@anthropic-ai/sdk';
 import { logger } from '../logger';
 import { config } from '../config';
-import fs from 'fs';
-import path from 'path';
 
 // --- Interfaces ---
 
@@ -62,21 +59,44 @@ interface CacheEntry {
 const analysisCache = new Map<string, CacheEntry>();
 const CACHE_TTL = 60 * 60 * 1000; // 1 hour
 
+// --- OpenAI-compatible API client ---
+
+interface ChatMessage {
+  role: 'system' | 'user' | 'assistant';
+  content: string | Array<{ type: string; text?: string; image_url?: { url: string } }>;
+}
+
+async function callLLM(messages: ChatMessage[], maxTokens: number = 1024): Promise<string> {
+  const baseUrl = config.visionProxyUrl || 'http://localhost:8317/v1';
+  const apiKey = config.visionProxyKey || 'sk-placeholder';
+  const model = config.visionModel;
+
+  const response = await fetch(`${baseUrl}/chat/completions`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${apiKey}`
+    },
+    body: JSON.stringify({
+      model,
+      messages,
+      max_tokens: maxTokens,
+      temperature: 0
+    })
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(`LLM API error ${response.status}: ${errorText}`);
+  }
+
+  const data = await response.json() as any;
+  return data.choices?.[0]?.message?.content || '';
+}
+
 // --- Main Class ---
 
 export class VisionAnalyzer {
-  private client: Anthropic | null = null;
-
-  private getClient(): Anthropic {
-    if (!this.client) {
-      if (!config.anthropicApiKey) {
-        throw new Error('ANTHROPIC_API_KEY is not set');
-      }
-      this.client = new Anthropic({ apiKey: config.anthropicApiKey });
-    }
-    return this.client;
-  }
-
   /**
    * Full page analysis: DOM-first, Vision fallback
    */
@@ -124,7 +144,6 @@ export class VisionAnalyzer {
     currency: string,
     selectorInfo: CurrencySelector
   ): Promise<ActionStep[]> {
-    // Take screenshot focused on the currency selector area
     const screenshot = await page.screenshot({ type: 'png', fullPage: false });
     const base64 = screenshot.toString('base64');
 
@@ -148,20 +167,14 @@ Common patterns:
 Keep selectors simple and robust. Prefer text content matching over class names.`;
 
     try {
-      const client = this.getClient();
-      const response = await client.messages.create({
-        model: config.visionModel,
-        max_tokens: 1024,
-        messages: [{
-          role: 'user',
-          content: [
-            { type: 'image', source: { type: 'base64', media_type: 'image/png', data: base64 } },
-            { type: 'text', text: prompt }
-          ]
-        }]
-      });
+      const text = await callLLM([{
+        role: 'user',
+        content: [
+          { type: 'image_url', image_url: { url: `data:image/png;base64,${base64}` } },
+          { type: 'text', text: prompt }
+        ]
+      }], 1024);
 
-      const text = response.content[0].type === 'text' ? response.content[0].text : '';
       return this.parseJsonFromResponse<ActionStep[]>(text) || [];
     } catch (error) {
       logger.error(`[VISION] Currency selection planning failed: ${error}`);
@@ -197,20 +210,14 @@ Return JSON:
 If you can't find an address, return {"address": null, "confidence": 0}.`;
 
     try {
-      const client = this.getClient();
-      const response = await client.messages.create({
-        model: config.visionModel,
-        max_tokens: 512,
-        messages: [{
-          role: 'user',
-          content: [
-            { type: 'image', source: { type: 'base64', media_type: 'image/png', data: base64 } },
-            { type: 'text', text: prompt }
-          ]
-        }]
-      });
+      const text = await callLLM([{
+        role: 'user',
+        content: [
+          { type: 'image_url', image_url: { url: `data:image/png;base64,${base64}` } },
+          { type: 'text', text: prompt }
+        ]
+      }], 512);
 
-      const text = response.content[0].type === 'text' ? response.content[0].text : '';
       const result = this.parseJsonFromResponse<{ address?: string; network?: string; memo?: string; confidence?: number }>(text);
 
       if (result?.address && result.confidence && result.confidence > 0.5) {
@@ -277,7 +284,6 @@ If you can't find an address, return {"address": null, "confidence": 0}.`;
         } else if (name) {
           selector = `${tag}[name="${CSS.escape(name)}"]`;
         } else if (index < 50) {
-          // Use class-based or nth selector
           const classes = className.split(/\s+/).filter((c: string) => c.length > 2 && c.length < 40).slice(0, 2);
           if (classes.length > 0) {
             selector = `${tag}.${classes.map((c: string) => CSS.escape(c)).join('.')}`;
@@ -308,7 +314,6 @@ If you can't find an address, return {"address": null, "confidence": 0}.`;
   // --- Private: DOM-based LLM Analysis ---
 
   private async analyzeWithDom(domElements: DomElement[], context: { fromCurrency: string; toCurrency: string }): Promise<PageAnalysis> {
-    // Filter to visible, relevant elements
     const relevant = domElements.filter(el =>
       el.visible || el.type === 'hidden' && (el.name.includes('direction') || el.name.includes('currency'))
     );
@@ -317,7 +322,6 @@ If you can't find an address, return {"address": null, "confidence": 0}.`;
       return this.emptyAnalysis();
     }
 
-    // Compact DOM for prompt (reduce token usage)
     const compactDom = relevant.map(el => ({
       tag: el.tag,
       type: el.type || undefined,
@@ -361,18 +365,10 @@ Rules:
 - Only include fields you're confident about`;
 
     try {
-      const client = this.getClient();
-      const response = await client.messages.create({
-        model: config.visionModel,
-        max_tokens: 1024,
-        messages: [{ role: 'user', content: prompt }]
-      });
-
-      const text = response.content[0].type === 'text' ? response.content[0].text : '';
+      const text = await callLLM([{ role: 'user', content: prompt }], 1024);
       const parsed = this.parseJsonFromResponse<PageAnalysis>(text);
 
       if (parsed) {
-        // Validate selectors exist
         parsed.fields = parsed.fields?.filter(f => f.selector && f.purpose) || [];
         parsed.confidence = Math.min(parsed.confidence || 0, 1);
         return parsed;
@@ -420,20 +416,14 @@ Key visual cues:
 - Currency icons with dropdown arrows = currency selector
 - Large colored button at bottom = submit`;
 
-      const client = this.getClient();
-      const response = await client.messages.create({
-        model: config.visionModel,
-        max_tokens: 1024,
-        messages: [{
-          role: 'user',
-          content: [
-            { type: 'image', source: { type: 'base64', media_type: 'image/png', data: base64 } },
-            { type: 'text', text: prompt }
-          ]
-        }]
-      });
+      const text = await callLLM([{
+        role: 'user',
+        content: [
+          { type: 'image_url', image_url: { url: `data:image/png;base64,${base64}` } },
+          { type: 'text', text: prompt }
+        ]
+      }], 1024);
 
-      const text = response.content[0].type === 'text' ? response.content[0].text : '';
       const parsed = this.parseJsonFromResponse<PageAnalysis>(text);
 
       if (parsed) {
@@ -453,10 +443,8 @@ Key visual cues:
 
   private parseJsonFromResponse<T>(text: string): T | null {
     try {
-      // Try direct parse
       return JSON.parse(text) as T;
     } catch {
-      // Extract JSON from markdown code block
       const jsonMatch = text.match(/```(?:json)?\s*([\s\S]*?)```/);
       if (jsonMatch) {
         try {
@@ -464,7 +452,6 @@ Key visual cues:
         } catch { /* fall through */ }
       }
 
-      // Try to find JSON object/array in text
       const braceMatch = text.match(/\{[\s\S]*\}/);
       if (braceMatch) {
         try {

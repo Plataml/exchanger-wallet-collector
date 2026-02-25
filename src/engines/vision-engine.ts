@@ -21,7 +21,7 @@ export class VisionEngine extends BaseEngine {
 
   async canHandle(page: Page): Promise<boolean> {
     // Always true — this is the universal fallback
-    return config.visionEnabled && !!config.anthropicApiKey;
+    return config.visionEnabled && !!config.visionProxyKey;
   }
 
   async collectAddress(page: Page, data: ExchangeFormData): Promise<CollectionResult> {

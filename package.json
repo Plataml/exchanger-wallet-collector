@@ -21,7 +21,6 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "@anthropic-ai/sdk": "^0.78.0",
     "dotenv": "^16.3.1",
     "imapflow": "^1.2.8",
     "playwright": "^1.58.0",

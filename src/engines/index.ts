@@ -54,7 +54,7 @@ export async function selectEngine(page: Page): Promise<{ engine: BaseEngine | n
   }
 
   // Final fallback: VisionEngine (if enabled)
-  if (config.visionEnabled && config.anthropicApiKey) {
+  if (config.visionEnabled && config.visionProxyKey) {
     const visionEngine = engines.find(e => e.type === 'vision');
     if (visionEngine) {
       logger.info('No specialized engine matched, falling back to Vision AI Engine');

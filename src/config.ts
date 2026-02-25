@@ -59,9 +59,10 @@ export const config = {
   // Human-like mouse simulation (Bezier curves before clicks)
   humanMouse: process.env.HUMAN_MOUSE !== 'false',
 
-  // Vision AI (Claude API for universal form analysis)
-  anthropicApiKey: process.env.ANTHROPIC_API_KEY || '',
-  visionModel: process.env.VISION_MODEL || 'claude-haiku-4-5-20251001',
+  // Vision AI (CLIProxyAPI — uses Claude Max subscription via local proxy)
+  visionProxyUrl: process.env.VISION_PROXY_URL || 'http://localhost:8317/v1',
+  visionProxyKey: process.env.VISION_PROXY_KEY || '',
+  visionModel: process.env.VISION_MODEL || 'claude-sonnet-4-5-20250929',
   visionEnabled: process.env.VISION_ENABLED !== 'false',
 };
 
