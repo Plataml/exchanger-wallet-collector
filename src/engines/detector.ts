@@ -7,6 +7,7 @@ export type EngineType =
   | 'exchanger-cms'
   | 'vue-spa'
   | 'multipage'
+  | 'vision'
   | 'cloudflare-protected'
   | 'unknown';
 
@@ -25,6 +26,7 @@ export async function detectEngine(page: Page): Promise<EngineSignature> {
     'exchanger-cms': 0,
     'vue-spa': 0,
     'multipage': 0,
+    'vision': 0,
     'cloudflare-protected': 0,
     'unknown': 0
   };

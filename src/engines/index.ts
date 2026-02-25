@@ -6,16 +6,19 @@ import { MultipageEngine } from './multipage';
 import { PremiumExchangerEngine } from './premium-exchanger';
 import { IexExchangerEngine } from './iex-exchanger';
 import { BoxExchangerEngine } from './box-exchanger';
+import { VisionEngine } from './vision-engine';
 import { getBestSelectors, recordSuccess, recordFailure, initPatternsTable } from './learned-patterns';
 import { logger } from '../logger';
+import { config } from '../config';
 
-// Registry of available engines
+// Registry of available engines (VisionEngine is last — universal fallback)
 const engines: BaseEngine[] = [
   new PremiumExchangerEngine(),
   new IexExchangerEngine(),
   new BoxExchangerEngine(),
   new VueSpaEngine(),
-  new MultipageEngine()
+  new MultipageEngine(),
+  new VisionEngine()
 ];
 
 export interface SmartCollectionResult extends CollectionResult {
@@ -42,10 +45,20 @@ export async function selectEngine(page: Page): Promise<{ engine: BaseEngine | n
     }
   }
 
-  // If no exact match, try each engine's canHandle
+  // If no exact match, try each engine's canHandle (except VisionEngine — it's the final fallback)
   for (const engine of engines) {
+    if (engine.type === 'vision') continue; // skip vision in this loop
     if (await engine.canHandle(page)) {
       return { engine, signature };
+    }
+  }
+
+  // Final fallback: VisionEngine (if enabled)
+  if (config.visionEnabled && config.anthropicApiKey) {
+    const visionEngine = engines.find(e => e.type === 'vision');
+    if (visionEngine) {
+      logger.info('No specialized engine matched, falling back to Vision AI Engine');
+      return { engine: visionEngine, signature };
     }
   }
 
